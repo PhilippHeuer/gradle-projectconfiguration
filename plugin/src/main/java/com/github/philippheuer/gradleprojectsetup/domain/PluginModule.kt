@@ -27,8 +27,8 @@ interface PluginModule {
     /**
      * logs a message
      *
-     * debug on -> print information for easy error diagnosis
-     * debug off -> forward to slf4j
+     * loglevel set, print to console for easy diagnosis
+     * loglevel not set, forward to slf4j
      */
     fun log(logLevel: LogLevel, message: String) {
         if (config.logLevel.isPresent) {

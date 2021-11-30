@@ -10,11 +10,7 @@ import org.gradle.api.plugins.ObjectConfigurationAction
 
 class LombokFeature constructor(override var project: Project, override var config: ProjectSetupExtension) : PluginModule {
     override fun check(): Boolean {
-        if (ProjectLanguage.JAVA == config.language.get()) {
-            return true
-        }
-
-        return false
+        return ProjectLanguage.JAVA == config.language.get()
     }
 
     override fun run() {

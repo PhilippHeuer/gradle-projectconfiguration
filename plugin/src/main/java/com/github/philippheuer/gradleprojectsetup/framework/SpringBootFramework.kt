@@ -9,11 +9,7 @@ import org.gradle.api.plugins.ObjectConfigurationAction
 
 class SpringBootFramework constructor(override var project: Project, override var config: ProjectSetupExtension) : PluginModule {
     override fun check(): Boolean {
-        if (ProjectFramework.SPRINGBOOT == config.framework.get()) {
-            return true
-        }
-
-        return false
+       return ProjectFramework.SPRINGBOOT == config.framework.get()
     }
 
     override fun run() {
