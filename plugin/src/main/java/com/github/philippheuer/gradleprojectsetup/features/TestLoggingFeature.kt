@@ -15,7 +15,7 @@ class TestLoggingFeature constructor(override var project: Project, override var
     override fun run() {
         project.run {
             apply { action: ObjectConfigurationAction ->
-                log(LogLevel.INFO, "applying gradle plugin [com.adarshr.test-logger]")
+                log(LogLevel.INFO, "applying plugin [com.adarshr.test-logger]")
                 action.plugin("com.adarshr.test-logger")
             }
 

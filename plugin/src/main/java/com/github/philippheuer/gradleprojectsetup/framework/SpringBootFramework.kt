@@ -15,7 +15,7 @@ class SpringBootFramework constructor(override var project: Project, override va
     override fun run() {
         project.run {
             apply { action: ObjectConfigurationAction ->
-                log(LogLevel.INFO, "applying gradle plugin [org.springframework.boot]")
+                log(LogLevel.INFO, "applying plugin [org.springframework.boot]")
                 action.plugin("org.springframework.boot")
             }
 

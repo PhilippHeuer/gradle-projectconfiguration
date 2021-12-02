@@ -1,10 +1,10 @@
 package com.github.philippheuer.gradleprojectsetup
 
-import com.github.philippheuer.gradleprojectsetup.features.LombokFeature
-import com.github.philippheuer.gradleprojectsetup.features.TestLoggingFeature
+import com.github.philippheuer.gradleprojectsetup.features.*
 import com.github.philippheuer.gradleprojectsetup.framework.QuarkusFramework
 import com.github.philippheuer.gradleprojectsetup.framework.SpringBootFramework
 import com.github.philippheuer.gradleprojectsetup.policy.GradleWrapperVersionPolicy
+import com.github.philippheuer.gradleprojectsetup.type.JavaLibraryType
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.slf4j.LoggerFactory
@@ -22,12 +22,16 @@ abstract class ProjectSetupPlugin : Plugin<Project> {
         project.afterEvaluate { // TODO: config property values are only accessible in afterEvaluate, but there should be a better way maybe?
             // process each module
             val modules = listOf(
+                // type
+                JavaLibraryType(project, config),
                 // frameworks
                 SpringBootFramework(project, config),
                 QuarkusFramework(project, config),
                 // features
                 LombokFeature(project, config),
                 TestLoggingFeature(project, config),
+                UTF8Feature(project, config),
+                JavadocFeature(project, config),
                 // policy
                 GradleWrapperVersionPolicy(project, config)
             )
