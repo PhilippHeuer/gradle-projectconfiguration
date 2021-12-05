@@ -5,6 +5,7 @@ import com.github.philippheuer.gradleprojectsetup.framework.QuarkusFramework
 import com.github.philippheuer.gradleprojectsetup.framework.SpringBootFramework
 import com.github.philippheuer.gradleprojectsetup.policy.GradleWrapperVersionPolicy
 import com.github.philippheuer.gradleprojectsetup.type.JavaLibraryType
+import com.github.philippheuer.gradleprojectsetup.type.JavaType
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.slf4j.LoggerFactory
@@ -23,6 +24,7 @@ abstract class ProjectSetupPlugin : Plugin<Project> {
             // process each module
             val modules = listOf(
                 // type
+                JavaType(project, config),
                 JavaLibraryType(project, config),
                 // frameworks
                 SpringBootFramework(project, config),
@@ -30,8 +32,9 @@ abstract class ProjectSetupPlugin : Plugin<Project> {
                 // features
                 LombokFeature(project, config),
                 TestLoggingFeature(project, config),
-                UTF8Feature(project, config),
                 JavadocFeature(project, config),
+                ShadowFeature(project, config),
+                ManifestFeature(project, config),
                 // policy
                 GradleWrapperVersionPolicy(project, config)
             )
@@ -42,11 +45,6 @@ abstract class ProjectSetupPlugin : Plugin<Project> {
                     it.run()
                 }
             }
-        }
-
-        // example task
-        project.tasks.register("example-task", ProjectSetupExampleTask::class.java) {
-            // ...
         }
     }
 

@@ -1,38 +1,45 @@
 package com.github.philippheuer.gradleprojectsetup
 
+import com.github.philippheuer.gradleprojectsetup.config.JavaTypeConfig
+import com.github.philippheuer.gradleprojectsetup.config.PluginConfig
 import com.github.philippheuer.gradleprojectsetup.domain.ProjectFramework
 import com.github.philippheuer.gradleprojectsetup.domain.ProjectLanguage
 import com.github.philippheuer.gradleprojectsetup.domain.ProjectType
+import com.github.philippheuer.gradleprojectsetup.config.JavadocConfig
+import com.github.philippheuer.gradleprojectsetup.config.ShadowConfig
+import com.github.philippheuer.gradleprojectsetup.config.GradleWrapperVersionConfig
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.api.logging.LogLevel
+import org.gradle.api.provider.ListProperty
+import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
+import java.util.*
 import javax.inject.Inject
 
 @Suppress("UnnecessaryAbstractClass")
-open class ProjectSetupExtension @Inject constructor(project: Project) {
+open class ProjectSetupExtension @Inject constructor(project: Project) : PluginConfig, JavaTypeConfig, JavadocConfig,
+    ShadowConfig, GradleWrapperVersionConfig {
     private val objects = project.objects
 
-    // logLevel for debugging, if not set logs will be forwarded to slf4j
-    val logLevel: Property<LogLevel> = objects.property(LogLevel::class.java)
+    override val logLevel: Property<LogLevel> = objects.property(LogLevel::class.java)
+    override val language: Property<ProjectLanguage> = objects.property(ProjectLanguage::class.java).convention(ProjectLanguage.JAVA)
+    override val type: Property<ProjectType> = objects.property(ProjectType::class.java).convention(ProjectType.APP)
+    override val framework: Property<ProjectFramework> = objects.property(ProjectFramework::class.java).convention(ProjectFramework.NONE)
 
-    // language
-    val language: Property<ProjectLanguage> = objects.property(ProjectLanguage::class.java).convention(ProjectLanguage.JAVA)
+    override val javaVersion: Property<JavaVersion> = objects.property(JavaVersion::class.java).convention(JavaVersion.VERSION_11)
 
-    // type
-    val type: Property<ProjectType> = objects.property(ProjectType::class.java).convention(ProjectType.APP)
+    override val javadocLocale: Property<String> = objects.property(String::class.java).convention("en")
+    override val javadocLinks: ListProperty<String> = objects.listProperty(String::class.java).convention(Collections.emptyList())
+    override val javadocGroups: MapProperty<String, String> = objects.mapProperty(String::class.java, String::class.java).convention(mutableMapOf())
+    override val javadocLombok: Property<Boolean> = objects.property(Boolean::class.java).convention(true)
+    override val javadocOverviewTemplate: Property<String> = objects.property(String::class.java)
+    override val javadocOverviewAggregateTemplate: Property<String> = objects.property(String::class.java)
 
-    // framework used in the project
-    val framework: Property<ProjectFramework> = objects.property(ProjectFramework::class.java).convention(ProjectFramework.NONE)
+    override val shadow: Property<Boolean> = objects.property(Boolean::class.java).convention(false)
+    override val shadowRelocate: Property<String> = objects.property(String::class.java)
 
-    // java version
-    val javaVersion: Property<JavaVersion> = objects.property(JavaVersion::class.java).convention(JavaVersion.VERSION_11)
-
-    // JavadocFeature: javadocs should integrate lombok generated code?
-    val javadocLombok: Property<Boolean> = objects.property(Boolean::class.java).convention(true)
-
-    // GradleWrapperVersionPolicy: this can be used to disable the gradle version check
-    val gradleVersionCheckBypass: Property<Boolean> = objects.property(Boolean::class.java).convention(false)
+    override val gradleVersionCheckBypass: Property<Boolean> = objects.property(Boolean::class.java).convention(false)
 
     // enable / add prometheus components
     // val prometheus: Property<Boolean> = objects.property(Boolean::class.java).convention(true)

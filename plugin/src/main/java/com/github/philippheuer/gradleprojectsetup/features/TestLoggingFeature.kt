@@ -5,7 +5,6 @@ import com.github.philippheuer.gradleprojectsetup.ProjectSetupExtension
 import com.github.philippheuer.gradleprojectsetup.domain.PluginModule
 import org.gradle.api.Project
 import org.gradle.api.logging.LogLevel
-import org.gradle.api.plugins.ObjectConfigurationAction
 
 class TestLoggingFeature constructor(override var project: Project, override var config: ProjectSetupExtension) : PluginModule {
     override fun check(): Boolean {
@@ -13,18 +12,12 @@ class TestLoggingFeature constructor(override var project: Project, override var
     }
 
     override fun run() {
-        project.run {
-            apply { action: ObjectConfigurationAction ->
-                log(LogLevel.INFO, "applying plugin [com.adarshr.test-logger]")
-                action.plugin("com.adarshr.test-logger")
-            }
+        log(LogLevel.INFO, "applying plugin [com.adarshr.test-logger]")
+        project.pluginManager.apply("com.adarshr.test-logger")
 
-            extensions.run {
-                configure(TestLoggerExtension::class.java) {
-                    it.setTheme("mocha-parallel")
-                    it.slowThreshold = 1000
-                }
-            }
+        project.extensions.configure(TestLoggerExtension::class.java) {
+            it.setTheme("mocha-parallel")
+            it.slowThreshold = 1000
         }
     }
 }

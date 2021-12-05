@@ -8,6 +8,7 @@ import org.gradle.api.Project
 import org.gradle.api.logging.LogLevel
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.plugins.ObjectConfigurationAction
+import org.gradle.api.tasks.compile.JavaCompile
 
 class JavaType constructor(override var project: Project, override var config: ProjectSetupExtension) : PluginModule {
     override fun check(): Boolean {
@@ -27,6 +28,10 @@ class JavaType constructor(override var project: Project, override var config: P
                     it.sourceCompatibility = config.javaVersion.get()
                     it.sourceCompatibility = config.javaVersion.get()
                 }
+            }
+
+            tasks.withType(JavaCompile::class.java).configureEach {
+                it.options.encoding = "UTF-8"
             }
         }
     }

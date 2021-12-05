@@ -17,6 +17,8 @@ dependencies {
     implementation("io.quarkus:gradle-application-plugin:2.5.0.Final")
     implementation("io.freefair.gradle:lombok-plugin:6.3.0")
     implementation("com.adarshr:gradle-test-logger-plugin:3.1.0")
+    implementation("gradle.plugin.com.github.johnrengelman:shadow:7.1.0")
+    implementation("com.coditory.gradle:manifest-plugin:0.1.14")
 
     // test
     testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
