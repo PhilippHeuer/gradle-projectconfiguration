@@ -5,7 +5,7 @@ import me.philippheuer.projectcfg.framework.QuarkusFramework
 import me.philippheuer.projectcfg.framework.SpringBootFramework
 import me.philippheuer.projectcfg.policy.GradleWrapperVersionPolicy
 import me.philippheuer.projectcfg.type.JavaLibraryType
-import me.philippheuer.projectcfg.type.JavaType
+import me.philippheuer.projectcfg.type.JavaApplicationType
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.slf4j.LoggerFactory
@@ -18,13 +18,15 @@ abstract class ProjectConfigurationPlugin : Plugin<Project> {
     }
 
     override fun apply(project: Project) {
-        val config = project.extensions.create(EXTENSION_NAME, me.philippheuer.projectcfg.ProjectConfigurationExtension::class.java)
+        val config = project.extensions.create(EXTENSION_NAME, ProjectConfigurationExtension::class.java)
 
         project.afterEvaluate { // TODO: config property values are only accessible in afterEvaluate, but there should be a better way maybe?
             // process each module
             val modules = listOf(
+                // policy
+                GradleWrapperVersionPolicy(project, config),
                 // type
-                JavaType(project, config),
+                JavaApplicationType(project, config),
                 JavaLibraryType(project, config),
                 // frameworks
                 SpringBootFramework(project, config),
@@ -35,9 +37,7 @@ abstract class ProjectConfigurationPlugin : Plugin<Project> {
                 JavadocFeature(project, config),
                 ShadowFeature(project, config),
                 ManifestFeature(project, config),
-                JUnit5Feature(project, config),
-                // policy
-                GradleWrapperVersionPolicy(project, config)
+                JUnit5Feature(project, config)
             )
 
             modules.forEach {

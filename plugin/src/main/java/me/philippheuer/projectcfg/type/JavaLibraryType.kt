@@ -9,6 +9,9 @@ import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.plugins.ObjectConfigurationAction
 import org.gradle.api.tasks.compile.JavaCompile
 
+/**
+ * Type - Library
+ */
 class JavaLibraryType constructor(override var project: Project, override var config: me.philippheuer.projectcfg.ProjectConfigurationExtension) : PluginModule {
     override fun check(): Boolean {
         return ProjectLanguage.JAVA == config.language.get() && ProjectType.LIBRARY == config.type.get()
@@ -24,7 +27,6 @@ class JavaLibraryType constructor(override var project: Project, override var co
             extensions.run {
                 configure(JavaPluginExtension::class.java) {
                     // java version
-                    it.sourceCompatibility = config.javaVersion.get()
                     it.sourceCompatibility = config.javaVersion.get()
 
                     // sources / javadocs

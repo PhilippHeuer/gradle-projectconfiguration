@@ -9,7 +9,10 @@ import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.plugins.ObjectConfigurationAction
 import org.gradle.api.tasks.compile.JavaCompile
 
-class JavaType constructor(override var project: Project, override var config: me.philippheuer.projectcfg.ProjectConfigurationExtension) : PluginModule {
+/**
+ * Type - Application
+ */
+class JavaApplicationType constructor(override var project: Project, override var config: me.philippheuer.projectcfg.ProjectConfigurationExtension) : PluginModule {
     override fun check(): Boolean {
         return ProjectLanguage.JAVA == config.language.get() && ProjectType.APP == config.type.get()
     }
@@ -25,7 +28,7 @@ class JavaType constructor(override var project: Project, override var config: m
                 configure(JavaPluginExtension::class.java) {
                     // java version
                     it.sourceCompatibility = config.javaVersion.get()
-                    it.sourceCompatibility = config.javaVersion.get()
+                    it.targetCompatibility = config.javaVersion.get()
                 }
             }
 

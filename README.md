@@ -33,6 +33,14 @@ Options:
 | type | the project type | APP, LIBRARY |
 | framework | your framework of choice (optional) | SPRINGBOOT, QUARKUS |
 
+## Modules
+
+| Type | Name | Docs |
+| :---: | :---: | :---: |
+| Type | Application | [view](docs/modules/type-application.md) |
+| Type | Library | [view](docs/modules/type-library.md) |
+| Policy | Gradle Wrapper Version | [view](docs/modules/policy-gradle-wrapper-version.md) |
+
 ### Related Plugins ###
 
 This plugin may include the following plugins based on the project configuration:

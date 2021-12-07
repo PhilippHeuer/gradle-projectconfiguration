@@ -34,7 +34,7 @@ open class ProjectConfigurationExtension @Inject constructor(project: Project) :
     override val shadow: Property<Boolean> = objects.property(Boolean::class.java).convention(false)
     override val shadowRelocate: Property<String> = objects.property(String::class.java)
 
-    override val gradleVersionCheckBypass: Property<Boolean> = objects.property(Boolean::class.java).convention(false)
+    override val gradleVersionPolicyEnabled: Property<Boolean> = objects.property(Boolean::class.java).convention(true)
 
     // enable / add prometheus components
     // val prometheus: Property<Boolean> = objects.property(Boolean::class.java).convention(true)
