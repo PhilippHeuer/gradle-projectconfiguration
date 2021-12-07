@@ -1,4 +1,4 @@
-# Project Setup Gradle Plugin
+# Project Configuration Gradle Plugin
 
 A gradle plugin to share best-practice project configurations and reduce boilerplate buildscript.
 
@@ -8,7 +8,7 @@ Add the plugin to your `build.gradle`:
 
 ```gradle
 plugins {
-    id 'io.github.philippheuer.setup' version '$version'
+    id 'me.philippheuer.configuration' version '$version'
 }
 ```
 
@@ -18,10 +18,10 @@ You will need to specify some required options to configure your project, this i
 
 Example:
 ```gradle
-projectSetup {
-    language.set(com.github.philippheuer.gradleprojectsetup.domain.ProjectLanguage.JAVA)
-    type.set(com.github.philippheuer.gradleprojectsetup.domain.ProjectType.APP)
-    framework.set(com.github.philippheuer.gradleprojectsetup.domain.ProjectFramework.SPRINGBOOT)
+projectConfiguration {
+    language.set(me.philippheuer.projectcfg.domain.ProjectLanguage.JAVA)
+    type.set(me.philippheuer.projectcfg.domain.ProjectType.APP)
+    framework.set(me.philippheuer.projectcfg.domain.ProjectFramework.SPRINGBOOT)
 }
 ```
 

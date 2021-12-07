@@ -1,14 +1,14 @@
-package io.github.philippheuer.gradleprojectsetup.features
+package me.philippheuer.projectcfg.features
 
 import io.freefair.gradle.plugins.lombok.LombokExtension
-import io.github.philippheuer.gradleprojectsetup.domain.PluginModule
-import io.github.philippheuer.gradleprojectsetup.domain.ProjectLanguage
+import me.philippheuer.projectcfg.domain.PluginModule
+import me.philippheuer.projectcfg.domain.ProjectLanguage
 import org.gradle.api.Project
 import org.gradle.api.logging.LogLevel
 import org.gradle.api.tasks.javadoc.Javadoc
 import org.gradle.external.javadoc.StandardJavadocDocletOptions
 
-class LombokFeature constructor(override var project: Project, override var config: io.github.philippheuer.gradleprojectsetup.ProjectSetupExtension) : PluginModule {
+class LombokFeature constructor(override var project: Project, override var config: me.philippheuer.projectcfg.ProjectConfigurationExtension) : PluginModule {
     override fun check(): Boolean {
         return ProjectLanguage.JAVA == config.language.get()
     }

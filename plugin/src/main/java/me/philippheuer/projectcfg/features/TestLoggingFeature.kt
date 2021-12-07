@@ -1,12 +1,11 @@
-package io.github.philippheuer.gradleprojectsetup.features
+package me.philippheuer.projectcfg.features
 
 import com.adarshr.gradle.testlogger.TestLoggerExtension
-import io.github.philippheuer.gradleprojectsetup.ProjectSetupExtension
-import io.github.philippheuer.gradleprojectsetup.domain.PluginModule
+import me.philippheuer.projectcfg.domain.PluginModule
 import org.gradle.api.Project
 import org.gradle.api.logging.LogLevel
 
-class TestLoggingFeature constructor(override var project: Project, override var config: ProjectSetupExtension) : PluginModule {
+class TestLoggingFeature constructor(override var project: Project, override var config: me.philippheuer.projectcfg.ProjectConfigurationExtension) : PluginModule {
     override fun check(): Boolean {
         return true
     }

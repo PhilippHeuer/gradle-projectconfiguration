@@ -1,16 +1,15 @@
-package io.github.philippheuer.gradleprojectsetup.type
+package me.philippheuer.projectcfg.type
 
-import io.github.philippheuer.gradleprojectsetup.ProjectSetupExtension
-import io.github.philippheuer.gradleprojectsetup.domain.PluginModule
-import io.github.philippheuer.gradleprojectsetup.domain.ProjectLanguage
-import io.github.philippheuer.gradleprojectsetup.domain.ProjectType
+import me.philippheuer.projectcfg.domain.PluginModule
+import me.philippheuer.projectcfg.domain.ProjectLanguage
+import me.philippheuer.projectcfg.domain.ProjectType
 import org.gradle.api.Project
 import org.gradle.api.logging.LogLevel
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.plugins.ObjectConfigurationAction
 import org.gradle.api.tasks.compile.JavaCompile
 
-class JavaType constructor(override var project: Project, override var config: ProjectSetupExtension) : PluginModule {
+class JavaType constructor(override var project: Project, override var config: me.philippheuer.projectcfg.ProjectConfigurationExtension) : PluginModule {
     override fun check(): Boolean {
         return ProjectLanguage.JAVA == config.language.get() && ProjectType.APP == config.type.get()
     }

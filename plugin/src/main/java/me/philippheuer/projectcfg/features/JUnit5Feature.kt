@@ -1,10 +1,10 @@
-package io.github.philippheuer.gradleprojectsetup.features
+package me.philippheuer.projectcfg.features
 
-import io.github.philippheuer.gradleprojectsetup.domain.PluginModule
+import me.philippheuer.projectcfg.domain.PluginModule
 import org.gradle.api.Project
 import org.gradle.api.tasks.testing.Test
 
-class JUnit5Feature constructor(override var project: Project, override var config: io.github.philippheuer.gradleprojectsetup.ProjectSetupExtension) : PluginModule {
+class JUnit5Feature constructor(override var project: Project, override var config: me.philippheuer.projectcfg.ProjectConfigurationExtension) : PluginModule {
     private val junit5Version = "5.8.2"
 
     override fun check(): Boolean {
@@ -17,7 +17,10 @@ class JUnit5Feature constructor(override var project: Project, override var conf
             dependencies.add("testImplementation", "org.junit.jupiter:junit-jupiter-api:$junit5Version")
             dependencies.add("testImplementation", "org.junit.jupiter:junit-jupiter-engine:$junit5Version")
             tasks.withType(Test::class.java).configureEach {
+                // use junit5
                 it.useJUnitPlatform()
+
+                // retest everything even if no changes have been made
                 it.dependsOn("cleanTest")
             }
         }

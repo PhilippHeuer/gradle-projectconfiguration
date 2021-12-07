@@ -1,4 +1,4 @@
-package io.github.philippheuer.gradleprojectsetup.config
+package me.philippheuer.projectcfg.config
 
 import org.gradle.api.JavaVersion
 import org.gradle.api.provider.Property
