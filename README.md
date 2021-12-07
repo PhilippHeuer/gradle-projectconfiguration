@@ -1,6 +1,6 @@
 # Project Configuration Gradle Plugin
 
-A gradle plugin to share best-practice project configurations and reduce boilerplate buildscript.
+A gradle plugin to share best-practice project configurations.
 
 ## Installation
 
@@ -14,7 +14,7 @@ plugins {
 
 ## Usage
 
-You will need to specify some required options to configure your project, this is needed for the plugin to apply the correct configuration.
+There are a few parameters that are required for in project configurations:
 
 Example:
 ```gradle
@@ -36,10 +36,12 @@ Options:
 ## Modules
 
 | Type | Name | Docs |
-| :---: | :---: | :---: |
+| :--- | :--- | :---: |
 | Type | Application | [view](docs/modules/type-application.md) |
 | Type | Library | [view](docs/modules/type-library.md) |
 | Policy | Gradle Wrapper Version | [view](docs/modules/policy-gradle-wrapper-version.md) |
+
+...
 
 ### Related Plugins ###
 
