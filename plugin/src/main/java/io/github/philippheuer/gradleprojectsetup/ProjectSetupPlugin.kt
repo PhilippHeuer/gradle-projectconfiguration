@@ -1,11 +1,11 @@
-package com.github.philippheuer.gradleprojectsetup
+package io.github.philippheuer.gradleprojectsetup
 
-import com.github.philippheuer.gradleprojectsetup.features.*
-import com.github.philippheuer.gradleprojectsetup.framework.QuarkusFramework
-import com.github.philippheuer.gradleprojectsetup.framework.SpringBootFramework
-import com.github.philippheuer.gradleprojectsetup.policy.GradleWrapperVersionPolicy
-import com.github.philippheuer.gradleprojectsetup.type.JavaLibraryType
-import com.github.philippheuer.gradleprojectsetup.type.JavaType
+import io.github.philippheuer.gradleprojectsetup.features.*
+import io.github.philippheuer.gradleprojectsetup.framework.QuarkusFramework
+import io.github.philippheuer.gradleprojectsetup.framework.SpringBootFramework
+import io.github.philippheuer.gradleprojectsetup.policy.GradleWrapperVersionPolicy
+import io.github.philippheuer.gradleprojectsetup.type.JavaLibraryType
+import io.github.philippheuer.gradleprojectsetup.type.JavaType
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.slf4j.LoggerFactory
@@ -18,7 +18,7 @@ abstract class ProjectSetupPlugin : Plugin<Project> {
     }
 
     override fun apply(project: Project) {
-        val config = project.extensions.create(EXTENSION_NAME, ProjectSetupExtension::class.java)
+        val config = project.extensions.create(EXTENSION_NAME, io.github.philippheuer.gradleprojectsetup.ProjectSetupExtension::class.java)
 
         project.afterEvaluate { // TODO: config property values are only accessible in afterEvaluate, but there should be a better way maybe?
             // process each module
@@ -35,6 +35,7 @@ abstract class ProjectSetupPlugin : Plugin<Project> {
                 JavadocFeature(project, config),
                 ShadowFeature(project, config),
                 ManifestFeature(project, config),
+                JUnit5Feature(project, config),
                 // policy
                 GradleWrapperVersionPolicy(project, config)
             )

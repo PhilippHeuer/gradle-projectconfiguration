@@ -1,4 +1,4 @@
-package com.github.philippheuer.gradleprojectsetup.domain
+package io.github.philippheuer.gradleprojectsetup.domain
 
 enum class ProjectFramework {
     NONE,

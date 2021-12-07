@@ -1,6 +1,6 @@
-package com.github.philippheuer.gradleprojectsetup.domain
+package io.github.philippheuer.gradleprojectsetup.domain
 
-import com.github.philippheuer.gradleprojectsetup.ProjectSetupExtension
+import io.github.philippheuer.gradleprojectsetup.ProjectSetupExtension
 import org.gradle.api.Project
 import org.gradle.api.logging.LogLevel
 import org.slf4j.LoggerFactory
@@ -11,7 +11,7 @@ interface PluginModule {
     }
 
     var project: Project // reference to the current project context
-    var config: ProjectSetupExtension // reference to the plugin configuration
+    var config: io.github.philippheuer.gradleprojectsetup.ProjectSetupExtension // reference to the plugin configuration
 
     /**
      * Checks if this module should be enabled

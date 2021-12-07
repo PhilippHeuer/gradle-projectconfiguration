@@ -1,8 +1,8 @@
-package com.github.philippheuer.gradleprojectsetup.policy
+package io.github.philippheuer.gradleprojectsetup.policy
 
-import com.github.philippheuer.gradleprojectsetup.EXTENSION_NAME
-import com.github.philippheuer.gradleprojectsetup.ProjectSetupExtension
-import com.github.philippheuer.gradleprojectsetup.domain.PluginModule
+import io.github.philippheuer.gradleprojectsetup.EXTENSION_NAME
+import io.github.philippheuer.gradleprojectsetup.ProjectSetupExtension
+import io.github.philippheuer.gradleprojectsetup.domain.PluginModule
 import org.gradle.api.GradleException
 import org.gradle.api.Project
 import org.gradle.api.logging.LogLevel

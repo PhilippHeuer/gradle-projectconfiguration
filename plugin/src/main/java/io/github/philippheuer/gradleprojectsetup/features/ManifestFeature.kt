@@ -1,9 +1,9 @@
-package com.github.philippheuer.gradleprojectsetup.features
+package io.github.philippheuer.gradleprojectsetup.features
 
 import com.coditory.gradle.manifest.ManifestPluginExtension
-import com.github.philippheuer.gradleprojectsetup.ProjectSetupExtension
-import com.github.philippheuer.gradleprojectsetup.domain.PluginModule
-import com.github.philippheuer.gradleprojectsetup.domain.ProjectLanguage
+import io.github.philippheuer.gradleprojectsetup.ProjectSetupExtension
+import io.github.philippheuer.gradleprojectsetup.domain.PluginModule
+import io.github.philippheuer.gradleprojectsetup.domain.ProjectLanguage
 import org.gradle.api.Project
 import org.gradle.api.logging.LogLevel
 import org.gradle.jvm.tasks.Jar

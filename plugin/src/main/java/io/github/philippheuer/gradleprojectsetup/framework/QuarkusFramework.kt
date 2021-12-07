@@ -1,8 +1,8 @@
-package com.github.philippheuer.gradleprojectsetup.framework
+package io.github.philippheuer.gradleprojectsetup.framework
 
-import com.github.philippheuer.gradleprojectsetup.ProjectSetupExtension
-import com.github.philippheuer.gradleprojectsetup.domain.PluginModule
-import com.github.philippheuer.gradleprojectsetup.domain.ProjectFramework
+import io.github.philippheuer.gradleprojectsetup.ProjectSetupExtension
+import io.github.philippheuer.gradleprojectsetup.domain.PluginModule
+import io.github.philippheuer.gradleprojectsetup.domain.ProjectFramework
 import org.gradle.api.Project
 import org.gradle.api.logging.LogLevel
 import org.gradle.api.plugins.ObjectConfigurationAction

@@ -1,4 +1,4 @@
-package com.github.philippheuer.gradleprojectsetup.config
+package io.github.philippheuer.gradleprojectsetup.config
 
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.MapProperty

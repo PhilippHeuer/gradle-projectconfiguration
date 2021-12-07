@@ -1,11 +1,11 @@
-package com.github.philippheuer.gradleprojectsetup.features
+package io.github.philippheuer.gradleprojectsetup.features
 
 import com.github.jengelman.gradle.plugins.shadow.tasks.ConfigureShadowRelocation
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-import com.github.philippheuer.gradleprojectsetup.ProjectSetupExtension
-import com.github.philippheuer.gradleprojectsetup.domain.PluginModule
-import com.github.philippheuer.gradleprojectsetup.domain.ProjectLanguage
-import com.github.philippheuer.gradleprojectsetup.domain.ProjectType
+import io.github.philippheuer.gradleprojectsetup.ProjectSetupExtension
+import io.github.philippheuer.gradleprojectsetup.domain.PluginModule
+import io.github.philippheuer.gradleprojectsetup.domain.ProjectLanguage
+import io.github.philippheuer.gradleprojectsetup.domain.ProjectType
 import org.gradle.api.Project
 import org.gradle.api.logging.LogLevel
 import org.gradle.jvm.tasks.Jar

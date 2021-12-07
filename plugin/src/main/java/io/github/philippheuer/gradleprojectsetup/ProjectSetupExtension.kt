@@ -1,13 +1,9 @@
-package com.github.philippheuer.gradleprojectsetup
+package io.github.philippheuer.gradleprojectsetup
 
-import com.github.philippheuer.gradleprojectsetup.config.JavaTypeConfig
-import com.github.philippheuer.gradleprojectsetup.config.PluginConfig
-import com.github.philippheuer.gradleprojectsetup.domain.ProjectFramework
-import com.github.philippheuer.gradleprojectsetup.domain.ProjectLanguage
-import com.github.philippheuer.gradleprojectsetup.domain.ProjectType
-import com.github.philippheuer.gradleprojectsetup.config.JavadocConfig
-import com.github.philippheuer.gradleprojectsetup.config.ShadowConfig
-import com.github.philippheuer.gradleprojectsetup.config.GradleWrapperVersionConfig
+import io.github.philippheuer.gradleprojectsetup.config.*
+import io.github.philippheuer.gradleprojectsetup.domain.ProjectFramework
+import io.github.philippheuer.gradleprojectsetup.domain.ProjectLanguage
+import io.github.philippheuer.gradleprojectsetup.domain.ProjectType
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.api.logging.LogLevel
@@ -18,8 +14,7 @@ import java.util.*
 import javax.inject.Inject
 
 @Suppress("UnnecessaryAbstractClass")
-open class ProjectSetupExtension @Inject constructor(project: Project) : PluginConfig, JavaTypeConfig, JavadocConfig,
-    ShadowConfig, GradleWrapperVersionConfig {
+open class ProjectSetupExtension @Inject constructor(project: Project) : PluginConfig, JavaTypeConfig, JavadocConfig, ShadowConfig, GradleWrapperVersionConfig {
     private val objects = project.objects
 
     override val logLevel: Property<LogLevel> = objects.property(LogLevel::class.java)

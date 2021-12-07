@@ -1,8 +1,8 @@
-package com.github.philippheuer.gradleprojectsetup.config
+package io.github.philippheuer.gradleprojectsetup.config
 
-import com.github.philippheuer.gradleprojectsetup.domain.ProjectFramework
-import com.github.philippheuer.gradleprojectsetup.domain.ProjectLanguage
-import com.github.philippheuer.gradleprojectsetup.domain.ProjectType
+import io.github.philippheuer.gradleprojectsetup.domain.ProjectFramework
+import io.github.philippheuer.gradleprojectsetup.domain.ProjectLanguage
+import io.github.philippheuer.gradleprojectsetup.domain.ProjectType
 import org.gradle.api.logging.LogLevel
 import org.gradle.api.provider.Property
 
