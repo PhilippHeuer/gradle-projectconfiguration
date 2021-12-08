@@ -40,6 +40,9 @@ Options:
 | Type | Application | [view](docs/modules/type-application.md) |
 | Type | Library | [view](docs/modules/type-library.md) |
 | Policy | Gradle Wrapper Version | [view](docs/modules/policy-gradle-wrapper-version.md) |
+| Framework | SpringBoot | [view](docs/modules/framework-springboot.md) |
+| Framework | Quarkus | [view](docs/modules/framework-quarkus.md) |
+| Feature | Lombok | [view](docs/modules/feature-lombok.md) |
 
 ...
 
