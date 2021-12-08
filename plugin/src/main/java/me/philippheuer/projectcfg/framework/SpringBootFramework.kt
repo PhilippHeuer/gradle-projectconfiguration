@@ -1,12 +1,13 @@
 package me.philippheuer.projectcfg.framework
 
+import me.philippheuer.projectcfg.ProjectConfigurationExtension
 import me.philippheuer.projectcfg.domain.PluginModule
 import me.philippheuer.projectcfg.domain.ProjectFramework
 import org.gradle.api.Project
 import org.gradle.api.logging.LogLevel
 import org.gradle.api.plugins.ObjectConfigurationAction
 
-class SpringBootFramework constructor(override var project: Project, override var config: me.philippheuer.projectcfg.ProjectConfigurationExtension) : PluginModule {
+class SpringBootFramework constructor(override var project: Project, override var config: ProjectConfigurationExtension) : PluginModule {
     private val springBootVersion = "2.6.1"
 
     override fun check(): Boolean {

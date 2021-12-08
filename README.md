@@ -43,6 +43,11 @@ Options:
 | Framework | SpringBoot | [view](docs/modules/framework-springboot.md) |
 | Framework | Quarkus | [view](docs/modules/framework-quarkus.md) |
 | Feature | Lombok | [view](docs/modules/feature-lombok.md) |
+| Feature | Javadoc | [view](docs/modules/feature-javadoc.md) |
+| Feature | Test Logging | [view](docs/modules/feature-test-logging.md) |
+| Feature | Shadow | [view](docs/modules/feature-shadow.md) |
+| Feature | JUnit5 | [view](docs/modules/feature-junit5.md) |
+| Feature | Manifest | [view](docs/modules/feature-manifest.md) |
 
 ...
 

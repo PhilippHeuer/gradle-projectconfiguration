@@ -1,6 +1,7 @@
 package me.philippheuer.projectcfg.features
 
 import com.coditory.gradle.manifest.ManifestPluginExtension
+import me.philippheuer.projectcfg.ProjectConfigurationExtension
 import me.philippheuer.projectcfg.domain.PluginModule
 import me.philippheuer.projectcfg.domain.ProjectLanguage
 import org.gradle.api.Project
@@ -8,7 +9,7 @@ import org.gradle.api.logging.LogLevel
 import org.gradle.jvm.tasks.Jar
 import java.io.File
 
-class ManifestFeature constructor(override var project: Project, override var config: me.philippheuer.projectcfg.ProjectConfigurationExtension) : PluginModule {
+class ManifestFeature constructor(override var project: Project, override var config: ProjectConfigurationExtension) : PluginModule {
     override fun check(): Boolean {
         return ProjectLanguage.JAVA == config.language.get()
     }

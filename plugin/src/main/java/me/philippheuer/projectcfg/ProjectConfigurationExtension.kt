@@ -14,7 +14,7 @@ import java.util.*
 import javax.inject.Inject
 
 @Suppress("UnnecessaryAbstractClass")
-open class ProjectConfigurationExtension @Inject constructor(project: Project) : PluginConfig, JavaTypeConfig, JavadocConfig, ShadowConfig, GradleWrapperVersionConfig {
+open class ProjectConfigurationExtension @Inject constructor(project: Project) : PluginConfig, JavaTypeConfig, LombokConfig, JavadocConfig, ShadowConfig, GradleWrapperVersionConfig {
     private val objects = project.objects
 
     override val logLevel: Property<LogLevel> = objects.property(LogLevel::class.java)
@@ -24,6 +24,9 @@ open class ProjectConfigurationExtension @Inject constructor(project: Project) :
 
     override val javaVersion: Property<JavaVersion> = objects.property(JavaVersion::class.java).convention(JavaVersion.VERSION_11)
 
+    override val lombokVersion: Property<String> = objects.property(String::class.java).convention("1.18.22")
+
+    override val javadocEncoding: Property<String> = objects.property(String::class.java).convention("UTF-8")
     override val javadocLocale: Property<String> = objects.property(String::class.java).convention("en")
     override val javadocLinks: ListProperty<String> = objects.listProperty(String::class.java).convention(Collections.emptyList())
     override val javadocGroups: MapProperty<String, String> = objects.mapProperty(String::class.java, String::class.java).convention(mutableMapOf())

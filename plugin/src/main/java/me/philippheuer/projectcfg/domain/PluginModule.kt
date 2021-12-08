@@ -1,5 +1,6 @@
 package me.philippheuer.projectcfg.domain
 
+import me.philippheuer.projectcfg.ProjectConfigurationExtension
 import org.gradle.api.Project
 import org.gradle.api.logging.LogLevel
 import org.slf4j.LoggerFactory
@@ -10,7 +11,7 @@ interface PluginModule {
     }
 
     var project: Project // reference to the current project context
-    var config: me.philippheuer.projectcfg.ProjectConfigurationExtension // reference to the plugin configuration
+    var config: ProjectConfigurationExtension // reference to the plugin configuration
 
     /**
      * Checks if this module should be enabled

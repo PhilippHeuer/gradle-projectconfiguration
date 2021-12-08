@@ -1,6 +1,7 @@
 package me.philippheuer.projectcfg.policy
 
 import me.philippheuer.projectcfg.EXTENSION_NAME
+import me.philippheuer.projectcfg.ProjectConfigurationExtension
 import me.philippheuer.projectcfg.domain.PluginModule
 import org.gradle.api.Project
 import org.gradle.api.logging.LogLevel
@@ -9,7 +10,7 @@ import org.gradle.api.tasks.wrapper.Wrapper
 /**
  * Policy - this will ensure that a tested version of gradle is used with this plugin
  */
-class GradleWrapperVersionPolicy constructor(override var project: Project, override var config: me.philippheuer.projectcfg.ProjectConfigurationExtension) : PluginModule {
+class GradleWrapperVersionPolicy constructor(override var project: Project, override var config: ProjectConfigurationExtension) : PluginModule {
     var allowedVersions = listOf("7.3")
 
     override fun check(): Boolean {

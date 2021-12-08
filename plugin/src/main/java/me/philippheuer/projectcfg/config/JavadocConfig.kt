@@ -6,22 +6,25 @@ import org.gradle.api.provider.Property
 
 interface JavadocConfig {
 
-    // JavadocFeature: javadoc locale
+    // javadoc locale
     val javadocLocale: Property<String>
 
-    // JavadocFeature: javadoc links
+    // javadoc encoding
+    val javadocEncoding: Property<String>
+
+    // javadoc links
     val javadocLinks: ListProperty<String>
 
-    // JavadocFeature: Mapping table, key = package, value = group name
+    // Mapping table, key = package, value = group name
     val javadocGroups: MapProperty<String, String>
 
-    // JavadocFeature: javadocs should integrate lombok generated code?
+    // javadocs should integrate lombok generated code?
     val javadocLombok: Property<Boolean>
 
-    // JavadocFeature: custom overview html template
+    // custom overview html template
     val javadocOverviewTemplate: Property<String>
 
-    // JavadocFeature: custom overview html template for aggregated javadocs
+    // custom overview html template for aggregated javadocs
     val javadocOverviewAggregateTemplate: Property<String>
 
 }

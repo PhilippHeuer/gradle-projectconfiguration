@@ -1,5 +1,6 @@
 package me.philippheuer.projectcfg.type
 
+import me.philippheuer.projectcfg.ProjectConfigurationExtension
 import me.philippheuer.projectcfg.domain.PluginModule
 import me.philippheuer.projectcfg.domain.ProjectLanguage
 import me.philippheuer.projectcfg.domain.ProjectType
@@ -12,7 +13,7 @@ import org.gradle.api.tasks.compile.JavaCompile
 /**
  * Type - Library
  */
-class JavaLibraryType constructor(override var project: Project, override var config: me.philippheuer.projectcfg.ProjectConfigurationExtension) : PluginModule {
+class JavaLibraryType constructor(override var project: Project, override var config: ProjectConfigurationExtension) : PluginModule {
     override fun check(): Boolean {
         return ProjectLanguage.JAVA == config.language.get() && ProjectType.LIBRARY == config.type.get()
     }

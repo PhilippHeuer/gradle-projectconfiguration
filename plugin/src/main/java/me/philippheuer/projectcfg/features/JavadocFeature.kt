@@ -3,6 +3,7 @@ package me.philippheuer.projectcfg.features
 import me.philippheuer.projectcfg.domain.PluginModule
 import me.philippheuer.projectcfg.domain.ProjectLanguage
 import me.philippheuer.projectcfg.domain.ProjectType
+import me.philippheuer.projectcfg.ProjectConfigurationExtension
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.api.logging.LogLevel
@@ -15,16 +16,11 @@ import org.gradle.external.javadoc.StandardJavadocDocletOptions
 /**
  * Javadoc Module
  *
- * This plugin offers the following features:
- * - encoding will be set to UTF-8 by default
- * - javadoc generation will always generate with locale en, regardless of the localization on the workstation (option: javadocLocale)
- * - adds a aggregateJavadoc task which will generate aggregated javadocs from all project modules (type: library)
- *
  * @param project the reference to the gradle project
  * @property config the global configuration of this plugin
  * @constructor Creates a new instance of this module
  */
-class JavadocFeature constructor(override var project: Project, override var config: me.philippheuer.projectcfg.ProjectConfigurationExtension) : PluginModule {
+class JavadocFeature constructor(override var project: Project, override var config: ProjectConfigurationExtension) : PluginModule {
     override fun check(): Boolean {
         return ProjectLanguage.JAVA == config.language.get()
     }
@@ -61,6 +57,17 @@ class JavadocFeature constructor(override var project: Project, override var con
                 // custom templates
                 if (config.javadocOverviewTemplate.isPresent) {
                     it.options.overview = file(config.javadocOverviewTemplate.get()).absolutePath
+                }
+
+                // JDK11 fix - copy element-list to package-list
+                if (JavaVersion.current() >= JavaVersion.VERSION_11) {
+                    it.doLast { task ->
+                        copy { cp ->
+                            cp.from(file("${it.destinationDir!!}/element-list"))
+                            cp.into(it.destinationDir!!)
+                            cp.rename { "package-list" }
+                        }
+                    }
                 }
             }
 
@@ -134,12 +141,14 @@ class JavadocFeature constructor(override var project: Project, override var con
                         }
                     }
 
-                    // rename element-list to package-list
-                    aj.doLast {
-                        copy {
-                            it.from(file("${aj.destinationDir!!}/element-list"))
-                            it.into(aj.destinationDir!!)
-                            it.rename { "package-list" }
+                    // JDK11 fix - copy element-list to package-list
+                    if (JavaVersion.current() >= JavaVersion.VERSION_11) {
+                        aj.doLast {
+                            copy {
+                                it.from(file("${aj.destinationDir!!}/element-list"))
+                                it.into(aj.destinationDir!!)
+                                it.rename { "package-list" }
+                            }
                         }
                     }
                 }
