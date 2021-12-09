@@ -37,7 +37,8 @@ abstract class ProjectConfigurationPlugin : Plugin<Project> {
                 JavadocFeature(project, config),
                 ShadowFeature(project, config),
                 ManifestFeature(project, config),
-                JUnit5Feature(project, config)
+                JUnit5Feature(project, config),
+                VersionUpgradeFeature(project, config)
             )
 
             modules.forEach {

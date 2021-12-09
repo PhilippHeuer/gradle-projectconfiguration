@@ -48,6 +48,7 @@ Options:
 | Feature | Shadow | [view](docs/modules/feature-shadow.md) |
 | Feature | JUnit5 | [view](docs/modules/feature-junit5.md) |
 | Feature | Manifest | [view](docs/modules/feature-manifest.md) |
+| Feature | VersionUpgrade | [view](docs/modules/feature-versionupgrade.md) |
 
 ...
 

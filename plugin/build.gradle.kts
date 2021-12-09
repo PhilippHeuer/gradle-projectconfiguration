@@ -19,6 +19,7 @@ dependencies {
     implementation("com.adarshr:gradle-test-logger-plugin:3.1.0")
     implementation("gradle.plugin.com.github.johnrengelman:shadow:7.1.0")
     implementation("com.coditory.gradle:manifest-plugin:0.1.14")
+    implementation("com.github.ben-manes:gradle-versions-plugin:0.39.0")
 
     // test
     testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
