@@ -37,7 +37,7 @@ class JavaLibraryType constructor(override var project: Project, override var co
             }
 
             tasks.withType(JavaCompile::class.java).configureEach {
-                it.options.encoding = "UTF-8"
+                it.options.encoding = config.fileEncoding.get()
             }
         }
     }

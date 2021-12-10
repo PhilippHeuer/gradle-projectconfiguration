@@ -14,15 +14,17 @@ import java.util.*
 import javax.inject.Inject
 
 @Suppress("UnnecessaryAbstractClass")
-open class ProjectConfigurationExtension @Inject constructor(project: Project) : PluginConfig, JavaTypeConfig, LombokConfig, JavadocConfig, ShadowConfig, GradleWrapperVersionConfig {
+open class ProjectConfigurationExtension @Inject constructor(project: Project) : PluginConfig, FrameworkConfig, JavaTypeConfig, LombokConfig, JavadocConfig, ShadowConfig, GradleWrapperVersionConfig {
     private val objects = project.objects
 
     override val logLevel: Property<LogLevel> = objects.property(LogLevel::class.java)
     override val language: Property<ProjectLanguage> = objects.property(ProjectLanguage::class.java).convention(ProjectLanguage.JAVA)
+    override val javaVersion: Property<JavaVersion> = objects.property(JavaVersion::class.java).convention(JavaVersion.VERSION_11)
     override val type: Property<ProjectType> = objects.property(ProjectType::class.java).convention(ProjectType.APP)
     override val framework: Property<ProjectFramework> = objects.property(ProjectFramework::class.java).convention(ProjectFramework.NONE)
+    override val fileEncoding: Property<String> = objects.property(String::class.java).convention("UTF-8")
 
-    override val javaVersion: Property<JavaVersion> = objects.property(JavaVersion::class.java).convention(JavaVersion.VERSION_11)
+    override val frameworkMetrics: Property<Boolean> = objects.property(Boolean::class.java).convention(false)
 
     override val lombokVersion: Property<String> = objects.property(String::class.java).convention("1.18.22")
 

@@ -20,4 +20,6 @@ interface PluginConfig {
     // framework used in the project
     val framework: Property<ProjectFramework>
 
+    // file encoding used in the project
+    val fileEncoding: Property<String>
 }
