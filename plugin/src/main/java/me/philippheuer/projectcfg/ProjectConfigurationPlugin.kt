@@ -35,10 +35,11 @@ abstract class ProjectConfigurationPlugin : Plugin<Project> {
                 LombokFeature(project, config),
                 TestLoggingFeature(project, config),
                 JavadocFeature(project, config),
+                MockitoFeature(project, config),
                 ShadowFeature(project, config),
                 ManifestFeature(project, config),
                 JUnit5Feature(project, config),
-                VersionUpgradeFeature(project, config)
+                VersionUpgradeFeature(project, config),
             )
 
             modules.forEach {

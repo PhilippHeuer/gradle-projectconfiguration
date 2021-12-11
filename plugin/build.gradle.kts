@@ -13,6 +13,7 @@ dependencies {
     implementation(kotlin("stdlib-jdk8"))
 
     // third party plugins
+    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.0")
     implementation("org.springframework.boot:spring-boot-gradle-plugin:2.6.1")
     implementation("io.quarkus:gradle-application-plugin:2.5.0.Final")
     implementation("io.freefair.gradle:lombok-plugin:6.3.0")

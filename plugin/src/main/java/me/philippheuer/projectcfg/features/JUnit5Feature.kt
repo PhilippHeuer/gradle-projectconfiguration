@@ -2,12 +2,12 @@ package me.philippheuer.projectcfg.features
 
 import me.philippheuer.projectcfg.ProjectConfigurationExtension
 import me.philippheuer.projectcfg.domain.PluginModule
+import me.philippheuer.projectcfg.domain.ProjectLanguage
+import me.philippheuer.projectcfg.util.DependencyVersion
 import org.gradle.api.Project
 import org.gradle.api.tasks.testing.Test
 
 class JUnit5Feature constructor(override var project: Project, override var config: ProjectConfigurationExtension) : PluginModule {
-    private val junit5Version = "5.8.2"
-
     override fun check(): Boolean {
         return true
     }
@@ -15,8 +15,9 @@ class JUnit5Feature constructor(override var project: Project, override var conf
     override fun run() {
         // junit5
         project.allprojects.forEach {
-            it.dependencies.add("testImplementation", "org.junit.jupiter:junit-jupiter-api:$junit5Version")
-            it.dependencies.add("testImplementation", "org.junit.jupiter:junit-jupiter-engine:$junit5Version")
+            it.dependencies.add("testImplementation", "org.junit.jupiter:junit-jupiter-api:${DependencyVersion.junit5Version}")
+            it.dependencies.add("testImplementation", "org.junit.jupiter:junit-jupiter-engine:${DependencyVersion.junit5Version}")
+
             it.tasks.withType(Test::class.java).configureEach { test ->
                 // use junit5
                 test.useJUnitPlatform()
