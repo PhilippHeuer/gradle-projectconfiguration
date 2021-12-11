@@ -3,6 +3,7 @@ package me.philippheuer.projectcfg.config
 import me.philippheuer.projectcfg.domain.ProjectFramework
 import me.philippheuer.projectcfg.domain.ProjectLanguage
 import me.philippheuer.projectcfg.domain.ProjectType
+import org.gradle.api.artifacts.repositories.ArtifactRepository
 import org.gradle.api.logging.LogLevel
 import org.gradle.api.provider.Property
 
@@ -22,4 +23,8 @@ interface PluginConfig {
 
     // file encoding used in the project
     val fileEncoding: Property<String>
+
+    // repository to publish library artifacts in
+    val artifactRepository: Property<ArtifactRepository>
+
 }

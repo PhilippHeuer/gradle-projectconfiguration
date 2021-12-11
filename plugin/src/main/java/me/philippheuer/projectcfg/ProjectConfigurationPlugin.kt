@@ -32,6 +32,8 @@ abstract class ProjectConfigurationPlugin : Plugin<Project> {
                 SpringBootFramework(project, config),
                 QuarkusFramework(project, config),
                 // features
+                PublishFeature(project, config),
+                SigningFeature(project, config),
                 LombokFeature(project, config),
                 TestLoggingFeature(project, config),
                 JavadocFeature(project, config),

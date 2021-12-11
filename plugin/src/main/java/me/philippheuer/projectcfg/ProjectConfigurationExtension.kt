@@ -6,6 +6,7 @@ import me.philippheuer.projectcfg.domain.ProjectLanguage
 import me.philippheuer.projectcfg.domain.ProjectType
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
+import org.gradle.api.artifacts.repositories.ArtifactRepository
 import org.gradle.api.logging.LogLevel
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.MapProperty
@@ -23,6 +24,7 @@ open class ProjectConfigurationExtension @Inject constructor(project: Project) :
     override val type: Property<ProjectType> = objects.property(ProjectType::class.java).convention(ProjectType.APP)
     override val framework: Property<ProjectFramework> = objects.property(ProjectFramework::class.java).convention(ProjectFramework.NONE)
     override val fileEncoding: Property<String> = objects.property(String::class.java).convention("UTF-8")
+    override val artifactRepository: Property<ArtifactRepository> = objects.property(ArtifactRepository::class.java)
 
     override val frameworkMetrics: Property<Boolean> = objects.property(Boolean::class.java).convention(false)
 
