@@ -61,7 +61,7 @@ class JavadocFeature constructor(override var project: Project, override var con
 
                 // JDK11 fix - copy element-list to package-list
                 if (JavaVersion.current() >= JavaVersion.VERSION_11) {
-                    it.doLast { task ->
+                    it.doLast { _ ->
                         copy { cp ->
                             cp.from(file("${it.destinationDir!!}/element-list"))
                             cp.into(it.destinationDir!!)

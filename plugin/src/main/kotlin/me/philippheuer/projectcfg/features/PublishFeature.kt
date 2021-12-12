@@ -38,8 +38,11 @@ class PublishFeature constructor(override var project: Project, override var con
 
             publish.publications.create("main", MavenPublication::class.java) { pub ->
                 pub.from(project.components.getByName("java"))
+                pub.groupId = project.group as String
+                pub.artifactId = config.artifactId.orElse(project.name as String).get()
+                pub.version = project.version as String
                 pub.pom { pom ->
-                    pom.name.set(project.name)
+                    pom.name.set(project.displayName)
                     pom.description.set(project.description)
                 }
             }

@@ -25,6 +25,8 @@ open class ProjectConfigurationExtension @Inject constructor(project: Project) :
     override val framework: Property<ProjectFramework> = objects.property(ProjectFramework::class.java).convention(ProjectFramework.NONE)
     override val fileEncoding: Property<String> = objects.property(String::class.java).convention("UTF-8")
     override val artifactRepository: Property<ArtifactRepository> = objects.property(ArtifactRepository::class.java)
+    override val artifactGroupId: Property<String> = objects.property(String::class.java)
+    override val artifactId: Property<String> = objects.property(String::class.java)
 
     override val frameworkMetrics: Property<Boolean> = objects.property(Boolean::class.java).convention(false)
 

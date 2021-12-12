@@ -27,4 +27,10 @@ interface PluginConfig {
     // repository to publish library artifacts in
     val artifactRepository: Property<ArtifactRepository>
 
+    // artifact group for publications
+    val artifactGroupId: Property<String>
+
+    // artifact id for publications
+    val artifactId: Property<String>
+
 }
