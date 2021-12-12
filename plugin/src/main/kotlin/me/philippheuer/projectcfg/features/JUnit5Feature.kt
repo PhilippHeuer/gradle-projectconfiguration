@@ -18,6 +18,10 @@ class JUnit5Feature constructor(override var project: Project, override var conf
             it.dependencies.add("testImplementation", "org.junit.jupiter:junit-jupiter-api:${DependencyVersion.junit5Version}")
             it.dependencies.add("testImplementation", "org.junit.jupiter:junit-jupiter-engine:${DependencyVersion.junit5Version}")
 
+            if (config.language.get() == ProjectLanguage.KOTLIN) {
+                it.dependencies.add("testImplementation", "org.jetbrains.kotlin:kotlin-test:${DependencyVersion.kotlinVersion}")
+            }
+
             it.tasks.withType(Test::class.java).configureEach { test ->
                 // use junit5
                 test.useJUnitPlatform()
