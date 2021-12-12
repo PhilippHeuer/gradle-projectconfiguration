@@ -5,4 +5,10 @@ pluginManagement {
     }
 }
 
-include("plugin")
+include(
+    ":plugin",
+    ":lib-springboot-proxy",
+)
+
+// artifact id's
+project(":lib-springboot-proxy").name = "springboot-proxy"

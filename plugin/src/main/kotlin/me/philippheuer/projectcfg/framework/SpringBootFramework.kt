@@ -24,12 +24,14 @@ class SpringBootFramework constructor(override var project: Project, override va
     }
 
     fun configureLibrary() {
-        // bom
-        project.dependencies.enforcedPlatform("org.springframework.boot:spring-boot-dependencies:${DependencyVersion.springBootVersion}")
+        project.run {
+            // bom
+            dependencies.enforcedPlatform("org.springframework.boot:spring-boot-dependencies:${DependencyVersion.springBootVersion}")
 
-        // spring
-        project.dependencies.add("implementation", "org.springframework.boot:spring-boot-starter:${DependencyVersion.springBootVersion}")
-        project.dependencies.add("testImplementation", "org.springframework.boot:spring-boot-starter-test:${DependencyVersion.springBootVersion}")
+            // spring
+            dependencies.add("implementation", "org.springframework.boot:spring-boot-starter:${DependencyVersion.springBootVersion}")
+            dependencies.add("testImplementation", "org.springframework.boot:spring-boot-starter-test:${DependencyVersion.springBootVersion}")
+        }
     }
 
     fun configureApplication() {
@@ -51,6 +53,9 @@ class SpringBootFramework constructor(override var project: Project, override va
             // spring - log4j2
             configurations.getByName("implementation").exclude(mapOf("group" to "org.springframework.boot", "module" to "spring-boot-starter-logging"))
             dependencies.add("implementation", "org.springframework.boot:spring-boot-starter-log4j2:${DependencyVersion.springBootVersion}")
+
+            // lib - auto configure http/https proxy
+            dependencies.add("implementation", "me.philippheuer.projectcfg.lib:springboot-proxy:${DependencyVersion.libVersion}")
 
             // metrics
             if (config.frameworkMetrics.get()) {
