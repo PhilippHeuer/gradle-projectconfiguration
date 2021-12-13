@@ -6,4 +6,5 @@ interface FrameworkConfig {
 
     // enables metrics
     val frameworkMetrics: Property<Boolean>
+
 }

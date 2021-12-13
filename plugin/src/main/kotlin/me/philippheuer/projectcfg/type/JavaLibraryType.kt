@@ -40,7 +40,7 @@ class JavaLibraryType constructor(override var project: Project, override var co
             pluginManager.apply("java-library")
 
             group = config.artifactGroupId.get()
-            version = project.properties["version"] as String
+            version = project.properties["artifact.version"] as String
 
             extensions.run {
                 configure(JavaPluginExtension::class.java) {
@@ -66,7 +66,7 @@ class JavaLibraryType constructor(override var project: Project, override var co
             pluginManager.apply("org.jetbrains.kotlin.jvm")
 
             group = config.artifactGroupId.get()
-            version = project.properties["version"] as String
+            version = project.properties["artifact.version"] as String
 
             dependencies.add("implementation", "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${DependencyVersion.kotlinVersion}")
 

@@ -4,6 +4,7 @@ import me.philippheuer.projectcfg.ProjectConfigurationExtension
 import me.philippheuer.projectcfg.domain.PluginModule
 import me.philippheuer.projectcfg.domain.ProjectType
 import org.gradle.api.Project
+import org.gradle.api.logging.LogLevel
 import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.publish.maven.MavenPublication
 import java.net.URI
@@ -39,12 +40,14 @@ class PublishFeature constructor(override var project: Project, override var con
             publish.publications.create("main", MavenPublication::class.java) { pub ->
                 pub.from(project.components.getByName("java"))
                 pub.groupId = project.group as String
-                pub.artifactId = config.artifactId.orElse(project.name as String).get()
+                pub.artifactId = config.artifactId.orElse(project.name).get()
                 pub.version = project.version as String
                 pub.pom { pom ->
                     pom.name.set(project.displayName)
                     pom.description.set(project.description)
                 }
+
+                log(LogLevel.DEBUG, "publication artifact: ${pub.groupId}:${pub.artifactId}:${pub.version}")
             }
         }
     }

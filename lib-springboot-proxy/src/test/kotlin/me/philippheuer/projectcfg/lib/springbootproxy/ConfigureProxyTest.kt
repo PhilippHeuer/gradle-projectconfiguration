@@ -1,13 +1,14 @@
 package me.philippheuer.projectcfg.lib.springbootproxy
 
+import me.philippheuer.projectcfg.lib.springbootproxy.util.ConfigureProxy
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.*
 
-class ProxyConfigurationTest {
+class ConfigureProxyTest {
 
     @Test
     fun httpProxy() {
-        val proxyAutoConfiguration : ProxyAutoConfiguration = mock()
+        val proxyAutoConfiguration : ConfigureProxy = mock()
         whenever(proxyAutoConfiguration.getEnvProperty("HTTP_PROXY")).thenReturn("http://myproxyhost:3128")
         whenever(proxyAutoConfiguration.getEnvProperty("NO_PROXY")).thenReturn("example.com,mynetwork.local")
         whenever(proxyAutoConfiguration.configureProxy()).thenCallRealMethod()
@@ -21,7 +22,7 @@ class ProxyConfigurationTest {
 
     @Test
     fun httpsProxy() {
-        val proxyAutoConfiguration : ProxyAutoConfiguration = mock()
+        val proxyAutoConfiguration : ConfigureProxy = mock()
         whenever(proxyAutoConfiguration.getEnvProperty("HTTPS_PROXY")).thenReturn("http://myproxyhost:3128")
         whenever(proxyAutoConfiguration.getEnvProperty("NO_PROXY")).thenReturn("example.com,mynetwork.local")
         whenever(proxyAutoConfiguration.configureProxy()).thenCallRealMethod()

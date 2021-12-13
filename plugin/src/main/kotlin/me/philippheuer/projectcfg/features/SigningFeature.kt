@@ -6,6 +6,7 @@ import me.philippheuer.projectcfg.domain.ProjectType
 import org.gradle.api.Project
 import org.gradle.api.logging.LogLevel
 import org.gradle.api.publish.PublishingExtension
+import org.gradle.plugins.signing.Sign
 import org.gradle.plugins.signing.SigningExtension
 
 class SigningFeature constructor(override var project: Project, override var config: ProjectConfigurationExtension) : PluginModule {
@@ -32,6 +33,11 @@ class SigningFeature constructor(override var project: Project, override var con
                     log(LogLevel.WARN, "can't configure signing, no main publication found")
                 }
             }
+        }
+
+        // toggle signing based on task graph
+        project.tasks.withType(Sign::class.java) {
+            it.onlyIf { !project.gradle.taskGraph.hasTask("publishToMavenLocal") }
         }
     }
 }
