@@ -68,7 +68,7 @@ class JavaLibraryType constructor(override var project: Project, override var co
             group = config.artifactGroupId.get()
             version = project.properties["artifact.version"] as String
 
-            dependencies.add("implementation", "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${DependencyVersion.kotlinVersion}")
+            dependencies.add("api", "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${DependencyVersion.kotlinVersion}")
 
             tasks.withType(KotlinCompile::class.java).configureEach {
                 it.kotlinOptions.jvmTarget = config.javaVersion.get().toString()
