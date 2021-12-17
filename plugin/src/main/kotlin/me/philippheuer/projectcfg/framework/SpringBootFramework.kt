@@ -57,7 +57,7 @@ class SpringBootFramework constructor(override var project: Project, override va
                     v.strictly("[2.16,3[")
                     v.prefer("2.16.0")
                 }
-                constraint.because("CVE-2021-44228: Log4J is vulnerable to remote code execution")
+                constraint.because("CVE-2021-44228: Log4J is vulnerable to remote code execution, CVE-2021-45046: Incomplete fix for Apache Log4j vulnerability")
             }
 
             // lib - auto configure http/https proxy
