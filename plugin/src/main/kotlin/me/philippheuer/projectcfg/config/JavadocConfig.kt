@@ -27,4 +27,15 @@ interface JavadocConfig {
     // custom overview html template for aggregated javadocs
     val javadocOverviewAggregateTemplate: Property<String>
 
+    /**
+     * linting options
+     *
+     * accessibility – checks for the issues to be detected by an accessibility checker (for example, no caption or summary attributes specified in a table tag)
+     * html – detects high-level HTML issues, like putting block elements inside inline elements or not closing elements that require an end tag
+     * missing – checks for missing Javadoc comments or tags (for example, a missing comment or class, or a missing @return tag or similar tag on a method)
+     * reference – checks for issues relating to the references to Java API elements from Javadoc tags (for example, item not found in @see, or a bad name after @param)
+     * syntax – checks for low-level issues like unescaped angle brackets (< and >) and ampersands (&) and invalid Javadoc tags
+     */
+    val javadocLint: ListProperty<String>
+
 }

@@ -38,6 +38,10 @@ class JavadocFeature constructor(override var project: Project, override var con
                 it.options.locale(config.javadocLocale.get())
                 log(LogLevel.INFO, "set [tasks.javadoc.options.locale] to [${config.javadocLocale.get()}]")
 
+                // lint
+                (it.options as StandardJavadocDocletOptions).addStringOption("-Xdoclint:" + config.javadocLint.get().joinToString(","))
+                log(LogLevel.INFO, "set [tasks.javadoc.options.doclint] to [${config.javadocLint.get().joinToString(",")}]")
+
                 // links
                 if (config.javadocLinks.get().size > 0) {
                     log(LogLevel.INFO, "set [tasks.javadoc.options.links] to [${config.javadocLinks.get()}]")
@@ -102,6 +106,9 @@ class JavadocFeature constructor(override var project: Project, override var con
                     }
                     aj.source(javadocTasks.map { it.source })
                     aj.classpath = files(javadocTasks.map { it.classpath })
+
+                    // lint
+                    (aj.options as StandardJavadocDocletOptions).addStringOption("-Xdoclint:" + config.javadocLint.get().joinToString(","))
 
                     // custom templates
                     if (config.javadocOverviewAggregateTemplate.isPresent) {

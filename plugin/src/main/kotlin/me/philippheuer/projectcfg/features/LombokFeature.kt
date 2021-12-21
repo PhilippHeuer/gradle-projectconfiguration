@@ -35,12 +35,6 @@ class LombokFeature constructor(override var project: Project, override var conf
                 log(LogLevel.INFO, "set [tasks.javadoc.dependsOn] to [delombok]")
                 it.dependsOn(delombok)
             }
-
-            // delombok as source would generate a lot of unfixable javadoc warnings
-            log(LogLevel.INFO, "set [tasks.javadoc.options.Xdoclint:none] to [-quiet]")
-            project.tasks.withType(Javadoc::class.java).configureEach {
-                (it.options as StandardJavadocDocletOptions).addStringOption("Xdoclint:none", "-quiet")
-            }
         }
 
         project.subprojects.forEach {
