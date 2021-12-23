@@ -13,22 +13,26 @@ class JUnit5Feature constructor(override var project: Project, override var conf
     }
 
     override fun run() {
-        // junit5
-        project.allprojects.forEach {
-            it.dependencies.add("testImplementation", "org.junit.jupiter:junit-jupiter-api:${DependencyVersion.junit5Version}")
-            it.dependencies.add("testImplementation", "org.junit.jupiter:junit-jupiter-engine:${DependencyVersion.junit5Version}")
+        configureJunitDependencies(project, config)
+        configureTestTask(project)
+    }
 
-            if (config.language.get() == ProjectLanguage.KOTLIN) {
-                it.dependencies.add("testImplementation", "org.jetbrains.kotlin:kotlin-test:${DependencyVersion.kotlinVersion}")
-            }
+    fun configureJunitDependencies(project: Project, config: ProjectConfigurationExtension) {
+        project.dependencies.add("testImplementation", "org.junit.jupiter:junit-jupiter-api:${DependencyVersion.junit5Version}")
+        project.dependencies.add("testImplementation", "org.junit.jupiter:junit-jupiter-engine:${DependencyVersion.junit5Version}")
 
-            it.tasks.withType(Test::class.java).configureEach { test ->
-                // use junit5
-                test.useJUnitPlatform()
+        if (config.language.get() == ProjectLanguage.KOTLIN) {
+            project.dependencies.add("testImplementation", "org.jetbrains.kotlin:kotlin-test:${DependencyVersion.kotlinVersion}")
+        }
+    }
 
-                // retest everything even if no changes have been made
-                test.dependsOn("cleanTest")
-            }
+    fun configureTestTask(project: Project) {
+        project.tasks.withType(Test::class.java).configureEach { test ->
+            // use junit5
+            test.useJUnitPlatform()
+
+            // retest everything even if no changes have been made
+            test.dependsOn("cleanTest")
         }
     }
 }

@@ -12,6 +12,9 @@ interface JavadocConfig {
     // javadoc encoding
     val javadocEncoding: Property<String>
 
+    // automatically link javadocs from other dependencies via javadoc.io
+    val javadocAutoLinking: Property<Boolean>
+
     // javadoc links
     val javadocLinks: ListProperty<String>
 

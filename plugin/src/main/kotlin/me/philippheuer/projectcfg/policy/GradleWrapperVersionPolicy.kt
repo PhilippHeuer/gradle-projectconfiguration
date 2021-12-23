@@ -12,7 +12,8 @@ import java.net.URL
  * Policy - this will ensure that a tested version of gradle is used with this plugin
  */
 class GradleWrapperVersionPolicy constructor(override var project: Project, override var config: ProjectConfigurationExtension) : PluginModule {
-    var allowedVersions = listOf("7.3", "7.3.1")
+    val allowedVersions = listOf("7.3", "7.3.1")
+    val suggestedVersion = allowedVersions.last()
 
     override fun check(): Boolean {
         log(LogLevel.DEBUG, "module check [$EXTENSION_NAME.gradleVersionCheckBypass] is [${config.gradleVersionPolicyEnabled.get()}]")
@@ -20,8 +21,13 @@ class GradleWrapperVersionPolicy constructor(override var project: Project, over
     }
 
     override fun run() {
-        val suggestedVersion = allowedVersions.last()
+        // only run for root project
+        if (project.rootProject == project) {
+            checkGradleVersion(project, config)
+        }
+    }
 
+    fun checkGradleVersion(project: Project, config: ProjectConfigurationExtension) {
         // configure wrapper task
         log(LogLevel.WARN, "set [gradle.version] to [${suggestedVersion}]")
         project.tasks.withType(Wrapper::class.java).configureEach {

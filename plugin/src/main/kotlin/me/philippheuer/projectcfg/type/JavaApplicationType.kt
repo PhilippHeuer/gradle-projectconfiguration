@@ -10,20 +10,19 @@ import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.plugins.ObjectConfigurationAction
 import org.gradle.api.tasks.compile.JavaCompile
 
-/**
- * Type - Application
- */
 class JavaApplicationType constructor(override var project: Project, override var config: ProjectConfigurationExtension) : PluginModule {
     override fun check(): Boolean {
         return ProjectLanguage.JAVA == config.language.get() && ProjectType.APP == config.type.get()
     }
 
     override fun run() {
+        configureJavaApplication(project, config)
+    }
+
+    fun configureJavaApplication(project: Project, config: ProjectConfigurationExtension) {
         project.run {
-            apply { action: ObjectConfigurationAction ->
-                log(LogLevel.INFO, "applying plugin [java]")
-                action.plugin("java")
-            }
+            log(LogLevel.INFO, "applying plugin [java]")
+            pluginManager.apply("java")
 
             extensions.run {
                 configure(JavaPluginExtension::class.java) {

@@ -15,13 +15,12 @@ class ManifestFeature constructor(override var project: Project, override var co
     }
 
     override fun run() {
+        configurePlugin(project)
+    }
+
+    fun configurePlugin(project: Project) {
         log(LogLevel.INFO, "applying plugin [com.coditory.manifest]")
         project.pluginManager.apply("com.coditory.manifest")
-
-        project.subprojects.forEach {
-            log(LogLevel.INFO, "applying plugin [com.coditory.manifest] to subproject [${it.displayName}]")
-            it.pluginManager.apply("com.coditory.manifest")
-        }
 
         project.extensions.configure(ManifestPluginExtension::class.java) {
             it.buildAttributes = false

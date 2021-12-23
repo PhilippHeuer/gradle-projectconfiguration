@@ -1,6 +1,7 @@
 package me.philippheuer.projectcfg.util
 
 import org.gradle.api.Project
+import org.gradle.api.artifacts.Dependency
 
 class DependencyUtils {
 
@@ -14,6 +15,32 @@ class DependencyUtils {
                     if (dependencyNotation == dep.group || dependencyNotation == "${dep.group}:${dep.name}") {
                         return true
                     }
+                }
+            }
+
+            return false
+        }
+
+        /**
+         * getDependencies collects all uzsed dependencies used in the project
+         */
+        fun getDependencies(project: Project, configurationNames: List<String>): List<Dependency> {
+            val deps = mutableListOf<Dependency>()
+            project.configurations.filter { configurationNames.contains(it.name) }.forEach { configuration ->
+                configuration.dependencies.forEach {
+                    deps.add(it)
+                }
+            }
+            return deps
+        }
+
+        /**
+         * is the dependency a module of the current project?
+         */
+        fun isProjectModule(project: Project, dep: Dependency): Boolean {
+            project.allprojects.forEach { p ->
+                if (p.group == dep.group && p.name == dep.name) {
+                    return true
                 }
             }
 

@@ -16,14 +16,16 @@ class ShadowFeature constructor(override var project: Project, override var conf
     }
 
     override fun run() {
+        applyShadowPlugin(project, config)
+        configureShadowPlugin(project, config)
+    }
+
+    fun applyShadowPlugin(project: Project, config: ProjectConfigurationExtension) {
         log(LogLevel.INFO, "applying plugin [com.github.johnrengelman.shadow]")
         project.pluginManager.apply("com.github.johnrengelman.shadow")
+    }
 
-        project.subprojects.forEach {
-            log(LogLevel.INFO, "applying plugin [com.github.johnrengelman.shadow] to subproject [${it.displayName}]")
-            it.pluginManager.apply("com.github.johnrengelman.shadow")
-        }
-
+    fun configureShadowPlugin(project: Project, config: ProjectConfigurationExtension) {
         // relocate contents
         if (config.shadowRelocate.isPresent) {
             val relocateTask = project.tasks.create("relocateShadowJar", ConfigureShadowRelocation::class.java) {

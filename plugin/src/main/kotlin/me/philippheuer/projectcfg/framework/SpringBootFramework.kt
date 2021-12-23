@@ -35,12 +35,10 @@ class SpringBootFramework constructor(override var project: Project, override va
 
     fun configureApplication() {
         project.run {
-            if (config.type.get() == ProjectType.APP) {
-                log(LogLevel.INFO, "applying plugin [org.springframework.boot]")
-                pluginManager.apply("org.springframework.boot")
+            log(LogLevel.INFO, "applying plugin [org.springframework.boot]")
+            pluginManager.apply("org.springframework.boot")
 
-                tasks.getByName("jar").enabled = false // disable jar task, this would generate a plain jar
-            }
+            tasks.getByName("jar").enabled = false // disable jar task, this would generate a plain jar
 
             // bom
             dependencies.enforcedPlatform("org.springframework.boot:spring-boot-dependencies:${DependencyVersion.springBootVersion}")
@@ -68,7 +66,7 @@ class SpringBootFramework constructor(override var project: Project, override va
                 dependencies.add("implementation", "io.micrometer:micrometer-core:1.8.1")
 
                 // web project?
-                if (DependencyUtils.hasDependency(project.rootProject, listOf("implementation"), "org.springframework.boot:spring-boot-starter-web")) {
+                if (DependencyUtils.hasDependency(project, listOf("implementation"), "org.springframework.boot:spring-boot-starter-web")) {
                     dependencies.add("implementation", "org.springframework.boot:spring-boot-starter-actuator:${DependencyVersion.springBootVersion}")
                     dependencies.add("implementation", "io.micrometer:micrometer-registry-prometheus:1.8.1")
                 }

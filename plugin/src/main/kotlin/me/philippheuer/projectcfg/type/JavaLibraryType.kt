@@ -19,9 +19,6 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinTest
 import java.net.URI
 import java.net.URL
 
-/**
- * Type - Library
- */
 class JavaLibraryType constructor(override var project: Project, override var config: ProjectConfigurationExtension) : PluginModule {
     override fun check(): Boolean {
         return ProjectType.LIBRARY == config.type.get()
@@ -29,15 +26,19 @@ class JavaLibraryType constructor(override var project: Project, override var co
 
     override fun run() {
         if (config.language.get() == ProjectLanguage.JAVA) {
-            applyJavaLibrary()
+            configureJavaLibrary(project, config)
         } else if (config.language.get() == ProjectLanguage.KOTLIN) {
-            applyKotlinLibrary()
+            configureJavaLibrary(project, config)
+            configureKotlinLibrary(project, config)
         }
     }
 
-    fun applyJavaLibrary() {
+    fun configureJavaLibrary(project: Project, config: ProjectConfigurationExtension) {
         project.run {
+            log(LogLevel.INFO, "applying plugin [java-library]")
             pluginManager.apply("java-library")
+            log(LogLevel.INFO, "applying plugin [maven-publish]")
+            pluginManager.apply("maven-publish")
 
             group = config.artifactGroupId.get()
             version = project.properties["artifact.version"] as String
@@ -59,14 +60,10 @@ class JavaLibraryType constructor(override var project: Project, override var co
         }
     }
 
-    fun applyKotlinLibrary() {
+    fun configureKotlinLibrary(project: Project, config: ProjectConfigurationExtension) {
         project.run {
-            pluginManager.apply("java-library")
-            pluginManager.apply("maven-publish")
+            log(LogLevel.INFO, "applying plugin [org.jetbrains.kotlin.jvm]")
             pluginManager.apply("org.jetbrains.kotlin.jvm")
-
-            group = config.artifactGroupId.get()
-            version = project.properties["artifact.version"] as String
 
             dependencies.add("api", "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${DependencyVersion.kotlinVersion}")
 

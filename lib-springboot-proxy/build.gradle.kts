@@ -2,7 +2,7 @@ import me.philippheuer.projectcfg.domain.*
 
 plugins {
     kotlin("jvm")
-    id("me.philippheuer.projectcfg") version "+"
+    id("me.philippheuer.configuration") version "+"
 }
 
 // setup

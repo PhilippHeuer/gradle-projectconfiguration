@@ -34,6 +34,7 @@ open class ProjectConfigurationExtension @Inject constructor(project: Project) :
 
     override val javadocEncoding: Property<String> = objects.property(String::class.java).convention("UTF-8")
     override val javadocLocale: Property<String> = objects.property(String::class.java).convention("en")
+    override val javadocAutoLinking: Property<Boolean> = objects.property(Boolean::class.java).convention(false)
     override val javadocLinks: ListProperty<String> = objects.listProperty(String::class.java).convention(Collections.emptyList())
     override val javadocGroups: MapProperty<String, String> = objects.mapProperty(String::class.java, String::class.java).convention(mutableMapOf())
     override val javadocLombok: Property<Boolean> = objects.property(Boolean::class.java).convention(true)

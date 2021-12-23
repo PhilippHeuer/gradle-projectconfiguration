@@ -13,11 +13,7 @@ class QuarkusFramework constructor(override var project: Project, override var c
     }
 
     override fun run() {
-        project.run {
-            apply { action: ObjectConfigurationAction ->
-                log(LogLevel.INFO, "applying plugin [io.quarkus]")
-                action.plugin("io.quarkus")
-            }
-        }
+        log(LogLevel.INFO, "applying plugin [io.quarkus]")
+        project.pluginManager.apply("io.quarkus")
     }
 }

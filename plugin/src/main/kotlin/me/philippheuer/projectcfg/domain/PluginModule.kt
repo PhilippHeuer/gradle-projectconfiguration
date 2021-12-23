@@ -33,7 +33,7 @@ interface PluginModule {
     fun log(logLevel: LogLevel, message: String) {
         if (config.logLevel.isPresent) {
             if (config.logLevel.get() <= logLevel) {
-                println("$logLevel: ${javaClass.simpleName} -> $message")
+                println("$logLevel: [${project.name}] ${javaClass.simpleName} -> $message")
             }
         } else {
             // delegate to slf4j

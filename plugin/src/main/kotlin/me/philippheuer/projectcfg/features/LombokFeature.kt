@@ -36,10 +36,5 @@ class LombokFeature constructor(override var project: Project, override var conf
                 it.dependsOn(delombok)
             }
         }
-
-        project.subprojects.forEach {
-            log(LogLevel.INFO, "applying plugin [io.freefair.lombok] to subproject [${it.displayName}]")
-            it.pluginManager.apply("io.freefair.lombok")
-        }
     }
 }

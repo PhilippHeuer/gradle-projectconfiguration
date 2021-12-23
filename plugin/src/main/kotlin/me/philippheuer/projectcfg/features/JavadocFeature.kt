@@ -4,6 +4,8 @@ import me.philippheuer.projectcfg.domain.PluginModule
 import me.philippheuer.projectcfg.domain.ProjectLanguage
 import me.philippheuer.projectcfg.domain.ProjectType
 import me.philippheuer.projectcfg.ProjectConfigurationExtension
+import me.philippheuer.projectcfg.util.DependencyUtils
+import me.philippheuer.projectcfg.util.HashUtils
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.api.logging.LogLevel
@@ -12,6 +14,8 @@ import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.tasks.javadoc.Javadoc
 import org.gradle.external.javadoc.StandardJavadocDocletOptions
+import java.io.File
+import java.net.URL
 
 /**
  * Javadoc Module
@@ -26,8 +30,22 @@ class JavadocFeature constructor(override var project: Project, override var con
     }
 
     override fun run() {
+        // javadoc task
+        if (project.subprojects.size > 0) {
+            project.subprojects.forEach { p -> configureJavadocTask(p, config)}
+        } else {
+            configureJavadocTask(project, config)
+        }
+
+        // toggle html5 for jdk9+
+        project.allprojects.forEach { p -> configureHtml5JDK9(p)}
+
+        // javadoc aggregate task
+        configureJavadocAggregateTask(project, config)
+    }
+
+    fun configureJavadocTask(project: Project, config: ProjectConfigurationExtension) {
         project.run {
-            // global options
             tasks.withType(Javadoc::class.java).configureEach {
                 it.options.windowTitle = "${project.rootProject.name} (v${project.version})"
                 log(LogLevel.INFO, "set [tasks.javadoc.options.windowTitle] to [${it.options.windowTitle}]")
@@ -48,12 +66,48 @@ class JavadocFeature constructor(override var project: Project, override var con
                     (it.options as StandardJavadocDocletOptions).links(*config.javadocLinks.get().toTypedArray())
                 }
 
+                // javadoc auto-linking
+                if (config.javadocAutoLinking.get()) {
+                    DependencyUtils.getDependencies(it.project, listOf("implementation", "api", "default")).forEach { dep ->
+                        // try to auto-link all external javadocs via javadoc.io
+                        if (dep.version != null && !DependencyUtils.isProjectModule(project, dep)) {
+                            val link = "https://javadoc.io/doc/${dep.group}/${dep.name}/${dep.version}"
+                            val depHash = HashUtils.stringToSha256Hash("${dep.group}/${dep.name}/${dep.version}")
+                            val checkCacheFile = project.file("$rootDir/build/javadocio-check/$depHash")
+
+                            // check if javadoc exists using file (package-list, element-list)
+                            var found = false
+                            if (checkCacheFile.exists()) {
+                                found = checkCacheFile.readText() == "true"
+                            } else {
+                                listOf("package-list", "element-list").forEach { file ->
+                                    try {
+                                        URL("$link/$file").openStream()
+                                        found = true
+                                    } catch (ex: Exception) {
+                                        // ignore
+                                    }
+                                }
+                            }
+
+                            if (found) {
+                                log(LogLevel.WARN, "append [tasks.javadoc.options.links] element [${link}]")
+                                (it.options as StandardJavadocDocletOptions).links?.add(link)
+                            }
+                            if (!checkCacheFile.exists()) {
+                                checkCacheFile.parentFile.mkdirs()
+                                checkCacheFile.writeText(found.toString())
+                            }
+                        }
+                    }
+                }
+
                 // groups
                 config.javadocGroups.get().run {
                     if (isNotEmpty()) {
-                       values.distinct().forEach { groupName ->
-                           log(LogLevel.INFO, "set [tasks.javadoc.group.{$groupName}] to [${filter { e -> e.value == groupName }.map { e -> e.key}}]")
-                           (it.options as StandardJavadocDocletOptions).group(groupName, filter { e -> e.value == groupName }.map { e -> e.key})
+                        values.distinct().forEach { groupName ->
+                            log(LogLevel.INFO, "set [tasks.javadoc.group.{$groupName}] to [${filter { e -> e.value == groupName }.map { e -> e.key}}]")
+                            (it.options as StandardJavadocDocletOptions).group(groupName, filter { e -> e.value == groupName }.map { e -> e.key})
                         }
                     }
                 }
@@ -74,24 +128,29 @@ class JavadocFeature constructor(override var project: Project, override var con
                     }
                 }
             }
+        }
+    }
 
-            // html5 for jdk9+
-            log(LogLevel.DEBUG, "using jdk9 or later, javadoc supports html5 output")
-            if (JavaVersion.current().isJava9Compatible) {
-                log(LogLevel.INFO, "set [tasks.javadoc.options.html5] to [true]")
-                tasks.withType(Javadoc::class.java).configureEach {
-                    (it.options as StandardJavadocDocletOptions).addBooleanOption("html5", true)
-                }
+    fun configureHtml5JDK9(project: Project) {
+        // html5 for jdk9+
+        if (JavaVersion.current().isJava9Compatible) {
+            log(LogLevel.INFO, "set [tasks.javadoc.options.html5] to [true]")
+            project.tasks.withType(Javadoc::class.java).configureEach {
+                (it.options as StandardJavadocDocletOptions).addBooleanOption("html5", true)
             }
+        }
+    }
 
-            // merge javadoc (library only)
-            log(LogLevel.INFO, "task allJavadoc: condition [type = ${ProjectType.LIBRARY}] is [${ProjectType.LIBRARY == config.type.get()}]")
-            log(LogLevel.INFO, "task allJavadoc: condition [subprojects.size > 0] is [${subprojects.size > 0}]")
-            if (ProjectType.LIBRARY == config.type.get() && subprojects.size > 0) {
-                tasks.register("aggregateJavadoc", Javadoc::class.java) { aj ->
+    /**
+     * configures a javadoc aggregation task, must be applied on the root project
+     */
+    fun configureJavadocAggregateTask(project: Project, config: ProjectConfigurationExtension) {
+        if (project.rootProject == project && ProjectType.LIBRARY == config.type.get() && project.subprojects.size > 0) {
+            project.run {
+                project.tasks.register("aggregateJavadoc", Javadoc::class.java) { aj ->
                     aj.group = JavaBasePlugin.DOCUMENTATION_GROUP
                     aj.description = "Generates javadoc for all modules and merges them all together, useful to publish javadoc of all modules as documentation."
-                    aj.setDestinationDir(file("${rootDir}/build/javadoc-aggregate"))
+                    aj.setDestinationDir(project.file("${project.rootDir}/build/javadoc-aggregate"))
 
                     // sources
                     var javadocTasks = mutableListOf<Javadoc>()
@@ -112,7 +171,7 @@ class JavadocFeature constructor(override var project: Project, override var con
 
                     // custom templates
                     if (config.javadocOverviewAggregateTemplate.isPresent) {
-                        aj.options.overview = file(config.javadocOverviewAggregateTemplate.get()).absolutePath
+                        aj.options.overview = project.file(config.javadocOverviewAggregateTemplate.get()).absolutePath
                     }
 
                     // merge options
