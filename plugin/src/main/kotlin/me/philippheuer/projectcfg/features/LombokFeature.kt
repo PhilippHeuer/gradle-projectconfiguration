@@ -20,9 +20,9 @@ class LombokFeature constructor(override var project: Project, override var conf
 
         project.extensions.configure(LombokExtension::class.java) {
             it.disableConfig.set(true) // don't generate lombok.config files
-            log(LogLevel.INFO, "set [lombok.disableConfig] to [${it.disableConfig}]")
+            log(LogLevel.INFO, "set [lombok.disableConfig] to [${it.disableConfig.get()}]")
             it.version.set(config.lombokVersion.get())
-            log(LogLevel.INFO, "set [lombok.version] to [${it.version}]")
+            log(LogLevel.INFO, "set [lombok.version] to [${it.version.get()}]")
         }
 
         log(LogLevel.INFO, "option [javadocLombok] is [${config.javadocLombok.get()}]")

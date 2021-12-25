@@ -47,7 +47,7 @@ class PublishFeature constructor(override var project: Project, override var con
                     pom.description.set(project.description)
                 }
 
-                log(LogLevel.DEBUG, "publication artifact: ${pub.groupId}:${pub.artifactId}:${pub.version}")
+                log(LogLevel.INFO, "configured artifact: ${pub.groupId}:${pub.artifactId}:${pub.version}")
             }
         }
     }

@@ -31,14 +31,10 @@ class JavadocFeature constructor(override var project: Project, override var con
 
     override fun run() {
         // javadoc task
-        if (project.subprojects.size > 0) {
-            project.subprojects.forEach { p -> configureJavadocTask(p, config)}
-        } else {
+        if (project.subprojects.size == 0 || (project.subprojects.size != 0 && project.rootProject != project)) {
             configureJavadocTask(project, config)
+            configureHtml5JDK9(project)
         }
-
-        // toggle html5 for jdk9+
-        project.allprojects.forEach { p -> configureHtml5JDK9(p)}
 
         // javadoc aggregate task
         configureJavadocAggregateTask(project, config)
@@ -47,7 +43,7 @@ class JavadocFeature constructor(override var project: Project, override var con
     fun configureJavadocTask(project: Project, config: ProjectConfigurationExtension) {
         project.run {
             tasks.withType(Javadoc::class.java).configureEach {
-                it.options.windowTitle = "${project.rootProject.name} (v${project.version})"
+                it.options.windowTitle = "${project.rootProject.name} (v${project.version}) - ${project.name}"
                 log(LogLevel.INFO, "set [tasks.javadoc.options.windowTitle] to [${it.options.windowTitle}]")
                 it.options.encoding = "UTF-8"
                 (it.options as StandardJavadocDocletOptions).docEncoding = "UTF-8"
@@ -91,7 +87,7 @@ class JavadocFeature constructor(override var project: Project, override var con
                             }
 
                             if (found) {
-                                log(LogLevel.WARN, "append [tasks.javadoc.options.links] element [${link}]")
+                                log(LogLevel.DEBUG, "append [tasks.javadoc.options.links] element [${link}]")
                                 (it.options as StandardJavadocDocletOptions).links?.add(link)
                             }
                             if (!checkCacheFile.exists()) {
@@ -106,7 +102,7 @@ class JavadocFeature constructor(override var project: Project, override var con
                 config.javadocGroups.get().run {
                     if (isNotEmpty()) {
                         values.distinct().forEach { groupName ->
-                            log(LogLevel.INFO, "set [tasks.javadoc.group.{$groupName}] to [${filter { e -> e.value == groupName }.map { e -> e.key}}]")
+                            log(LogLevel.DEBUG, "set [tasks.javadoc.group.{$groupName}] to [${filter { e -> e.value == groupName }.map { e -> e.key}}]")
                             (it.options as StandardJavadocDocletOptions).group(groupName, filter { e -> e.value == groupName }.map { e -> e.key})
                         }
                     }
