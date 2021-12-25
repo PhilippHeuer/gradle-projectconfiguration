@@ -41,7 +41,7 @@ class JavaLibraryType constructor(override var project: Project, override var co
             pluginManager.apply("maven-publish")
 
             group = config.artifactGroupId.get()
-            version = project.properties["artifact.version"] as String
+            version = config.artifactVersion.get()
 
             extensions.run {
                 configure(JavaPluginExtension::class.java) {

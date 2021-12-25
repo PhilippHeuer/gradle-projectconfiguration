@@ -11,6 +11,7 @@ import org.gradle.api.logging.LogLevel
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
+import org.gradle.api.publish.maven.MavenPom
 import java.util.*
 import javax.inject.Inject
 
@@ -27,6 +28,8 @@ open class ProjectConfigurationExtension @Inject constructor(project: Project) :
     override val artifactRepository: Property<ArtifactRepository> = objects.property(ArtifactRepository::class.java)
     override val artifactGroupId: Property<String> = objects.property(String::class.java)
     override val artifactId: Property<String> = objects.property(String::class.java)
+    override val artifactVersion: Property<String> = objects.property(String::class.java)
+    override var pom: (MavenPom) -> Unit = {}
 
     override val frameworkMetrics: Property<Boolean> = objects.property(Boolean::class.java).convention(false)
 

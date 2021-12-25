@@ -6,6 +6,7 @@ import me.philippheuer.projectcfg.domain.ProjectType
 import org.gradle.api.artifacts.repositories.ArtifactRepository
 import org.gradle.api.logging.LogLevel
 import org.gradle.api.provider.Property
+import org.gradle.api.publish.maven.MavenPom
 
 interface PluginConfig {
 
@@ -33,4 +34,9 @@ interface PluginConfig {
     // artifact id for publications
     val artifactId: Property<String>
 
+    // artifact version for publications
+    val artifactVersion: Property<String>
+
+    // customize pom
+    var pom: (MavenPom) -> Unit
 }
