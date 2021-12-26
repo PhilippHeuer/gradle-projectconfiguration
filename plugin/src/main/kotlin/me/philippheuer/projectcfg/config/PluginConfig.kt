@@ -37,6 +37,12 @@ interface PluginConfig {
     // artifact version for publications
     val artifactVersion: Property<String>
 
+    // artifact display name
+    val artifactDisplayName: Property<String>
+
+    // artifact description
+    val artifactDescription: Property<String>
+
     // customize pom
     var pom: (MavenPom) -> Unit
 }

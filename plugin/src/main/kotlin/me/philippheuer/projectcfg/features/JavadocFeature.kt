@@ -53,7 +53,9 @@ class JavadocFeature constructor(override var project: Project, override var con
                 log(LogLevel.INFO, "set [tasks.javadoc.options.locale] to [${config.javadocLocale.get()}]")
 
                 // lint
-                (it.options as StandardJavadocDocletOptions).addStringOption("-Xdoclint:" + config.javadocLint.get().joinToString(","))
+                config.javadocLint.get().forEach { lint ->
+                    (it.options as StandardJavadocDocletOptions).addBooleanOption("Xdoclint:$lint", true)
+                }
                 log(LogLevel.INFO, "set [tasks.javadoc.options.doclint] to [${config.javadocLint.get().joinToString(",")}]")
 
                 // links

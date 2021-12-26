@@ -29,6 +29,8 @@ open class ProjectConfigurationExtension @Inject constructor(project: Project) :
     override val artifactGroupId: Property<String> = objects.property(String::class.java)
     override val artifactId: Property<String> = objects.property(String::class.java)
     override val artifactVersion: Property<String> = objects.property(String::class.java)
+    override val artifactDisplayName: Property<String> = objects.property(String::class.java)
+    override val artifactDescription: Property<String> = objects.property(String::class.java)
     override var pom: (MavenPom) -> Unit = {}
 
     override val frameworkMetrics: Property<Boolean> = objects.property(Boolean::class.java).convention(false)
@@ -43,7 +45,7 @@ open class ProjectConfigurationExtension @Inject constructor(project: Project) :
     override val javadocLombok: Property<Boolean> = objects.property(Boolean::class.java).convention(true)
     override val javadocOverviewTemplate: Property<String> = objects.property(String::class.java)
     override val javadocOverviewAggregateTemplate: Property<String> = objects.property(String::class.java)
-    override val javadocLint: ListProperty<String> = objects.listProperty(String::class.java).convention(listOf("accessibility", "html", "reference", "syntax"))
+    override val javadocLint: ListProperty<String> = objects.listProperty(String::class.java).convention(listOf("accessibility", "html", "reference", "syntax", "-missing"))
 
     override val shadow: Property<Boolean> = objects.property(Boolean::class.java).convention(false)
     override val shadowRelocate: Property<String> = objects.property(String::class.java)

@@ -8,6 +8,7 @@ import me.philippheuer.projectcfg.util.DependencyVersion
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.api.logging.LogLevel
+import org.gradle.api.plugins.BasePluginExtension
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.plugins.ObjectConfigurationAction
 import org.gradle.api.publish.PublishingExtension
@@ -44,6 +45,10 @@ class JavaLibraryType constructor(override var project: Project, override var co
             version = config.artifactVersion.get()
 
             extensions.run {
+                configure(BasePluginExtension::class.java) {
+                    it.archivesName.set(config.artifactId.get())
+                }
+
                 configure(JavaPluginExtension::class.java) {
                     // java version
                     it.sourceCompatibility = config.javaVersion.get()

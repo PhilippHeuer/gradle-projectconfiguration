@@ -6,6 +6,7 @@ import me.philippheuer.projectcfg.domain.ProjectLanguage
 import me.philippheuer.projectcfg.domain.ProjectType
 import org.gradle.api.Project
 import org.gradle.api.logging.LogLevel
+import org.gradle.api.plugins.BasePluginExtension
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.plugins.ObjectConfigurationAction
 import org.gradle.api.tasks.compile.JavaCompile
@@ -24,7 +25,14 @@ class JavaApplicationType constructor(override var project: Project, override va
             log(LogLevel.INFO, "applying plugin [java]")
             pluginManager.apply("java")
 
+            group = config.artifactGroupId.get()
+            version = config.artifactVersion.get()
+
             extensions.run {
+                configure(BasePluginExtension::class.java) {
+                    it.archivesName.set(config.artifactId.get())
+                }
+
                 configure(JavaPluginExtension::class.java) {
                     // java version
                     it.sourceCompatibility = config.javaVersion.get()

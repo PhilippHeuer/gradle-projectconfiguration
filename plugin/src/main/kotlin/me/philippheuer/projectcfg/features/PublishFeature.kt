@@ -43,10 +43,11 @@ class PublishFeature constructor(override var project: Project, override var con
                 pub.artifactId = config.artifactId.get()
                 pub.version = config.artifactVersion.get()
                 pub.pom { pom ->
-                    // customize pom defaults if provided
+                    pom.name.set(config.artifactDisplayName.getOrElse(project.displayName))
+                    pom.description.set(config.artifactDescription.getOrElse(""))
+
+                    // customize pom
                     config.pom.invoke(pom)
-                    pom.name.set(project.displayName)
-                    pom.description.set(project.description)
                 }
 
                 log(LogLevel.INFO, "configured artifact: ${pub.groupId}:${pub.artifactId}:${pub.version}")
