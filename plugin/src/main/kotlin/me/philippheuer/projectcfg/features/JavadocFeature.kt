@@ -1,20 +1,21 @@
 package me.philippheuer.projectcfg.features
 
+import me.philippheuer.projectcfg.ProjectConfigurationExtension
 import me.philippheuer.projectcfg.domain.PluginModule
 import me.philippheuer.projectcfg.domain.ProjectLanguage
 import me.philippheuer.projectcfg.domain.ProjectType
-import me.philippheuer.projectcfg.ProjectConfigurationExtension
 import me.philippheuer.projectcfg.util.DependencyUtils
 import me.philippheuer.projectcfg.util.HashUtils
+import org.gradle.api.Action
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
+import org.gradle.api.Task
 import org.gradle.api.logging.LogLevel
 import org.gradle.api.plugins.JavaBasePlugin
 import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.tasks.javadoc.Javadoc
 import org.gradle.external.javadoc.StandardJavadocDocletOptions
-import java.io.File
 import java.net.URL
 
 /**
@@ -117,13 +118,16 @@ class JavadocFeature constructor(override var project: Project, override var con
 
                 // JDK11 fix - copy element-list to package-list
                 if (JavaVersion.current() >= JavaVersion.VERSION_11) {
-                    it.doLast { _ ->
-                        copy { cp ->
-                            cp.from(file("${it.destinationDir!!}/element-list"))
-                            cp.into(it.destinationDir!!)
-                            cp.rename { "package-list" }
+                    it.doLast(object : Action<Task> {
+                        // this can not be a lambda! see https://docs.gradle.org/7.3.1/userguide/validation_problems.html#implementation_unknown
+                        override fun execute(t: Task) {
+                            copy { cp ->
+                                cp.from(file("${it.destinationDir!!}/element-list"))
+                                cp.into(it.destinationDir!!)
+                                cp.rename { "package-list" }
+                            }
                         }
-                    }
+                    })
                 }
             }
         }
@@ -199,21 +203,27 @@ class JavadocFeature constructor(override var project: Project, override var con
                     }
 
                     // clear old files
-                    aj.doFirst {
-                        if (aj.destinationDir?.exists() == true) {
-                            aj.destinationDir?.deleteRecursively()
+                    aj.doFirst(object : Action<Task> {
+                        // this can not be a lambda! see https://docs.gradle.org/7.3.1/userguide/validation_problems.html#implementation_unknown
+                        override fun execute(t: Task) {
+                            if (aj.destinationDir?.exists() == true) {
+                                aj.destinationDir?.deleteRecursively()
+                            }
                         }
-                    }
+                    })
 
                     // JDK11 fix - copy element-list to package-list
                     if (JavaVersion.current() >= JavaVersion.VERSION_11) {
-                        aj.doLast {
-                            copy {
-                                it.from(file("${aj.destinationDir!!}/element-list"))
-                                it.into(aj.destinationDir!!)
-                                it.rename { "package-list" }
+                        aj.doLast(object : Action<Task> {
+                            // this can not be a lambda! see https://docs.gradle.org/7.3.1/userguide/validation_problems.html#implementation_unknown
+                            override fun execute(t: Task) {
+                                copy { cp ->
+                                    cp.from(file("${aj.destinationDir!!}/element-list"))
+                                    cp.into(aj.destinationDir!!)
+                                    cp.rename { "package-list" }
+                                }
                             }
-                        }
+                        })
                     }
                 }
             }
