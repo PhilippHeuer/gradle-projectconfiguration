@@ -23,7 +23,13 @@ dependencies {
     implementation("com.github.ben-manes:gradle-versions-plugin:0.39.0")
 
     // test
-    testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.8.2")
+    testImplementation("org.jetbrains.kotlin:kotlin-test:1.6.0")
+}
+
+configurations {
+    implementation.get().exclude(mapOf("group" to "org.jboss.slf4j", "module" to "slf4j-jboss-logmanager"))
 }
 
 java {

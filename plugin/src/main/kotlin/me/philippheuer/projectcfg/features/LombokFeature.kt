@@ -7,7 +7,6 @@ import me.philippheuer.projectcfg.domain.ProjectLanguage
 import org.gradle.api.Project
 import org.gradle.api.logging.LogLevel
 import org.gradle.api.tasks.javadoc.Javadoc
-import org.gradle.external.javadoc.StandardJavadocDocletOptions
 
 class LombokFeature constructor(override var project: Project, override var config: ProjectConfigurationExtension) : PluginModule {
     override fun check(): Boolean {
@@ -15,6 +14,14 @@ class LombokFeature constructor(override var project: Project, override var conf
     }
 
     override fun run() {
+        configurePlugin(project, config)
+        if (config.javadocLombok.get()) {
+            log(LogLevel.INFO, "option [javadocLombok] is [${config.javadocLombok.get()}]")
+            configureJavadoc(project)
+        }
+    }
+
+    fun configurePlugin(project: Project, config: ProjectConfigurationExtension) {
         log(LogLevel.INFO, "applying plugin [io.freefair.lombok]")
         project.pluginManager.apply("io.freefair.lombok")
 
@@ -24,17 +31,17 @@ class LombokFeature constructor(override var project: Project, override var conf
             it.version.set(config.lombokVersion.get())
             log(LogLevel.INFO, "set [lombok.version] to [${it.version.get()}]")
         }
+    }
 
-        log(LogLevel.INFO, "option [javadocLombok] is [${config.javadocLombok.get()}]")
-        if (config.javadocLombok.get()) {
-            // javadoc - delombok
-            val delombok = project.tasks.getByName("delombok")
-            project.tasks.withType(Javadoc::class.java).configureEach {
-                log(LogLevel.INFO, "set [tasks.javadoc.source] to [delombok]")
-                it.source(delombok)
-                log(LogLevel.INFO, "set [tasks.javadoc.dependsOn] to [delombok]")
-                it.dependsOn(delombok)
-            }
+    fun configureJavadoc(project: Project) {
+        // javadoc - delombok
+        val delombok = project.tasks.getByName("delombok")
+        project.tasks.withType(Javadoc::class.java).configureEach {
+            log(LogLevel.INFO, "set [tasks.javadoc.source] to [delombok]")
+            it.source(delombok)
+            log(LogLevel.INFO, "set [tasks.javadoc.dependsOn] to [delombok]")
+            it.dependsOn(delombok)
         }
     }
+
 }
