@@ -16,7 +16,7 @@ import java.util.*
 import javax.inject.Inject
 
 @Suppress("UnnecessaryAbstractClass")
-open class ProjectConfigurationExtension @Inject constructor(project: Project) : PluginConfig, FrameworkConfig, JavaTypeConfig, LombokConfig, JavadocConfig, ShadowConfig, GradleWrapperVersionConfig {
+open class ProjectConfigurationExtension @Inject constructor(project: Project) : PluginConfig, FrameworkConfig, JavaTypeConfig, LombokConfig, JavadocConfig, ShadowConfig, GradleWrapperVersionConfig, CheckstyleConfig {
     private val objects = project.objects
 
     override val logLevel: Property<LogLevel> = objects.property(LogLevel::class.java)
@@ -51,6 +51,9 @@ open class ProjectConfigurationExtension @Inject constructor(project: Project) :
     override val shadowRelocate: Property<String> = objects.property(String::class.java)
 
     override val gradleVersionPolicyEnabled: Property<Boolean> = objects.property(Boolean::class.java).convention(true)
+
+    override val checkstyleToolVersion: Property<String> = objects.property(String::class.java).convention("9.2.1")
+    override val checkstyleRuleSet: Property<String> = objects.property(String::class.java).convention("")
 
     // enable / add prometheus components
     // val prometheus: Property<Boolean> = objects.property(Boolean::class.java).convention(true)

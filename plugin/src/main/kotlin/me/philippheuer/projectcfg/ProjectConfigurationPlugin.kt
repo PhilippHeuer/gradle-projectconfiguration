@@ -61,6 +61,7 @@ abstract class ProjectConfigurationPlugin : Plugin<Project> {
                 ManifestFeature(project, config),
                 JUnit5Feature(project, config),
                 VersionUpgradeFeature(project, config),
+                CheckstyleFeature(project, config),
             )
 
             modules.forEach {
