@@ -6,6 +6,7 @@ import me.philippheuer.projectcfg.framework.SpringBootFramework
 import me.philippheuer.projectcfg.policy.GradleWrapperVersionPolicy
 import me.philippheuer.projectcfg.type.JavaLibraryType
 import me.philippheuer.projectcfg.type.JavaApplicationType
+import me.philippheuer.projectcfg.util.PluginLogger
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.slf4j.LoggerFactory
@@ -20,6 +21,11 @@ abstract class ProjectConfigurationPlugin : Plugin<Project> {
     override fun apply(project: Project) {
         val config = project.extensions.create(EXTENSION_NAME, ProjectConfigurationExtension::class.java)
 
+        // logger
+        PluginLogger.project = project
+        PluginLogger.config = config
+
+        // process features
         project.afterEvaluate { // TODO: config property values are only accessible in afterEvaluate, but there should be a better way maybe?
             // config preprocessing
             if (!config.artifactGroupId.isPresent) {
@@ -65,6 +71,7 @@ abstract class ProjectConfigurationPlugin : Plugin<Project> {
             )
 
             modules.forEach {
+                PluginLogger.module = it
                 val enabled = it.check()
                 if (enabled) {
                     it.run()

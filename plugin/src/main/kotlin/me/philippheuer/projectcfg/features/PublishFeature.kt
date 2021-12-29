@@ -3,6 +3,8 @@ package me.philippheuer.projectcfg.features
 import me.philippheuer.projectcfg.ProjectConfigurationExtension
 import me.philippheuer.projectcfg.domain.PluginModule
 import me.philippheuer.projectcfg.domain.ProjectType
+import me.philippheuer.projectcfg.util.PluginLogger
+import me.philippheuer.projectcfg.util.applyProject
 import org.gradle.api.Project
 import org.gradle.api.logging.LogLevel
 import org.gradle.api.publish.PublishingExtension
@@ -16,7 +18,7 @@ class PublishFeature constructor(override var project: Project, override var con
 
     override fun run() {
         // plugin
-        project.pluginManager.apply("maven-publish")
+        project.applyProject("maven-publish")
 
         // configure
         project.extensions.configure(PublishingExtension::class.java) { publish ->
@@ -50,7 +52,7 @@ class PublishFeature constructor(override var project: Project, override var con
                     config.pom.invoke(pom)
                 }
 
-                log(LogLevel.INFO, "configured artifact: ${pub.groupId}:${pub.artifactId}:${pub.version}")
+                PluginLogger.log(LogLevel.INFO, "configured artifact: ${pub.groupId}:${pub.artifactId}:${pub.version}")
             }
         }
     }

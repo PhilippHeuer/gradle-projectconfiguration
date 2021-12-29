@@ -6,6 +6,7 @@ import me.philippheuer.projectcfg.domain.ProjectLanguage
 import me.philippheuer.projectcfg.domain.ProjectType
 import me.philippheuer.projectcfg.util.DependencyUtils
 import me.philippheuer.projectcfg.util.HashUtils
+import me.philippheuer.projectcfg.util.PluginLogger
 import org.gradle.api.Action
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
@@ -45,23 +46,23 @@ class JavadocFeature constructor(override var project: Project, override var con
         project.run {
             tasks.withType(Javadoc::class.java).configureEach {
                 it.options.windowTitle = "${project.rootProject.name} (v${project.version}) - ${project.name}"
-                log(LogLevel.INFO, "set [tasks.javadoc.options.windowTitle] to [${it.options.windowTitle}]")
+                PluginLogger.log(LogLevel.INFO, "set [tasks.javadoc.options.windowTitle] to [${it.options.windowTitle}]")
                 it.options.encoding = "UTF-8"
                 (it.options as StandardJavadocDocletOptions).docEncoding = "UTF-8"
                 (it.options as StandardJavadocDocletOptions).charSet = "UTF-8"
-                log(LogLevel.INFO, "set [tasks.javadoc.options.encoding] to [${it.options.encoding}]")
+                PluginLogger.log(LogLevel.INFO, "set [tasks.javadoc.options.encoding] to [${it.options.encoding}]")
                 it.options.locale(config.javadocLocale.get())
-                log(LogLevel.INFO, "set [tasks.javadoc.options.locale] to [${config.javadocLocale.get()}]")
+                PluginLogger.log(LogLevel.INFO, "set [tasks.javadoc.options.locale] to [${config.javadocLocale.get()}]")
 
                 // lint
                 config.javadocLint.get().forEach { lint ->
                     (it.options as StandardJavadocDocletOptions).addBooleanOption("Xdoclint:$lint", true)
                 }
-                log(LogLevel.INFO, "set [tasks.javadoc.options.doclint] to [${config.javadocLint.get().joinToString(",")}]")
+                PluginLogger.log(LogLevel.INFO, "set [tasks.javadoc.options.doclint] to [${config.javadocLint.get().joinToString(",")}]")
 
                 // links
                 if (config.javadocLinks.get().size > 0) {
-                    log(LogLevel.INFO, "set [tasks.javadoc.options.links] to [${config.javadocLinks.get()}]")
+                    PluginLogger.log(LogLevel.INFO, "set [tasks.javadoc.options.links] to [${config.javadocLinks.get()}]")
                     (it.options as StandardJavadocDocletOptions).links(*config.javadocLinks.get().toTypedArray())
                 }
 
@@ -90,7 +91,7 @@ class JavadocFeature constructor(override var project: Project, override var con
                             }
 
                             if (found) {
-                                log(LogLevel.DEBUG, "append [tasks.javadoc.options.links] element [${link}]")
+                                PluginLogger.log(LogLevel.DEBUG, "append [tasks.javadoc.options.links] element [${link}]")
                                 (it.options as StandardJavadocDocletOptions).links?.add(link)
                             }
                             if (!checkCacheFile.exists()) {
@@ -105,7 +106,7 @@ class JavadocFeature constructor(override var project: Project, override var con
                 config.javadocGroups.get().run {
                     if (isNotEmpty()) {
                         values.distinct().forEach { groupName ->
-                            log(LogLevel.DEBUG, "set [tasks.javadoc.group.{$groupName}] to [${filter { e -> e.value == groupName }.map { e -> e.key}}]")
+                            PluginLogger.log(LogLevel.DEBUG, "set [tasks.javadoc.group.{$groupName}] to [${filter { e -> e.value == groupName }.map { e -> e.key}}]")
                             (it.options as StandardJavadocDocletOptions).group(groupName, filter { e -> e.value == groupName }.map { e -> e.key})
                         }
                     }
@@ -136,7 +137,7 @@ class JavadocFeature constructor(override var project: Project, override var con
     fun configureHtml5JDK9(project: Project) {
         // html5 for jdk9+
         if (JavaVersion.current().isJava9Compatible) {
-            log(LogLevel.INFO, "set [tasks.javadoc.options.html5] to [true]")
+            PluginLogger.log(LogLevel.INFO, "set [tasks.javadoc.options.html5] to [true]")
             project.tasks.withType(Javadoc::class.java).configureEach {
                 (it.options as StandardJavadocDocletOptions).addBooleanOption("html5", true)
             }

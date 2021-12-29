@@ -3,7 +3,8 @@ package me.philippheuer.projectcfg.features
 import me.philippheuer.projectcfg.ProjectConfigurationExtension
 import me.philippheuer.projectcfg.ProjectConfigurationPlugin
 import me.philippheuer.projectcfg.domain.PluginModule
-import me.philippheuer.projectcfg.domain.PluginModule.Companion.log
+import me.philippheuer.projectcfg.util.PluginLogger
+import me.philippheuer.projectcfg.util.applyProject
 import org.gradle.api.GradleException
 import org.gradle.api.Project
 import org.gradle.api.logging.LogLevel
@@ -15,8 +16,7 @@ class CheckstyleFeature constructor(override var project: Project, override var 
     companion object {
         fun applyPlugin(project: Project, config: ProjectConfigurationExtension) {
             // plugin
-            log(LogLevel.INFO, project, config, "applying plugin [checkstyle]")
-            project.pluginManager.apply("checkstyle")
+            project.applyProject("checkstyle")
 
             // checkstyle
             project.tasks.register("checkstyleAll", Checkstyle::class.java) { task ->
@@ -46,7 +46,7 @@ class CheckstyleFeature constructor(override var project: Project, override var 
                     } else if (config.checkstyleRuleSet.get().isNotEmpty()) {
                         val file = ProjectConfigurationPlugin::class.java.classLoader.getResource("checkstyle/${config.checkstyleRuleSet.get()}.xml")
                             ?: throw GradleException("checkstyle ruleset ${config.checkstyleRuleSet.get()} is not supported!")
-                        log(LogLevel.INFO, project, config, "using checkstyle ruleset [${config.checkstyleRuleSet.get()}]")
+                        PluginLogger.log(LogLevel.INFO, "using checkstyle ruleset [${config.checkstyleRuleSet.get()}]")
                         val targetFile = project.file("${project.buildDir}/tmp/checkstyle.xml")
 
                         val fileContent = file.readText()
@@ -54,7 +54,7 @@ class CheckstyleFeature constructor(override var project: Project, override var 
                         targetFile.writeText(fileContent)
                         it.configFile = targetFile
                     }
-                    log(LogLevel.INFO, project, config, "using checkstyle config [${it.configFile}]")
+                    PluginLogger.log(LogLevel.INFO, "using checkstyle config [${it.configFile}]")
 
                     it.maxWarnings = 0
                     it.maxErrors = 0

@@ -4,6 +4,8 @@ import me.philippheuer.projectcfg.ProjectConfigurationExtension
 import me.philippheuer.projectcfg.domain.PluginModule
 import me.philippheuer.projectcfg.domain.ProjectLanguage
 import me.philippheuer.projectcfg.domain.ProjectType
+import me.philippheuer.projectcfg.util.PluginLogger
+import me.philippheuer.projectcfg.util.applyProject
 import org.gradle.api.Project
 import org.gradle.api.logging.LogLevel
 import org.gradle.api.plugins.BasePluginExtension
@@ -21,10 +23,9 @@ class JavaApplicationType constructor(override var project: Project, override va
     }
 
     fun configureJavaApplication(project: Project, config: ProjectConfigurationExtension) {
-        project.run {
-            log(LogLevel.INFO, "applying plugin [java]")
-            pluginManager.apply("java")
+        project.applyProject("java")
 
+        project.run {
             group = config.artifactGroupId.get()
             version = config.artifactVersion.get()
 

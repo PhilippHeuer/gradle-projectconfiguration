@@ -3,6 +3,7 @@ package me.philippheuer.projectcfg.features
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import me.philippheuer.projectcfg.ProjectConfigurationExtension
 import me.philippheuer.projectcfg.domain.PluginModule
+import me.philippheuer.projectcfg.util.PluginLogger
 import org.gradle.api.Project
 import org.gradle.api.logging.LogLevel
 
@@ -12,7 +13,7 @@ class VersionUpgradeFeature constructor(override var project: Project, override 
     }
 
     override fun run() {
-        log(LogLevel.INFO, "applying plugin [com.github.ben-manes.versions]")
+        PluginLogger.log(LogLevel.INFO, "applying plugin [com.github.ben-manes.versions]")
         project.pluginManager.apply("com.github.ben-manes.versions")
 
         project.tasks.withType(DependencyUpdatesTask::class.java).configureEach { task ->

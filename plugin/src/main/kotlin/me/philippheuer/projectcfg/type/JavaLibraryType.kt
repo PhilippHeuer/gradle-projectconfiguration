@@ -5,6 +5,8 @@ import me.philippheuer.projectcfg.domain.PluginModule
 import me.philippheuer.projectcfg.domain.ProjectLanguage
 import me.philippheuer.projectcfg.domain.ProjectType
 import me.philippheuer.projectcfg.util.DependencyVersion
+import me.philippheuer.projectcfg.util.PluginLogger
+import me.philippheuer.projectcfg.util.applyProject
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.api.logging.LogLevel
@@ -35,12 +37,10 @@ class JavaLibraryType constructor(override var project: Project, override var co
     }
 
     fun configureJavaLibrary(project: Project, config: ProjectConfigurationExtension) {
-        project.run {
-            log(LogLevel.INFO, "applying plugin [java-library]")
-            pluginManager.apply("java-library")
-            log(LogLevel.INFO, "applying plugin [maven-publish]")
-            pluginManager.apply("maven-publish")
+        project.applyProject("java-library")
+        project.applyProject("maven-publish")
 
+        project.run {
             group = config.artifactGroupId.get()
             version = config.artifactVersion.get()
 
@@ -66,10 +66,9 @@ class JavaLibraryType constructor(override var project: Project, override var co
     }
 
     fun configureKotlinLibrary(project: Project, config: ProjectConfigurationExtension) {
-        project.run {
-            log(LogLevel.INFO, "applying plugin [org.jetbrains.kotlin.jvm]")
-            pluginManager.apply("org.jetbrains.kotlin.jvm")
+        project.applyProject("org.jetbrains.kotlin.jvm")
 
+        project.run {
             dependencies.add("api", "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${DependencyVersion.kotlinVersion}")
 
             tasks.withType(KotlinCompile::class.java).configureEach {

@@ -4,6 +4,8 @@ import com.coditory.gradle.manifest.ManifestPluginExtension
 import me.philippheuer.projectcfg.ProjectConfigurationExtension
 import me.philippheuer.projectcfg.domain.PluginModule
 import me.philippheuer.projectcfg.domain.ProjectLanguage
+import me.philippheuer.projectcfg.util.PluginLogger
+import me.philippheuer.projectcfg.util.applyProject
 import org.gradle.api.Project
 import org.gradle.api.logging.LogLevel
 import org.gradle.jvm.tasks.Jar
@@ -19,12 +21,11 @@ class ManifestFeature constructor(override var project: Project, override var co
     }
 
     fun configurePlugin(project: Project) {
-        log(LogLevel.INFO, "applying plugin [com.coditory.manifest]")
-        project.pluginManager.apply("com.coditory.manifest")
+        project.applyProject("com.coditory.manifest")
 
         project.extensions.configure(ManifestPluginExtension::class.java) {
             it.buildAttributes = false
-            log(LogLevel.INFO, "set [manifest.buildAttributes] to [${it.buildAttributes}]")
+            PluginLogger.log(LogLevel.INFO, "set [manifest.buildAttributes] to [${it.buildAttributes}]")
         }
 
         project.tasks.withType(Jar::class.java).configureEach {

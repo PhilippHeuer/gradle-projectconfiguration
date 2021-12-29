@@ -15,13 +15,6 @@
         <property name="eachLine" value="true"/>
     </module>
 
-    <!-- line length -->
-    <module name="LineLength">
-        <property name="fileExtensions" value="java"/>
-        <property name="max" value="300"/>
-        <property name="ignorePattern" value="^package.*|^import.*|a href|href|http://|https://|ftp://"/>
-    </module>
-
     <!-- require a package-info.java -->
     <!-- <module name="JavadocPackage"/> -->
 
@@ -72,7 +65,7 @@
         <!-- generic java stuff -->
         <!-- tokens that need braces -->
         <module name="NeedBraces">
-            <property name="tokens" value="LITERAL_DO, LITERAL_FOR, LITERAL_WHILE"/> <!-- originally also LITERAL_ELSE, LITERAL_IF -->
+            <property name="tokens" value="LITERAL_DO, LITERAL_WHILE"/> <!-- disabled for: LITERAL_ELSE, LITERAL_IF, LITERAL_FOR -->
         </module>
 
         <!-- some more generic rules -->
@@ -90,7 +83,10 @@
             <property name="allowByTailComment" value="true"/>
             <property name="allowNonPrintableEscapes" value="true"/>
         </module>
-
+        <!-- whitespace -->
+        <module name="WhitespaceAfter">
+            <property name="tokens" value="COMMA, SEMI, TYPECAST, LITERAL_IF, LITERAL_ELSE, LITERAL_WHILE, LITERAL_DO, LITERAL_FOR, DO_WHILE"/>
+        </module>
 
         <module name="LeftCurly">
             <property name="tokens"
@@ -102,14 +98,7 @@
         </module>
         <module name="RightCurly">
             <property name="id" value="RightCurlySame"/>
-            <property name="tokens"
-                      value="LITERAL_TRY, LITERAL_CATCH, LITERAL_FINALLY, LITERAL_IF, LITERAL_ELSE,
-                    LITERAL_DO"/>
-        </module>
-        <module name="WhitespaceAfter">
-            <property name="tokens"
-                      value="COMMA, SEMI, TYPECAST, LITERAL_IF, LITERAL_ELSE,
-                    LITERAL_WHILE, LITERAL_DO, LITERAL_FOR, DO_WHILE"/>
+            <property name="tokens" value="LITERAL_TRY, LITERAL_CATCH, LITERAL_FINALLY, LITERAL_IF, LITERAL_ELSE, LITERAL_DO"/>
         </module>
         <module name="WhitespaceAround">
             <property name="allowEmptyConstructors" value="true"/>
@@ -183,9 +172,8 @@
                      value="Type name ''{0}'' must match pattern ''{1}''."/>
         </module>
         <module name="MemberName">
-            <property name="format" value="^[a-zA-Z0-9]*$"/>
-            <message key="name.invalidPattern"
-                     value="Member name ''{0}'' must match pattern ''{1}''."/>
+            <property name="format" value="^[a-zA-Z0-9_]*$"/>
+            <message key="name.invalidPattern" value="Member name ''{0}'' must match pattern ''{1}''."/>
         </module>
         <module name="ParameterName">
             <property name="format" value="^[a-z]([a-z0-9][a-zA-Z0-9]*)?$"/>
