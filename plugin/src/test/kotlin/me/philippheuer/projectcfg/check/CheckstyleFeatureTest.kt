@@ -1,4 +1,4 @@
-package me.philippheuer.projectcfg.features
+package me.philippheuer.projectcfg.check
 
 import me.philippheuer.projectcfg.util.PluginTestUtils
 import org.gradle.api.plugins.quality.CheckstyleExtension

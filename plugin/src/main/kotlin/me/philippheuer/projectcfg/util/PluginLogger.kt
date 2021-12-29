@@ -10,8 +10,8 @@ class PluginLogger {
     companion object {
         private val log = LoggerFactory.getLogger(PluginModule::class.java)
 
-        var project: Project? = null
-        var config: ProjectConfigurationExtension? = null
+        lateinit var project: Project
+        lateinit var config: ProjectConfigurationExtension
         var module: PluginModule? = null
 
         /**
@@ -23,7 +23,11 @@ class PluginLogger {
         fun log(logLevel: LogLevel, message: String) {
             if (config!!.logLevel.isPresent) {
                 if (config!!.logLevel.get() <= logLevel) {
-                    println("$logLevel: [${project!!.name}] ${module!!::class.java} -> $message")
+                    if (module != null) {
+                        println("$logLevel: [${project!!.name}] ${module!!::class.java} -> $message")
+                    } else {
+                        println("$logLevel: [${project!!.name}] -> $message")
+                    }
                 }
             } else {
                 // delegate to slf4j

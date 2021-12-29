@@ -15,7 +15,7 @@ import org.gradle.api.tasks.compile.JavaCompile
 
 class JavaApplicationType constructor(override var project: Project, override var config: ProjectConfigurationExtension) : PluginModule {
     override fun check(): Boolean {
-        return ProjectLanguage.JAVA == config.language.get() && ProjectType.APP == config.type.get()
+        return config.type.get() == ProjectType.APP
     }
 
     override fun run() {

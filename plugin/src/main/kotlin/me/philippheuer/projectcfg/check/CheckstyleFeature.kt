@@ -1,8 +1,9 @@
-package me.philippheuer.projectcfg.features
+package me.philippheuer.projectcfg.check
 
 import me.philippheuer.projectcfg.ProjectConfigurationExtension
 import me.philippheuer.projectcfg.ProjectConfigurationPlugin
 import me.philippheuer.projectcfg.domain.PluginModule
+import me.philippheuer.projectcfg.domain.ProjectLanguage
 import me.philippheuer.projectcfg.util.PluginLogger
 import me.philippheuer.projectcfg.util.applyProject
 import org.gradle.api.GradleException
@@ -74,7 +75,7 @@ class CheckstyleFeature constructor(override var project: Project, override var 
     }
 
     override fun check(): Boolean {
-        return true
+        return config.language.get() == ProjectLanguage.JAVA
     }
 
     override fun run() {

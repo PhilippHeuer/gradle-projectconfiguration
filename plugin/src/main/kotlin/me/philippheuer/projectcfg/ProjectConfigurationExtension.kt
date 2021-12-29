@@ -4,6 +4,8 @@ import me.philippheuer.projectcfg.config.*
 import me.philippheuer.projectcfg.domain.ProjectFramework
 import me.philippheuer.projectcfg.domain.ProjectLanguage
 import me.philippheuer.projectcfg.domain.ProjectType
+import me.philippheuer.projectcfg.util.PluginLogger.Companion.config
+import me.philippheuer.projectcfg.util.PluginLogger.Companion.project
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.api.artifacts.repositories.ArtifactRepository
@@ -22,7 +24,7 @@ open class ProjectConfigurationExtension @Inject constructor(project: Project) :
     override val logLevel: Property<LogLevel> = objects.property(LogLevel::class.java)
     override val language: Property<ProjectLanguage> = objects.property(ProjectLanguage::class.java).convention(ProjectLanguage.JAVA)
     override val javaVersion: Property<JavaVersion> = objects.property(JavaVersion::class.java).convention(JavaVersion.VERSION_11)
-    override val type: Property<ProjectType> = objects.property(ProjectType::class.java).convention(ProjectType.APP)
+    override val type: Property<ProjectType> = objects.property(ProjectType::class.java).convention(ProjectType.DEFAULT)
     override val framework: Property<ProjectFramework> = objects.property(ProjectFramework::class.java).convention(ProjectFramework.NONE)
     override val fileEncoding: Property<String> = objects.property(String::class.java).convention("UTF-8")
     override val artifactRepository: Property<ArtifactRepository> = objects.property(ArtifactRepository::class.java)
@@ -60,5 +62,43 @@ open class ProjectConfigurationExtension @Inject constructor(project: Project) :
 
     override fun toString(): String {
         return "LANGUAGE: ${language.orNull} - FRAMEWORK: ${framework.orNull}"
+    }
+
+    fun defaults() {
+        // auto-detect project type
+        if (type.get() == ProjectType.DEFAULT) {
+            if (project!!.pluginManager.hasPlugin("java-library")) {
+                type.set(ProjectType.LIBRARY)
+            } else if (project!!.pluginManager.hasPlugin("java")) {
+                type.set(ProjectType.APP)
+            }
+        }
+
+        // artifact
+        if (!artifactGroupId.isPresent) {
+            if (project!!.properties.containsKey("artifact.group")) {
+                artifactGroupId.set(project!!.properties["artifact.group"] as String)
+            } else {
+                artifactGroupId.set(project!!.group as String)
+            }
+        }
+        if (!artifactId.isPresent) {
+            artifactId.set(project!!.name)
+        }
+        if (!artifactVersion.isPresent) {
+            if (project!!.properties.containsKey("artifact.version")) {
+                artifactVersion.set(project!!.properties["artifact.version"] as String)
+            } else if (project!!.version != "undefined") {
+                artifactVersion.set(project!!.version as String)
+            }
+        }
+    }
+
+    fun javaVersionAsJvmVersion(): String {
+        if (javaVersion.get() == JavaVersion.VERSION_1_8) {
+            return "1.8"
+        }
+
+        return javaVersion.get().toString()
     }
 }

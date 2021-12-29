@@ -49,13 +49,6 @@ class SpringBootFramework constructor(override var project: Project, override va
             // spring - log4j2
             configurations.getByName("implementation").exclude(mapOf("group" to "org.springframework.boot", "module" to "spring-boot-starter-logging"))
             dependencies.add("implementation", "org.springframework.boot:spring-boot-starter-log4j2:${DependencyVersion.springBootVersion}")
-            dependencies.constraints.add("implementation", "org.apache.logging.log4j:log4j-core") { constraint ->
-                constraint.version { v ->
-                    v.strictly("[2.17, 3[")
-                    v.prefer("2.17.0")
-                }
-                constraint.because("CVE-2021-44228, CVE-2021-45046, CVE-2021-45105: Log4j vulnerable to remote code execution and other critical security vulnerabilities")
-            }
 
             // lib - auto configure http/https proxy
             dependencies.add("implementation", "me.philippheuer.projectcfg.lib:springboot-proxy:${DependencyVersion.libVersion}")

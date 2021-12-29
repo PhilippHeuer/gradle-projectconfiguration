@@ -24,7 +24,7 @@ import java.net.URL
 
 class JavaLibraryType constructor(override var project: Project, override var config: ProjectConfigurationExtension) : PluginModule {
     override fun check(): Boolean {
-        return ProjectType.LIBRARY == config.type.get()
+        return config.type.get() == ProjectType.LIBRARY
     }
 
     override fun run() {
@@ -72,7 +72,7 @@ class JavaLibraryType constructor(override var project: Project, override var co
             dependencies.add("api", "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${DependencyVersion.kotlinVersion}")
 
             tasks.withType(KotlinCompile::class.java).configureEach {
-                it.kotlinOptions.jvmTarget = config.javaVersion.get().toString()
+                it.kotlinOptions.jvmTarget = config.javaVersionAsJvmVersion()
             }
         }
     }

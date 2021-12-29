@@ -1,5 +1,8 @@
 package me.philippheuer.projectcfg
 
+import me.philippheuer.projectcfg.check.CheckstyleFeature
+import me.philippheuer.projectcfg.check.DetektFeature
+import me.philippheuer.projectcfg.cve.Log4JCVE
 import me.philippheuer.projectcfg.features.*
 import me.philippheuer.projectcfg.framework.QuarkusFramework
 import me.philippheuer.projectcfg.framework.SpringBootFramework
@@ -28,28 +31,14 @@ abstract class ProjectConfigurationPlugin : Plugin<Project> {
         // process features
         project.afterEvaluate { // TODO: config property values are only accessible in afterEvaluate, but there should be a better way maybe?
             // config preprocessing
-            if (!config.artifactGroupId.isPresent) {
-                if (project.properties.containsKey("artifact.group")) {
-                    config.artifactGroupId.set(project.properties["artifact.group"] as String)
-                } else {
-                    config.artifactGroupId.set(project.group as String)
-                }
-            }
-            if (!config.artifactId.isPresent) {
-                config.artifactId.set(project.name)
-            }
-            if (!config.artifactVersion.isPresent) {
-                if (project.properties.containsKey("artifact.version")) {
-                    config.artifactVersion.set(project.properties["artifact.version"] as String)
-                } else if (project.version != "undefined") {
-                    config.artifactVersion.set(project.version as String)
-                }
-            }
+            config.defaults()
 
             // process each module
             val modules = listOf(
                 // policy
                 GradleWrapperVersionPolicy(project, config),
+                // cve
+                Log4JCVE(project, config),
                 // type
                 JavaApplicationType(project, config),
                 JavaLibraryType(project, config),
@@ -67,7 +56,9 @@ abstract class ProjectConfigurationPlugin : Plugin<Project> {
                 ManifestFeature(project, config),
                 JUnit5Feature(project, config),
                 VersionUpgradeFeature(project, config),
+                // check
                 CheckstyleFeature(project, config),
+                DetektFeature(project, config),
             )
 
             modules.forEach {

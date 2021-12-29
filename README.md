@@ -17,6 +17,7 @@ plugins {
 There are a few parameters that are required for in project configurations:
 
 Example:
+
 ```gradle
 projectConfiguration {
     language.set(me.philippheuer.projectcfg.domain.ProjectLanguage.JAVA)
@@ -27,30 +28,31 @@ projectConfiguration {
 
 Options:
 
-| Option | Description | allowed values |
-| :--- | :--- | :--- |
-| language | the language | JAVA, KOTLIN |
-| type | the project type | APP, LIBRARY |
+| Option    | Description                         | allowed values      |
+|:----------|:------------------------------------|:--------------------|
+| language  | the language                        | JAVA, KOTLIN        |
+| type      | the project type                    | APP, LIBRARY        |
 | framework | your framework of choice (optional) | SPRINGBOOT, QUARKUS |
 
 ## Modules
 
-| Type | Name | Docs |
-| :--- | :--- | :---: |
-| Type | Application | [view](docs/modules/type-application.md) |
-| Type | Library | [view](docs/modules/type-library.md) |
-| Policy | Gradle Wrapper Version | [view](docs/modules/policy-gradle-wrapper-version.md) |
-| Framework | SpringBoot | [view](docs/modules/framework-springboot.md) |
-| Framework | Quarkus | [view](docs/modules/framework-quarkus.md) |
-| Feature | Lombok | [view](docs/modules/feature-lombok.md) |
-| Feature | Javadoc | [view](docs/modules/feature-javadoc.md) |
-| Feature | Test Logging | [view](docs/modules/feature-test-logging.md) |
-| Feature | Shadow | [view](docs/modules/feature-shadow.md) |
-| Feature | JUnit5 | [view](docs/modules/feature-junit5.md) |
-| Feature | Manifest | [view](docs/modules/feature-manifest.md) |
-| Feature | VersionUpgrade | [view](docs/modules/feature-versionupgrade.md) |
-
-...
+| Type      | Name                   | Docs                                                  |
+|:----------|:-----------------------|:------------------------------------------------------|
+| Type      | Application            | [view](docs/modules/type-application.md)              |
+| Type      | Library                | [view](docs/modules/type-library.md)                  |
+| Policy    | Gradle Wrapper Version | [view](docs/modules/policy-gradle-wrapper-version.md) |
+| Framework | SpringBoot             | [view](docs/modules/framework-springboot.md)          |
+| Framework | Quarkus                | [view](docs/modules/framework-quarkus.md)             |
+| Feature   | Lombok                 | [view](docs/modules/feature-lombok.md)                |
+| Feature   | Javadoc                | [view](docs/modules/feature-javadoc.md)               |
+| Feature   | Test Logging           | [view](docs/modules/feature-test-logging.md)          |
+| Feature   | Shadow                 | [view](docs/modules/feature-shadow.md)                |
+| Feature   | JUnit5                 | [view](docs/modules/feature-junit5.md)                |
+| Feature   | Manifest               | [view](docs/modules/feature-manifest.md)              |
+| Feature   | VersionUpgrade         | [view](docs/modules/feature-versionupgrade.md)        |
+| Check     | Checkstyle (Java)      | [view](docs/modules/check-checkstyle.md)              |
+| Check     | Detekt (Kotlin)        | [view](docs/modules/check-detekt.md)                  |
+| CVE       | Log4j                  | [view](docs/modules/cve-log4j.md)                     |
 
 ### Related Plugins ###
 

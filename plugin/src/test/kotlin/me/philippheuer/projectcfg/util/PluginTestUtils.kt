@@ -16,6 +16,9 @@ class PluginTestUtils {
             config.logLevel.set(LogLevel.INFO)
             config.language.set(ProjectLanguage.JAVA)
 
+            PluginLogger.project = project
+            PluginLogger.config = config
+
             return Pair(project, config)
         }
     }
