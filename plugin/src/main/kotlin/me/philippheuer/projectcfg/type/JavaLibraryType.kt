@@ -5,22 +5,12 @@ import me.philippheuer.projectcfg.domain.PluginModule
 import me.philippheuer.projectcfg.domain.ProjectLanguage
 import me.philippheuer.projectcfg.domain.ProjectType
 import me.philippheuer.projectcfg.util.DependencyVersion
-import me.philippheuer.projectcfg.util.PluginLogger
 import me.philippheuer.projectcfg.util.applyProject
-import org.gradle.api.JavaVersion
 import org.gradle.api.Project
-import org.gradle.api.logging.LogLevel
 import org.gradle.api.plugins.BasePluginExtension
 import org.gradle.api.plugins.JavaPluginExtension
-import org.gradle.api.plugins.ObjectConfigurationAction
-import org.gradle.api.publish.PublishingExtension
-import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.api.tasks.compile.JavaCompile
-import org.gradle.plugins.signing.SigningExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import org.jetbrains.kotlin.gradle.tasks.KotlinTest
-import java.net.URI
-import java.net.URL
 
 class JavaLibraryType constructor(override var project: Project, override var config: ProjectConfigurationExtension) : PluginModule {
     override fun check(): Boolean {
@@ -61,6 +51,7 @@ class JavaLibraryType constructor(override var project: Project, override var co
 
             tasks.withType(JavaCompile::class.java).configureEach {
                 it.options.encoding = config.fileEncoding.get()
+                it.options.isIncremental = true
             }
         }
     }
@@ -73,6 +64,8 @@ class JavaLibraryType constructor(override var project: Project, override var co
 
             tasks.withType(KotlinCompile::class.java).configureEach {
                 it.kotlinOptions.jvmTarget = config.javaVersionAsJvmVersion()
+                it.kotlinOptions.javaParameters = true
+                it.incremental = true
             }
         }
     }

@@ -11,14 +11,16 @@ dependencies {
 
     // kotlin
     implementation(kotlin("stdlib-jdk8"))
+    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:${BuildPluginsVersion.KOTLIN}")
+    implementation("org.jetbrains.kotlin:kotlin-allopen:${BuildPluginsVersion.KOTLIN}")
 
     // third party plugins
-    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.0")
-    implementation("org.springframework.boot:spring-boot-gradle-plugin:2.6.1")
-    implementation("io.quarkus:gradle-application-plugin:2.5.0.Final")
+
+    implementation("org.springframework.boot:spring-boot-gradle-plugin:2.6.2")
+    implementation("io.quarkus:gradle-application-plugin:2.6.1.Final")
     implementation("io.freefair.gradle:lombok-plugin:6.3.0")
     implementation("com.adarshr:gradle-test-logger-plugin:3.1.0")
-    implementation("gradle.plugin.com.github.johnrengelman:shadow:7.1.1")
+    implementation("gradle.plugin.com.github.johnrengelman:shadow:7.1.2")
     implementation("com.coditory.gradle:manifest-plugin:0.1.14")
     implementation("com.github.ben-manes:gradle-versions-plugin:0.39.0")
     implementation("io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.19.0")

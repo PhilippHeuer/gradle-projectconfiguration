@@ -67,29 +67,29 @@ open class ProjectConfigurationExtension @Inject constructor(project: Project) :
     fun defaults() {
         // auto-detect project type
         if (type.get() == ProjectType.DEFAULT) {
-            if (project!!.pluginManager.hasPlugin("java-library")) {
+            if (project.pluginManager.hasPlugin("java-library")) {
                 type.set(ProjectType.LIBRARY)
-            } else if (project!!.pluginManager.hasPlugin("java")) {
+            } else if (project.pluginManager.hasPlugin("java")) {
                 type.set(ProjectType.APP)
             }
         }
 
         // artifact
         if (!artifactGroupId.isPresent) {
-            if (project!!.properties.containsKey("artifact.group")) {
-                artifactGroupId.set(project!!.properties["artifact.group"] as String)
+            if (project.properties.containsKey("artifact.group")) {
+                artifactGroupId.set(project.properties["artifact.group"] as String)
             } else {
-                artifactGroupId.set(project!!.group as String)
+                artifactGroupId.set(project.group as String)
             }
         }
         if (!artifactId.isPresent) {
-            artifactId.set(project!!.name)
+            artifactId.set(project.name)
         }
         if (!artifactVersion.isPresent) {
-            if (project!!.properties.containsKey("artifact.version")) {
-                artifactVersion.set(project!!.properties["artifact.version"] as String)
-            } else if (project!!.version != "undefined") {
-                artifactVersion.set(project!!.version as String)
+            if (project.properties.containsKey("artifact.version")) {
+                artifactVersion.set(project.properties["artifact.version"] as String)
+            } else if (project.version != "undefined") {
+                artifactVersion.set(project.version as String)
             }
         }
     }

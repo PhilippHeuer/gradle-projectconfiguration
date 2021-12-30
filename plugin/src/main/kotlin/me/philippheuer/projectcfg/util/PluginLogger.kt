@@ -21,12 +21,12 @@ class PluginLogger {
          * loglevel not set, forward to slf4j
          */
         fun log(logLevel: LogLevel, message: String) {
-            if (config!!.logLevel.isPresent) {
-                if (config!!.logLevel.get() <= logLevel) {
+            if (config.logLevel.isPresent) {
+                if (config.logLevel.get() <= logLevel) {
                     if (module != null) {
-                        println("$logLevel: [${project!!.name}] ${module!!::class.java} -> $message")
+                        println("$logLevel: [${project.name}] ${module!!::class.java} -> $message")
                     } else {
-                        println("$logLevel: [${project!!.name}] -> $message")
+                        println("$logLevel: [${project.name}] -> $message")
                     }
                 }
             } else {

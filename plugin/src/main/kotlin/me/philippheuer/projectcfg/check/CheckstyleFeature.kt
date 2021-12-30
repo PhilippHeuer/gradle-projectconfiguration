@@ -67,7 +67,7 @@ class CheckstyleFeature constructor(override var project: Project, override var 
             // tasks
             project.tasks.withType(Checkstyle::class.java).configureEach { task ->
                 task.reports { report ->
-                    report.xml.required.set(false)
+                    report.xml.required.set(true)
                     report.html.required.set(true)
                 }
             }

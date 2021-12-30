@@ -56,7 +56,7 @@ Options:
 
 ### Related Plugins ###
 
-This plugin may include the following plugins based on the project configuration:
+This plugin may include the following plugins based on your project configuration:
 
 - [Lombok](https://docs.freefair.io/gradle-plugins/6.3.0/reference/)
 - [Gradle Test Logger](https://github.com/radarsh/gradle-test-logger-plugin)
@@ -65,3 +65,5 @@ This plugin may include the following plugins based on the project configuration
 - [Gradle Versions Plugin](https://github.com/ben-manes/gradle-versions-plugin)
 - [Quarkus](https://quarkus.io/)
 - [SpringBoot](https://docs.spring.io/spring-boot/docs/current/gradle-plugin/reference/htmlsingle/)
+- [Checkstyle](https://docs.gradle.org/current/userguide/checkstyle_plugin.html)
+- [Detekt](https://github.com/detekt/detekt)

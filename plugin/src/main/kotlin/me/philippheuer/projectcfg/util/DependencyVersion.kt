@@ -9,5 +9,6 @@ open class DependencyVersion {
         @JvmStatic var mockitoKotlinVersion: String = "4.0.0"
         @JvmStatic var jacksonVersion: String = "2.13.0"
         @JvmStatic var springBootVersion: String = "2.6.1"
+        @JvmStatic var quarkusVersion: String = "2.6.1.Final"
     }
 }
