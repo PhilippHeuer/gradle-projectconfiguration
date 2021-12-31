@@ -67,6 +67,9 @@ class JavaLibraryType constructor(override var project: Project, override var co
                 it.kotlinOptions.javaParameters = true
                 it.incremental = true
             }
+
+            // logging
+            dependencies.add("api", "io.github.microutils:kotlin-logging:2.1.20")
         }
     }
 }

@@ -5,13 +5,10 @@ import me.philippheuer.projectcfg.domain.PluginModule
 import me.philippheuer.projectcfg.domain.ProjectLanguage
 import me.philippheuer.projectcfg.domain.ProjectType
 import me.philippheuer.projectcfg.util.DependencyVersion
-import me.philippheuer.projectcfg.util.PluginLogger
 import me.philippheuer.projectcfg.util.applyProject
 import org.gradle.api.Project
-import org.gradle.api.logging.LogLevel
 import org.gradle.api.plugins.BasePluginExtension
 import org.gradle.api.plugins.JavaPluginExtension
-import org.gradle.api.plugins.ObjectConfigurationAction
 import org.gradle.api.tasks.compile.JavaCompile
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
@@ -52,6 +49,9 @@ class JavaApplicationType constructor(override var project: Project, override va
                     it.kotlinOptions.jvmTarget = config.javaVersionAsJvmVersion()
                     it.incremental = true
                 }
+
+                // logging
+                dependencies.add("implementation", "io.github.microutils:kotlin-logging:2.1.20")
             }
         }
     }
