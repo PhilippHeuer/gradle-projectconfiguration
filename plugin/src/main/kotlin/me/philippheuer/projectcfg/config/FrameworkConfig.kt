@@ -7,4 +7,10 @@ interface FrameworkConfig {
     // enables metrics
     val frameworkMetrics: Property<Boolean>
 
+    // enables tracing
+    val frameworkTracing: Property<Boolean>
+
+    // enables web api
+    val frameworkWebApi: Property<Boolean>
+
 }

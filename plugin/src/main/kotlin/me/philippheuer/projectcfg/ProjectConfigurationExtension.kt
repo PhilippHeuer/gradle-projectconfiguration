@@ -35,7 +35,9 @@ open class ProjectConfigurationExtension @Inject constructor(project: Project) :
     override val artifactDescription: Property<String> = objects.property(String::class.java)
     override var pom: (MavenPom) -> Unit = {}
 
-    override val frameworkMetrics: Property<Boolean> = objects.property(Boolean::class.java).convention(false)
+    override val frameworkWebApi: Property<Boolean> = objects.property(Boolean::class.java).convention(false)
+    override val frameworkMetrics: Property<Boolean> = objects.property(Boolean::class.java).convention(true)
+    override val frameworkTracing: Property<Boolean> = objects.property(Boolean::class.java).convention(false)
 
     override val lombokVersion: Property<String> = objects.property(String::class.java).convention("1.18.22")
 
