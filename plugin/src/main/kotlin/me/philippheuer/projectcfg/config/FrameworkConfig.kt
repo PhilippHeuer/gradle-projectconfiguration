@@ -13,4 +13,10 @@ interface FrameworkConfig {
     // enables web api
     val frameworkWebApi: Property<Boolean>
 
+    // enables db (hibernate)
+    val frameworkDb: Property<Boolean>
+
+    // enables automatic db migrations
+    val frameworkDbMigrate: Property<Boolean>
+
 }

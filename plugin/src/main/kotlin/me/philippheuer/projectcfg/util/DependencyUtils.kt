@@ -22,6 +22,23 @@ class DependencyUtils {
         }
 
         /**
+         * hasDependency can be used to check if a project contains a certain dependency
+         */
+        fun hasOneOfDependency(project: Project, configurationNames: List<String>, dependencyNotation: List<String>): Boolean {
+            project.configurations.filter { configurationNames.contains(it.name) }.forEach { configuration ->
+                configuration.allDependencies.forEach { dep ->
+                    dependencyNotation.forEach { dn ->
+                        if (dn == dep.group || dn == "${dep.group}:${dep.name}") {
+                            return true
+                        }
+                    }
+                }
+            }
+
+            return false
+        }
+
+        /**
          * getDependencies collects all uzsed dependencies used in the project
          */
         fun getDependencies(project: Project, configurationNames: List<String>): List<Dependency> {

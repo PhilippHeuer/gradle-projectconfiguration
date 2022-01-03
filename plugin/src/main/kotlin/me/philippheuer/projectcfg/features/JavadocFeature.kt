@@ -117,19 +117,9 @@ class JavadocFeature constructor(override var project: Project, override var con
                     it.options.overview = file(config.javadocOverviewTemplate.get()).absolutePath
                 }
 
-                // JDK11 fix - copy element-list to package-list
-                if (JavaVersion.current() >= JavaVersion.VERSION_11) {
-                    it.doLast(object : Action<Task> {
-                        // this can not be a lambda! see https://docs.gradle.org/7.3.1/userguide/validation_problems.html#implementation_unknown
-                        override fun execute(t: Task) {
-                            copy { cp ->
-                                cp.from(file("${it.destinationDir!!}/element-list"))
-                                cp.into(it.destinationDir!!)
-                                cp.rename { "package-list" }
-                            }
-                        }
-                    })
-                }
+                // others
+                clearOutputFirst(it)
+                jdk11ElementListBackwardsCompat(it, project)
             }
         }
     }
@@ -142,6 +132,32 @@ class JavadocFeature constructor(override var project: Project, override var con
                 (it.options as StandardJavadocDocletOptions).addBooleanOption("html5", true)
             }
         }
+    }
+
+    private fun jdk11ElementListBackwardsCompat(it: Javadoc, project: Project) {
+        if (JavaVersion.current() >= JavaVersion.VERSION_11) {
+            it.doLast(object : Action<Task> {
+                // this can not be a lambda! see https://docs.gradle.org/7.3.1/userguide/validation_problems.html#implementation_unknown
+                override fun execute(t: Task) {
+                    project.copy { cp ->
+                        cp.from(project.file("${it.destinationDir!!}/element-list"))
+                        cp.into(it.destinationDir!!)
+                        cp.rename { "package-list" }
+                    }
+                }
+            })
+        }
+    }
+
+    private fun clearOutputFirst(it: Javadoc) {
+        it.doFirst(object : Action<Task> {
+            // this can not be a lambda! see https://docs.gradle.org/7.3.1/userguide/validation_problems.html#implementation_unknown
+            override fun execute(t: Task) {
+                if (it.destinationDir?.exists() == true) {
+                    it.destinationDir?.deleteRecursively()
+                }
+            }
+        })
     }
 
     /**
@@ -203,32 +219,11 @@ class JavadocFeature constructor(override var project: Project, override var con
                         }
                     }
 
-                    // clear old files
-                    aj.doFirst(object : Action<Task> {
-                        // this can not be a lambda! see https://docs.gradle.org/7.3.1/userguide/validation_problems.html#implementation_unknown
-                        override fun execute(t: Task) {
-                            if (aj.destinationDir?.exists() == true) {
-                                aj.destinationDir?.deleteRecursively()
-                            }
-                        }
-                    })
-
-                    // JDK11 fix - copy element-list to package-list
-                    if (JavaVersion.current() >= JavaVersion.VERSION_11) {
-                        aj.doLast(object : Action<Task> {
-                            // this can not be a lambda! see https://docs.gradle.org/7.3.1/userguide/validation_problems.html#implementation_unknown
-                            override fun execute(t: Task) {
-                                copy { cp ->
-                                    cp.from(file("${aj.destinationDir!!}/element-list"))
-                                    cp.into(aj.destinationDir!!)
-                                    cp.rename { "package-list" }
-                                }
-                            }
-                        })
-                    }
+                    // others
+                    clearOutputFirst(aj)
+                    jdk11ElementListBackwardsCompat(aj, project)
                 }
             }
         }
     }
-
 }
