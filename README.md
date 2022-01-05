@@ -14,7 +14,7 @@ plugins {
 
 ## Usage
 
-There are a few parameters that are required for in project configurations:
+You can configure your project with a few simple parameters:
 
 Example:
 
@@ -26,6 +26,8 @@ projectConfiguration {
 }
 ```
 
+*Note*: You can apply this plugin to each of your project modules independently, if your project contains different project types.
+
 Options:
 
 | Option    | Description                         | allowed values      |
@@ -34,7 +36,18 @@ Options:
 | type      | the project type                    | APP, LIBRARY        |
 | framework | your framework of choice (optional) | SPRINGBOOT, QUARKUS |
 
+## Example Configurations
+
+| Description             | Link |
+|:------------------------|:-----|
+| MavenCentral Library    | ...  |
+| Private Library         | ...  |
+| SpringBoot Microservice | ...  |
+| Quarkus Microservice    | ...  |
+
 ## Modules
+
+There are options to further configure each `feature`, these links document what a `feature` does by default and what customization options are available.
 
 | Type      | Name                   | Docs                                                  |
 |:----------|:-----------------------|:------------------------------------------------------|
