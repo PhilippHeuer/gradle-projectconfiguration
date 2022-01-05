@@ -34,6 +34,7 @@ open class ProjectConfigurationExtension @Inject constructor(project: Project) :
     override val artifactDisplayName: Property<String> = objects.property(String::class.java)
     override val artifactDescription: Property<String> = objects.property(String::class.java)
     override var pom: (MavenPom) -> Unit = {}
+    override val native: Property<Boolean> = objects.property(Boolean::class.java).convention(false)
 
     override val frameworkWebApi: Property<Boolean> = objects.property(Boolean::class.java).convention(false)
     override val frameworkMetrics: Property<Boolean> = objects.property(Boolean::class.java).convention(true)

@@ -45,4 +45,7 @@ interface PluginConfig {
 
     // customize pom
     var pom: (MavenPom) -> Unit
+
+    // build native binary
+    val native: Property<Boolean>
 }

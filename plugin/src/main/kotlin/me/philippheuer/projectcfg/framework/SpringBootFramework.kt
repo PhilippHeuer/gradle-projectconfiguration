@@ -56,12 +56,23 @@ class SpringBootFramework constructor(override var project: Project, override va
             // metrics
             if (config.frameworkMetrics.get()) {
                 dependencies.add("implementation", "io.micrometer:micrometer-core:1.8.1")
+                dependencies.add("implementation", "io.micrometer:micrometer-registry-prometheus:1.8.1")
 
                 // web project?
                 if (DependencyUtils.hasDependency(project, listOf("implementation"), "org.springframework.boot:spring-boot-starter-web")) {
                     dependencies.add("implementation", "org.springframework.boot:spring-boot-starter-actuator:${DependencyVersion.springBootVersion}")
-                    dependencies.add("implementation", "io.micrometer:micrometer-registry-prometheus:1.8.1")
                 }
+            }
+
+            // native
+            if (config.native.get()) {
+                project.applyProject("org.springframework.experimental.aot")
+
+                repositories.add(repositories.maven {
+                    uri("https://repo.spring.io/libs-milestone/")
+                })
+
+                dependencies.add("implementation", "org.springframework.experimental:spring-native:0.11.1")
             }
         }
     }

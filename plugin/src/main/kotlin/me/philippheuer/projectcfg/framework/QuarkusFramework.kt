@@ -7,8 +7,6 @@ import me.philippheuer.projectcfg.domain.ProjectLanguage
 import me.philippheuer.projectcfg.util.DependencyUtils
 import me.philippheuer.projectcfg.util.DependencyVersion
 import me.philippheuer.projectcfg.util.PluginLogger
-import me.philippheuer.projectcfg.util.PluginLogger.Companion.config
-import me.philippheuer.projectcfg.util.PluginLogger.Companion.project
 import me.philippheuer.projectcfg.util.applyProject
 import org.gradle.api.Project
 import org.jetbrains.kotlin.allopen.gradle.AllOpenExtension
@@ -92,7 +90,7 @@ class QuarkusFramework constructor(override var project: Project, override var c
             }
         }
 
-        fun quarkusDefaults(config: ProjectConfigurationExtension) {
+        fun quarkusDefaults(project: Project, config: ProjectConfigurationExtension) {
             val properties = mutableMapOf(
                 // banner
                 "quarkus.banner.enabled" to "false",
@@ -110,7 +108,6 @@ class QuarkusFramework constructor(override var project: Project, override var c
                 // logging
                 "quarkus.log.level" to "INFO",
                 "quarkus.log.min-level" to "DEBUG",
-                "quarkus.log.console.enabled" to "true",
                 "quarkus.log.console.json" to "false",
                 "quarkus.log.console.async" to "true",
                 "quarkus.log.console.async.queue-length" to "512",
@@ -125,9 +122,6 @@ class QuarkusFramework constructor(override var project: Project, override var c
             )
 
             // metrics
-            properties["quarkus.hibernate-orm.metrics.enabled"] = "true"
-            properties["quarkus.reactive-messaging.metrics.enabled"] = "true"
-            properties["quarkus.smallrye-graphql.metrics.enabled"] = "true"
             if (DependencyUtils.hasDependency(project, listOf("implementation"), "io.quarkus:quarkus-agroal")) {
                 properties["quarkus.datasource.metrics.enabled"] = "true"
             }
@@ -136,6 +130,31 @@ class QuarkusFramework constructor(override var project: Project, override var c
             }
             if (DependencyUtils.hasDependency(project, listOf("implementation"), "quarkus-smallrye-opentracing")) {
                 properties["quarkus.jaeger.metrics.enabled"] = "true"
+            }
+            if (DependencyUtils.hasDependency(project, listOf("implementation"), "smallrye-reactive-messaging-kafka")) {
+                properties["quarkus.reactive-messaging.metrics.enabled"] = "true"
+            }
+            if (DependencyUtils.hasDependency(project, listOf("implementation"), "quarkus-smallrye-graphql")) {
+                properties["quarkus.smallrye-graphql.metrics.enabled"] = "true"
+            }
+            if (DependencyUtils.hasOneOfDependency(project, listOf("implementation"), listOf("io.quarkus:quarkus-hibernate-orm-panache", "io.quarkus:quarkus-hibernate-orm-panache-kotlin"))) {
+                properties["quarkus.hibernate-orm.metrics.enabled"] = "true"
+            }
+
+            // db
+            if (DependencyUtils.hasOneOfDependency(project, listOf("implementation"), listOf("io.quarkus:quarkus-agroal", "io.quarkus:quarkus-hibernate-orm-panache", "io.quarkus:quarkus-hibernate-orm-panache-kotlin"))) {
+                // batch
+                properties["quarkus.hibernate-orm.jdbc.statement-batch-size"] = "300"
+                properties["quarkus.hibernate-orm.fetch.batch-size"] = "100"
+
+                // don't generate schema
+                properties["quarkus.hibernate-orm.database.generation"] = "none"
+
+                // default timeout
+                properties["quarkus.transaction-manager.default-transaction-timeout"] = "30s"
+
+                // log slow queries
+                properties["quarkus.hibernate-orm.log.queries-slower-than-ms"] = "1000"
             }
 
             // db migrations
@@ -146,10 +165,14 @@ class QuarkusFramework constructor(override var project: Project, override var c
             }
 
             // native image package config
-            properties["quarkus.package.type"] = "native"
-            properties["quarkus.native.container-build"] = "true"
-            properties["quarkus.native.builder-image"] = "quay.io/quarkus/ubi-quarkus-native-image:21.3.0-java17"
-            properties["quarkus.ssl.native"] = "true"
+            if (config.native.get()) {
+                properties["quarkus.package.type"] = "native"
+                properties["quarkus.native.container-build"] = "true"
+                properties["quarkus.native.builder-image"] = "quay.io/quarkus/ubi-quarkus-native-image:21.3.0-java17"
+                properties["quarkus.ssl.native"] = "true"
+            } else {
+                properties["quarkus.package.type"] = "fast-jar"
+            }
 
             // write config
             val content = StringBuilder()
@@ -169,6 +192,6 @@ class QuarkusFramework constructor(override var project: Project, override var c
 
     override fun run() {
         applyPlugin(project, config)
-        quarkusDefaults(config)
+        quarkusDefaults(project, config)
     }
 }

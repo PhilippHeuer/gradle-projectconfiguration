@@ -14,10 +14,15 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:${BuildPluginsVersion.KOTLIN}")
     implementation("org.jetbrains.kotlin:kotlin-allopen:${BuildPluginsVersion.KOTLIN}")
 
-    // third party plugins
-
+    // third party - spring
     implementation("org.springframework.boot:spring-boot-gradle-plugin:2.6.2")
+    //implementation("org.springframework.experimental:spring-native:0.11.1")
+    //implementation("org.springframework.experimental:spring-aot-gradle-plugin:0.11.1")
+
+    // third party - quarkus
     implementation("io.quarkus:gradle-application-plugin:2.6.1.Final")
+
+    // third party - plugins
     implementation("io.freefair.gradle:lombok-plugin:6.3.0")
     implementation("com.adarshr:gradle-test-logger-plugin:3.1.0")
     implementation("gradle.plugin.com.github.johnrengelman:shadow:7.1.2")
