@@ -62,7 +62,7 @@ gradlePlugin {
         create(PluginCoordinates.ID) {
             id = PluginCoordinates.ID
             implementationClass = PluginCoordinates.IMPLEMENTATION_CLASS
-            version = PluginCoordinates.VERSION
+            version = project.version
         }
     }
 }
@@ -82,6 +82,6 @@ pluginBundle {
     mavenCoordinates {
         groupId = PluginCoordinates.GROUP
         artifactId = PluginCoordinates.ID
-        version = PluginCoordinates.VERSION
+        version = project.version as String
     }
 }

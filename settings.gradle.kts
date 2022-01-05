@@ -7,8 +7,7 @@ pluginManagement {
 
 include(
     ":plugin",
-    ":lib-springboot-proxy",
 )
 
 // artifact id's
-project(":lib-springboot-proxy").name = "springboot-proxy"
+project(":plugin").name = "projectcfg-gradle-plugin"

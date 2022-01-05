@@ -12,7 +12,7 @@ class ShadowFeatureTest {
     fun `shadow plugin is being applied`() {
         val (project, config) = PluginTestUtils.getJavaProject()
         config.shadow.set(true)
-        ShadowFeature.applyPlugin(project, config)
+        ShadowFeature.applyPlugin(project)
 
         assertNotNull(project.pluginManager.findPlugin("com.github.johnrengelman.shadow"), "com.github.johnrengelman.shadow plugin was not applied")
         project.afterEvaluate {

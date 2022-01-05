@@ -24,11 +24,11 @@ class GradleWrapperVersionPolicy constructor(override var project: Project, over
     override fun run() {
         // only run for root project
         if (project.rootProject == project) {
-            checkGradleVersion(project, config)
+            checkGradleVersion(project)
         }
     }
 
-    fun checkGradleVersion(project: Project, config: ProjectConfigurationExtension) {
+    fun checkGradleVersion(project: Project) {
         // configure wrapper task
         PluginLogger.log(LogLevel.WARN, "set [gradle.version] to [${suggestedVersion}]")
         project.tasks.withType(Wrapper::class.java).configureEach {

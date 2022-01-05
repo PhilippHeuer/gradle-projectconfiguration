@@ -12,7 +12,7 @@ import org.gradle.jvm.tasks.Jar
 
 class ShadowFeature constructor(override var project: Project, override var config: ProjectConfigurationExtension) : PluginModule {
     companion object {
-        fun applyPlugin(project: Project, config: ProjectConfigurationExtension) {
+        fun applyPlugin(project: Project) {
             project.applyProject("com.github.johnrengelman.shadow")
         }
 
@@ -38,7 +38,7 @@ class ShadowFeature constructor(override var project: Project, override var conf
     }
 
     override fun run() {
-        applyPlugin(project, config)
+        applyPlugin(project)
         configurePlugin(project, config)
     }
 }

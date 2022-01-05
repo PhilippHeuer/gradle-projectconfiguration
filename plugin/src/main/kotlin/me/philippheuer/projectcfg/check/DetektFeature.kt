@@ -11,7 +11,7 @@ import org.gradle.api.Project
 
 class DetektFeature constructor(override var project: Project, override var config: ProjectConfigurationExtension) : PluginModule {
     companion object {
-        fun applyPlugin(project: Project, config: ProjectConfigurationExtension) {
+        fun applyPlugin(project: Project) {
             project.applyProject("io.gitlab.arturbosch.detekt")
         }
 
@@ -43,7 +43,7 @@ class DetektFeature constructor(override var project: Project, override var conf
     }
 
     override fun run() {
-        applyPlugin(project, config)
+        applyPlugin(project)
         applyConfiguration(project, config)
         applyReporting(project)
     }

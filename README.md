@@ -8,7 +8,7 @@ Add the plugin to your `build.gradle`:
 
 ```gradle
 plugins {
-    id 'me.philippheuer.configuration' version '$version'
+    id 'me.philippheuer.configuration' version '+'
 }
 ```
 

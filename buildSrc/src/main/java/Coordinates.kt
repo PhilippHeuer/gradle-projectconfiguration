@@ -1,7 +1,6 @@
 object PluginCoordinates {
     const val ID = "me.philippheuer.configuration"
     const val GROUP = "me.philippheuer.projectcfg"
-    const val VERSION = "1.0.0"
     const val IMPLEMENTATION_CLASS = "me.philippheuer.projectcfg.ProjectConfigurationPlugin"
 }
 

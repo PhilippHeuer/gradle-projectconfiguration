@@ -5,7 +5,7 @@ plugins {
 
 allprojects {
     group = PluginCoordinates.GROUP
-    version = PluginCoordinates.VERSION
+    version = project.property("artifact.version") as String
 
     repositories {
         mavenCentral()

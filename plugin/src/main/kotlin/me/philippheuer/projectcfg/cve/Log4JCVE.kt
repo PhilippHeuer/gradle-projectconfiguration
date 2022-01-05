@@ -27,7 +27,7 @@ import java.net.URI
  */
 class Log4JCVE constructor(override var project: Project, override var config: ProjectConfigurationExtension) : PluginModule {
     companion object {
-        fun applyConstraint(project: Project, config: ProjectConfigurationExtension) {
+        fun applyConstraint(project: Project) {
             project.configurations.forEach { configuration ->
                 project.dependencies.constraints.add(configuration.name, "org.apache.logging.log4j:log4j-core") { constraint ->
                     constraint.version { v ->
@@ -45,6 +45,6 @@ class Log4JCVE constructor(override var project: Project, override var config: P
     }
 
     override fun run() {
-        applyConstraint(project, config)
+        applyConstraint(project)
     }
 }
