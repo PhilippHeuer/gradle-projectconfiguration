@@ -56,6 +56,7 @@ abstract class ProjectConfigurationPlugin : Plugin<Project> {
                 ManifestFeature(project, config),
                 JUnit5Feature(project, config),
                 VersionUpgradeFeature(project, config),
+                JacksonFeature(project, config),
                 // check
                 CheckstyleFeature(project, config),
                 DetektFeature(project, config),

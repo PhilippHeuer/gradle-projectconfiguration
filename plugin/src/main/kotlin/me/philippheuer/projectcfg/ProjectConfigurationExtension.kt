@@ -62,9 +62,6 @@ open class ProjectConfigurationExtension @Inject constructor(project: Project) :
     override val checkstyleToolVersion: Property<String> = objects.property(String::class.java).convention("9.2.1")
     override val checkstyleRuleSet: Property<String> = objects.property(String::class.java).convention("")
 
-    // enable / add prometheus components
-    // val prometheus: Property<Boolean> = objects.property(Boolean::class.java).convention(true)
-
     override fun toString(): String {
         return "LANGUAGE: ${language.orNull} - FRAMEWORK: ${framework.orNull}"
     }

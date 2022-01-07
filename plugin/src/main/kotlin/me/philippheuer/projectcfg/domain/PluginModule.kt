@@ -8,13 +8,20 @@ interface PluginModule {
     var config: ProjectConfigurationExtension // reference to the plugin configuration
 
     /**
-     * Checks if this module should be enabled
+     * checks if this module should be enabled
      * @return boolean
      */
     fun check(): Boolean
 
     /**
-     * Configures this module / feature, only call after check
+     * default init code, runs before afterEvaluate so config is not available yet
+     */
+    fun init() {
+
+    }
+
+    /**
+     * configures this module / feature, only call after check
      */
     fun run()
 }
