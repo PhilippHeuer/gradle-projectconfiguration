@@ -15,8 +15,7 @@ class LombokFeatureTest {
     fun `lombok plugin is being applied to java projects`() {
         val (project, config) = PluginTestUtils.getJavaProject()
 
-        val feature = LombokFeature(project, config)
-        feature.configurePlugin(project, config)
+        LombokFeature.configurePlugin(project, config)
 
         assertNotNull(project.pluginManager.findPlugin("io.freefair.lombok"), "lombok plugin was not applied")
         assertTrue(project.extensions.getByType(LombokExtension::class.java).disableConfig.get(), "lombok config file generation should be disabled")
@@ -31,9 +30,8 @@ class LombokFeatureTest {
     fun `javadoc is using delombok as source`() {
         val (project, config) = PluginTestUtils.getJavaProject()
 
-        val feature = LombokFeature(project, config)
-        feature.configurePlugin(project, config)
-        feature.configureJavadoc(project)
+        LombokFeature.configurePlugin(project, config)
+        LombokFeature.configureJavadoc(project)
 
         project.afterEvaluate {
             val delombok = project.tasks.getByName("delombok")

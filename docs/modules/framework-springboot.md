@@ -11,6 +11,11 @@
 ## Requirements
 
 - `ProjectFramework = SPRINGBOOT`
+- add the following line before calling SpringApplication.run
+
+```java
+System.setProperty("spring.config.location", "optional:classpath:application-default.properties,optional:classpath:application.yml,optional:classpath:application.properties");
+```
 
 ## Configuration
 

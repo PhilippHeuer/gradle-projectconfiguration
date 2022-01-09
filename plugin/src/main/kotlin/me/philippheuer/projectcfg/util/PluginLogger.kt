@@ -44,5 +44,14 @@ class PluginLogger {
                 }
             }
         }
+
+        /**
+         * updates the logger context
+         */
+        fun setContext(project: Project, config: ProjectConfigurationExtension, module: PluginModule) {
+            this.project = project
+            this.config = config
+            this.module = module
+        }
     }
 }

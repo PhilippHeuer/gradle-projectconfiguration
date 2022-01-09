@@ -8,6 +8,7 @@ import me.philippheuer.projectcfg.util.DependencyUtils
 import me.philippheuer.projectcfg.util.DependencyVersion
 import me.philippheuer.projectcfg.util.PluginHelper
 import me.philippheuer.projectcfg.util.PluginLogger
+import me.philippheuer.projectcfg.util.addDepdenency
 import me.philippheuer.projectcfg.util.applyProject
 import org.gradle.api.Project
 import org.jetbrains.kotlin.allopen.gradle.AllOpenExtension
@@ -16,7 +17,6 @@ import java.io.File
 class QuarkusFramework constructor(override var project: Project, override var config: ProjectConfigurationExtension) : PluginModule {
     companion object {
         fun applyPlugin(project: Project, config: ProjectConfigurationExtension) {
-            // plugin
             project.run {
                 // plugin
                 applyProject("io.quarkus")
@@ -25,20 +25,20 @@ class QuarkusFramework constructor(override var project: Project, override var c
                 dependencies.enforcedPlatform("io.quarkus.platform:quarkus-bom:${DependencyVersion.quarkusVersion}")
 
                 // health
-                dependencies.add("implementation", "io.quarkus:quarkus-smallrye-health:${DependencyVersion.quarkusVersion}")
+                addDepdenency("implementation", "io.quarkus:quarkus-smallrye-health:${DependencyVersion.quarkusVersion}")
 
                 // cache
-                dependencies.add("implementation", "io.quarkus:quarkus-cache:${DependencyVersion.quarkusVersion}")
+                addDepdenency("implementation", "io.quarkus:quarkus-cache:${DependencyVersion.quarkusVersion}")
 
                 // logging
-                dependencies.add("implementation", "org.jboss.slf4j:slf4j-jboss-logmanager:1.1.0.Final")
-                dependencies.add("implementation", "io.quarkus:quarkus-logging-json:${DependencyVersion.quarkusVersion}")
+                addDepdenency("implementation", "org.jboss.slf4j:slf4j-jboss-logmanager:1.1.0.Final")
+                addDepdenency("implementation", "io.quarkus:quarkus-logging-json:${DependencyVersion.quarkusVersion}")
 
                 // kotlin
                 if (config.language.get() == ProjectLanguage.KOTLIN) {
                     applyProject("org.jetbrains.kotlin.plugin.allopen")
 
-                    dependencies.add("implementation", "io.quarkus:quarkus-kotlin:${DependencyVersion.quarkusVersion}")
+                    addDepdenency("implementation", "io.quarkus:quarkus-kotlin:${DependencyVersion.quarkusVersion}")
 
                     extensions.configure(AllOpenExtension::class.java) {
                         it.annotation("io.quarkus.test.junit.QuarkusTest")
@@ -48,35 +48,35 @@ class QuarkusFramework constructor(override var project: Project, override var c
 
                 // rest
                 if (config.frameworkWebApi.get()) {
-                    dependencies.add("implementation", "io.quarkus:quarkus-resteasy:${DependencyVersion.quarkusVersion}")
+                    addDepdenency("implementation", "io.quarkus:quarkus-resteasy:${DependencyVersion.quarkusVersion}")
                 }
 
                 // metrics
                 if (config.frameworkMetrics.get()) {
-                    dependencies.add("implementation", "io.quarkus:quarkus-micrometer-registry-prometheus:${DependencyVersion.quarkusVersion}")
+                    addDepdenency("implementation", "io.quarkus:quarkus-micrometer-registry-prometheus:${DependencyVersion.quarkusVersion}")
                 }
 
                 // tracing
                 if (config.frameworkTracing.get()) {
-                    dependencies.add("implementation", "io.quarkus:quarkus-smallrye-opentracing:${DependencyVersion.quarkusVersion}")
+                    addDepdenency("implementation", "io.quarkus:quarkus-smallrye-opentracing:${DependencyVersion.quarkusVersion}")
                 }
 
                 // db
                 if (config.frameworkDb.get()) {
                     if (config.language.get() == ProjectLanguage.JAVA) {
-                        dependencies.add("implementation", "io.quarkus:quarkus-hibernate-orm-panache:${DependencyVersion.quarkusVersion}")
+                        addDepdenency("implementation", "io.quarkus:quarkus-hibernate-orm-panache:${DependencyVersion.quarkusVersion}")
                     } else if (config.language.get() == ProjectLanguage.KOTLIN) {
-                        dependencies.add("implementation", "io.quarkus:quarkus-hibernate-orm-panache-kotlin:${DependencyVersion.quarkusVersion}")
+                        addDepdenency("implementation", "io.quarkus:quarkus-hibernate-orm-panache-kotlin:${DependencyVersion.quarkusVersion}")
                     }
                 }
 
                 // db migrations
                 if (config.frameworkDbMigrate.get()) {
-                    dependencies.add("implementation", "io.quarkus:quarkus-flyway:${DependencyVersion.quarkusVersion}")
+                    addDepdenency("implementation", "io.quarkus:quarkus-flyway:${DependencyVersion.quarkusVersion}")
                 }
 
                 // test
-                dependencies.add("testImplementation", "io.quarkus:quarkus-junit5:${DependencyVersion.quarkusVersion}")
+                addDepdenency("testImplementation", "io.quarkus:quarkus-junit5:${DependencyVersion.quarkusVersion}")
 
                 // hibernate jandex constraint
                 if (DependencyUtils.hasOneOfDependency(PluginLogger.project, listOf("implementation"), listOf("io.quarkus:quarkus-hibernate-orm", "io.quarkus:quarkus-hibernate-orm-panache", "io.quarkus:quarkus-hibernate-orm-panache-kotlin"))) {
@@ -181,7 +181,7 @@ class QuarkusFramework constructor(override var project: Project, override var c
     }
 
     override fun check(): Boolean {
-        return ProjectFramework.QUARKUS == config.framework.get()
+        return ProjectFramework.QUARKUS.valueEquals(config.framework.get())
     }
 
     override fun run() {

@@ -1,5 +1,8 @@
 package me.philippheuer.projectcfg.config
 
+import me.philippheuer.projectcfg.domain.IProjectFramework
+import me.philippheuer.projectcfg.domain.IProjectLanguage
+import me.philippheuer.projectcfg.domain.IProjectType
 import me.philippheuer.projectcfg.domain.ProjectFramework
 import me.philippheuer.projectcfg.domain.ProjectLanguage
 import me.philippheuer.projectcfg.domain.ProjectType
@@ -14,13 +17,13 @@ interface PluginConfig {
     val logLevel: Property<LogLevel>
 
     // language
-    val language: Property<ProjectLanguage>
+    val language: Property<IProjectLanguage>
 
     // type
-    val type: Property<ProjectType>
+    val type: Property<IProjectType>
 
     // framework used in the project
-    val framework: Property<ProjectFramework>
+    val framework: Property<IProjectFramework>
 
     // file encoding used in the project
     val fileEncoding: Property<String>

@@ -5,6 +5,7 @@ import me.philippheuer.projectcfg.domain.PluginModule
 import me.philippheuer.projectcfg.domain.ProjectLanguage
 import me.philippheuer.projectcfg.domain.ProjectType
 import me.philippheuer.projectcfg.util.DependencyVersion
+import me.philippheuer.projectcfg.util.addDepdenency
 import me.philippheuer.projectcfg.util.applyProject
 import org.gradle.api.Project
 import org.gradle.api.plugins.BasePluginExtension
@@ -46,6 +47,14 @@ class JavaLibraryType constructor(override var project: Project, override var co
                     // sources / javadocs
                     it.withSourcesJar()
                     it.withJavadocJar()
+
+                    // sourceSets
+                    it.sourceSets.getByName("main") { ss ->
+                        ss.java.setSrcDirs(listOf("src/main/java", "src/main/kotlin"))
+                    }
+                    it.sourceSets.getByName("test") { ss ->
+                        ss.java.setSrcDirs(listOf("src/test/java", "src/test/kotlin"))
+                    }
                 }
             }
 
@@ -60,16 +69,13 @@ class JavaLibraryType constructor(override var project: Project, override var co
         project.applyProject("org.jetbrains.kotlin.jvm")
 
         project.run {
-            dependencies.add("api", "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${DependencyVersion.kotlinVersion}")
+            addDepdenency("api", "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${DependencyVersion.kotlinVersion}")
 
             tasks.withType(KotlinCompile::class.java).configureEach {
                 it.kotlinOptions.jvmTarget = config.javaVersionAsJvmVersion()
                 it.kotlinOptions.javaParameters = true
                 it.incremental = true
             }
-
-            // logging
-            dependencies.add("api", "io.github.microutils:kotlin-logging:2.1.20")
         }
     }
 }

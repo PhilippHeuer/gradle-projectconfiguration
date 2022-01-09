@@ -1,6 +1,9 @@
 package me.philippheuer.projectcfg
 
 import me.philippheuer.projectcfg.config.*
+import me.philippheuer.projectcfg.domain.IProjectFramework
+import me.philippheuer.projectcfg.domain.IProjectLanguage
+import me.philippheuer.projectcfg.domain.IProjectType
 import me.philippheuer.projectcfg.domain.ProjectFramework
 import me.philippheuer.projectcfg.domain.ProjectLanguage
 import me.philippheuer.projectcfg.domain.ProjectType
@@ -22,10 +25,10 @@ open class ProjectConfigurationExtension @Inject constructor(project: Project) :
     private val objects = project.objects
 
     override val logLevel: Property<LogLevel> = objects.property(LogLevel::class.java)
-    override val language: Property<ProjectLanguage> = objects.property(ProjectLanguage::class.java).convention(ProjectLanguage.JAVA)
+    override val language: Property<IProjectLanguage> = objects.property(IProjectLanguage::class.java).convention(ProjectLanguage.JAVA)
     override val javaVersion: Property<JavaVersion> = objects.property(JavaVersion::class.java).convention(JavaVersion.VERSION_11)
-    override val type: Property<ProjectType> = objects.property(ProjectType::class.java).convention(ProjectType.DEFAULT)
-    override val framework: Property<ProjectFramework> = objects.property(ProjectFramework::class.java).convention(ProjectFramework.NONE)
+    override val type: Property<IProjectType> = objects.property(IProjectType::class.java).convention(ProjectType.DEFAULT)
+    override val framework: Property<IProjectFramework> = objects.property(IProjectFramework::class.java).convention(ProjectFramework.NONE)
     override val fileEncoding: Property<String> = objects.property(String::class.java).convention("UTF-8")
     override val artifactRepository: Property<ArtifactRepository> = objects.property(ArtifactRepository::class.java)
     override val artifactGroupId: Property<String> = objects.property(String::class.java)
@@ -69,10 +72,10 @@ open class ProjectConfigurationExtension @Inject constructor(project: Project) :
     fun defaults() {
         // auto-detect project type
         if (type.get() == ProjectType.DEFAULT) {
-            if (project.pluginManager.hasPlugin("java-library")) {
-                type.set(ProjectType.LIBRARY)
-            } else if (project.pluginManager.hasPlugin("java")) {
+            if (project.pluginManager.hasPlugin("java")) {
                 type.set(ProjectType.APP)
+            } else if (project.pluginManager.hasPlugin("java-library")) {
+                type.set(ProjectType.LIBRARY)
             }
         }
 

@@ -32,7 +32,7 @@ class Log4JCVE constructor(override var project: Project, override var config: P
                 project.dependencies.constraints.add(configuration.name, "org.apache.logging.log4j:log4j-core") { constraint ->
                     constraint.version { v ->
                         v.strictly("[2.17, 3[")
-                        v.prefer("2.17.0")
+                        v.prefer("2.17.1")
                     }
                     constraint.because("CVE-2021-44228, CVE-2021-45046, CVE-2021-45105: Log4j vulnerable to remote code execution and other critical security vulnerabilities")
                 }
