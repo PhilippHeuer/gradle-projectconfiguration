@@ -4,21 +4,13 @@ import me.philippheuer.projectcfg.ProjectConfigurationExtension
 import me.philippheuer.projectcfg.domain.PluginModule
 import me.philippheuer.projectcfg.domain.ProjectFramework
 import me.philippheuer.projectcfg.domain.ProjectType
-import me.philippheuer.projectcfg.framework.SpringBootFramework.Companion.configDefaults
-import me.philippheuer.projectcfg.framework.SpringBootFramework.Companion.configureApplication
-import me.philippheuer.projectcfg.framework.SpringBootFramework.Companion.configureLibrary
 import me.philippheuer.projectcfg.util.DependencyUtils
 import me.philippheuer.projectcfg.util.DependencyVersion
 import me.philippheuer.projectcfg.util.PluginHelper
-import me.philippheuer.projectcfg.util.PluginLogger.Companion.config
-import me.philippheuer.projectcfg.util.PluginLogger.Companion.project
 import me.philippheuer.projectcfg.util.addDepdenency
 import me.philippheuer.projectcfg.util.applyProject
-import me.philippheuer.projectcfg.util.isRootProjectWithoutSubprojectsOrSubproject
 import org.gradle.api.Project
-import org.gradle.api.tasks.testing.Test
 import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
-import java.io.File
 
 class SpringBootFramework constructor(override var project: Project, override var config: ProjectConfigurationExtension) : PluginModule {
     companion object {
@@ -84,10 +76,67 @@ class SpringBootFramework constructor(override var project: Project, override va
         }
 
         fun configDefaults(project: Project, config: ProjectConfigurationExtension) {
+            // see: https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html
             val properties = mutableMapOf(
+                // banner
+                "spring.main.banner-mode" to "off",
+
                 // logging
                 "logging.level.root" to "INFO",
+                "logging.pattern.console" to "%d{yyyy-MM-dd HH:mm:ss} %highlight(%-5level) %logger{36} : %msg%n",
+                "logging.pattern.file" to "%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} : %msg%n",
+                "logging.charset.console" to "UTF-8",
+                "logging.charset.file" to "UTF-8",
+
+                // server
+                "server.port" to "8080",
+
+                // don't show default error page
+                "server.error.whitelabel.enabled" to "false",
+
+                // http2
+                "server.http2.enabled" to "true",
+
+                // graceful shutdown
+                "server.shutdown" to "graceful",
+                "spring.lifecycle.timeout-per-shutdown-phase" to "1m",
+
+                // tomcat
+                "server.tomcat.uri-encoding" to "UTF-8",
+                "server.tomcat.relaxed-query-chars" to "[,]",
+
+                // compression
+                "server.compression.enabled" to "true",
+                "server.compression.mime-types" to "text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json",
+                "server.compression.min-response-size" to "1024",
+
+                // cache
+                "spring.web.resources.cache.cachecontrol.max-age" to "120",
+                "spring.web.resources.cache.cachecontrol.must-revalidate" to "true",
+
+                // spring
+                "spring.main.allow-bean-definition-overriding" to "true",
             )
+
+            // actuator
+            if (DependencyUtils.hasDependency(project, listOf("implementation"), "org.springframework.boot:spring-boot-starter-actuator")) {
+                // disable discovery
+                properties["management.endpoints.web.discovery.enabled"] = "false"
+
+                // use a different port for management endpoints
+                properties["management.server.port"] = "8081"
+
+                // expose endpoints
+                var exposeEndpoints = mutableListOf("health", "heapdump", "prometheus")
+                if (config.frameworkDbMigrate.get()) {
+                    exposeEndpoints.add("flyway")
+                }
+                properties["management.endpoints.web.exposure.include"] = exposeEndpoints.joinToString(",")
+
+                // expose /livez and /readyz and show more details
+                properties["management.endpoint.health.probes.add-additional-paths"] = "true"
+                properties["management.endpoint.health.show-details"] = "always"
+            }
 
             // db migrations
             if (config.frameworkDbMigrate.get()) {

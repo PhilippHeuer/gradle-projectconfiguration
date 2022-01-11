@@ -4,10 +4,8 @@ import com.adarshr.gradle.testlogger.TestLoggerExtension
 import com.adarshr.gradle.testlogger.theme.ThemeType
 import me.philippheuer.projectcfg.ProjectConfigurationExtension
 import me.philippheuer.projectcfg.domain.PluginModule
-import me.philippheuer.projectcfg.util.PluginLogger
 import me.philippheuer.projectcfg.util.applyProject
 import org.gradle.api.Project
-import org.gradle.api.logging.LogLevel
 
 class TestLoggingFeature constructor(override var project: Project, override var config: ProjectConfigurationExtension) : PluginModule {
     private val isIDEA = System.getProperty("idea.fatal.error.notification") != null

@@ -1,13 +1,19 @@
 package me.philippheuer.projectcfg
 
-import me.philippheuer.projectcfg.config.*
+import me.philippheuer.projectcfg.config.CheckstyleConfig
+import me.philippheuer.projectcfg.config.FrameworkConfig
+import me.philippheuer.projectcfg.config.GradleWrapperVersionConfig
+import me.philippheuer.projectcfg.config.JavaTypeConfig
+import me.philippheuer.projectcfg.config.JavadocConfig
+import me.philippheuer.projectcfg.config.LombokConfig
+import me.philippheuer.projectcfg.config.PluginConfig
+import me.philippheuer.projectcfg.config.ShadowConfig
 import me.philippheuer.projectcfg.domain.IProjectFramework
 import me.philippheuer.projectcfg.domain.IProjectLanguage
 import me.philippheuer.projectcfg.domain.IProjectType
 import me.philippheuer.projectcfg.domain.ProjectFramework
 import me.philippheuer.projectcfg.domain.ProjectLanguage
 import me.philippheuer.projectcfg.domain.ProjectType
-import me.philippheuer.projectcfg.util.PluginLogger.Companion.config
 import me.philippheuer.projectcfg.util.PluginLogger.Companion.project
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project

@@ -1,24 +1,8 @@
 package me.philippheuer.projectcfg.cve
 
 import me.philippheuer.projectcfg.ProjectConfigurationExtension
-import me.philippheuer.projectcfg.ProjectConfigurationPlugin
 import me.philippheuer.projectcfg.domain.PluginModule
-import me.philippheuer.projectcfg.domain.ProjectType
-import me.philippheuer.projectcfg.util.PluginLogger
-import me.philippheuer.projectcfg.util.applyProject
-import org.gradle.api.GradleException
 import org.gradle.api.Project
-import org.gradle.api.artifacts.DependencyConstraint
-import org.gradle.api.internal.artifacts.DefaultModuleIdentifier
-import org.gradle.api.internal.artifacts.dependencies.DefaultDependencyConstraint
-import org.gradle.api.internal.artifacts.dependencies.DefaultImmutableVersionConstraint
-import org.gradle.api.logging.LogLevel
-import org.gradle.api.plugins.JavaPluginExtension
-import org.gradle.api.plugins.quality.Checkstyle
-import org.gradle.api.plugins.quality.CheckstyleExtension
-import org.gradle.api.publish.PublishingExtension
-import org.gradle.api.publish.maven.MavenPublication
-import java.net.URI
 
 /**
  * dependency constraints for vulnerable Log4J versions

@@ -3,9 +3,6 @@ package me.philippheuer.projectcfg.config
 import me.philippheuer.projectcfg.domain.IProjectFramework
 import me.philippheuer.projectcfg.domain.IProjectLanguage
 import me.philippheuer.projectcfg.domain.IProjectType
-import me.philippheuer.projectcfg.domain.ProjectFramework
-import me.philippheuer.projectcfg.domain.ProjectLanguage
-import me.philippheuer.projectcfg.domain.ProjectType
 import org.gradle.api.artifacts.repositories.ArtifactRepository
 import org.gradle.api.logging.LogLevel
 import org.gradle.api.provider.Property

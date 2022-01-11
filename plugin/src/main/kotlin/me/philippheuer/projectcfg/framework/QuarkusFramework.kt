@@ -12,7 +12,6 @@ import me.philippheuer.projectcfg.util.addDepdenency
 import me.philippheuer.projectcfg.util.applyProject
 import org.gradle.api.Project
 import org.jetbrains.kotlin.allopen.gradle.AllOpenExtension
-import java.io.File
 
 class QuarkusFramework constructor(override var project: Project, override var config: ProjectConfigurationExtension) : PluginModule {
     companion object {
@@ -92,6 +91,7 @@ class QuarkusFramework constructor(override var project: Project, override var c
         }
 
         fun quarkusDefaults(project: Project, config: ProjectConfigurationExtension) {
+            // see: https://quarkus.io/guides/all-config
             val properties = mutableMapOf(
                 // banner
                 "quarkus.banner.enabled" to "false",
