@@ -2,6 +2,7 @@ package me.philippheuer.projectcfg.policy
 
 import me.philippheuer.projectcfg.EXTENSION_NAME
 import me.philippheuer.projectcfg.ProjectConfigurationExtension
+import me.philippheuer.projectcfg.domain.IProjectContext
 import me.philippheuer.projectcfg.domain.PluginModule
 import me.philippheuer.projectcfg.util.PluginLogger
 import org.gradle.api.Project
@@ -12,16 +13,16 @@ import java.net.URL
 /**
  * Policy - this will ensure that a tested version of gradle is used with this plugin
  */
-class GradleWrapperVersionPolicy constructor(override var project: Project, override var config: ProjectConfigurationExtension) : PluginModule {
+class GradleWrapperVersionPolicy constructor(override var ctx: IProjectContext) : PluginModule {
     override fun check(): Boolean {
-        PluginLogger.log(LogLevel.DEBUG, "module check [$EXTENSION_NAME.gradleVersionCheckBypass] is [${config.gradleVersionPolicyEnabled.get()}]")
-        return config.gradleVersionPolicyEnabled.get()
+        PluginLogger.log(LogLevel.DEBUG, "module check [$EXTENSION_NAME.gradleVersionCheckBypass] is [${ctx.config.gradleVersionPolicyEnabled.get()}]")
+        return ctx.config.gradleVersionPolicyEnabled.get()
     }
 
     override fun run() {
         // only run for root project
-        if (project.rootProject == project) {
-            checkGradleVersion(project)
+        if (ctx.project.rootProject == ctx.project) {
+            checkGradleVersion(ctx.project)
         }
     }
 

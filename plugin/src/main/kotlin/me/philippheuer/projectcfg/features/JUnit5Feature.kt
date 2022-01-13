@@ -1,6 +1,7 @@
 package me.philippheuer.projectcfg.features
 
 import me.philippheuer.projectcfg.ProjectConfigurationExtension
+import me.philippheuer.projectcfg.domain.IProjectContext
 import me.philippheuer.projectcfg.domain.PluginModule
 import me.philippheuer.projectcfg.domain.ProjectLanguage
 import me.philippheuer.projectcfg.util.DependencyVersion
@@ -14,14 +15,14 @@ import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 /**
  * JUnit5 Task Configuration
  */
-class JUnit5Feature constructor(override var project: Project, override var config: ProjectConfigurationExtension) : PluginModule {
+class JUnit5Feature constructor(override var ctx: IProjectContext) : PluginModule {
     override fun check(): Boolean {
         return true
     }
 
     override fun run() {
-        configureJunitDependencies(project, config)
-        configureTestTask(project)
+        configureJunitDependencies(ctx.project, ctx.config)
+        configureTestTask(ctx.project)
     }
 
     companion object {

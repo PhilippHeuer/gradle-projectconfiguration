@@ -2,6 +2,7 @@ package me.philippheuer.projectcfg.check
 
 import me.philippheuer.projectcfg.ProjectConfigurationExtension
 import me.philippheuer.projectcfg.ProjectConfigurationPlugin
+import me.philippheuer.projectcfg.domain.IProjectContext
 import me.philippheuer.projectcfg.domain.PluginModule
 import me.philippheuer.projectcfg.domain.ProjectLanguage
 import me.philippheuer.projectcfg.util.PluginLogger
@@ -13,7 +14,18 @@ import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.plugins.quality.Checkstyle
 import org.gradle.api.plugins.quality.CheckstyleExtension
 
-class CheckstyleFeature constructor(override var project: Project, override var config: ProjectConfigurationExtension) : PluginModule {
+class CheckstyleFeature constructor(override var ctx: IProjectContext) : PluginModule {
+    override fun check(): Boolean {
+        return isProjectLanguage(ProjectLanguage.JAVA)
+    }
+
+    override fun run() {
+        if (ctx.project.rootProject == ctx.project && (ctx.project.file("${ctx.project.rootDir}/checkstyle.xml").exists() || ctx.config.checkstyleRuleSet.orElse("").get().isNotEmpty())) {
+            applyPlugin(ctx.project, ctx.config)
+            reportingSetup(ctx.project)
+        }
+    }
+
     companion object {
         fun applyPlugin(project: Project, config: ProjectConfigurationExtension) {
             // plugin
@@ -71,17 +83,6 @@ class CheckstyleFeature constructor(override var project: Project, override var 
                     report.html.required.set(true)
                 }
             }
-        }
-    }
-
-    override fun check(): Boolean {
-        return config.language.get() == ProjectLanguage.JAVA
-    }
-
-    override fun run() {
-        if (project.rootProject == project && (project.file("${project.rootDir}/checkstyle.xml").exists() || config.checkstyleRuleSet.orElse("").get().isNotEmpty())) {
-            applyPlugin(project, config)
-            reportingSetup(project)
         }
     }
 }

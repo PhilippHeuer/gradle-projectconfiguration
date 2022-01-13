@@ -1,6 +1,7 @@
 package me.philippheuer.projectcfg.framework
 
 import me.philippheuer.projectcfg.ProjectConfigurationExtension
+import me.philippheuer.projectcfg.domain.IProjectContext
 import me.philippheuer.projectcfg.domain.PluginModule
 import me.philippheuer.projectcfg.domain.ProjectFramework
 import me.philippheuer.projectcfg.domain.ProjectLanguage
@@ -13,14 +14,14 @@ import me.philippheuer.projectcfg.util.applyProject
 import org.gradle.api.Project
 import org.jetbrains.kotlin.allopen.gradle.AllOpenExtension
 
-class QuarkusFramework constructor(override var project: Project, override var config: ProjectConfigurationExtension) : PluginModule {
+class QuarkusFramework constructor(override var ctx: IProjectContext) : PluginModule {
     override fun check(): Boolean {
-        return ProjectFramework.QUARKUS.valueEquals(config.framework.get())
+        return isProjectFramework(ProjectFramework.QUARKUS)
     }
 
     override fun run() {
-        applyPlugin(project, config)
-        quarkusDefaults(project, config)
+        applyPlugin(ctx.project, ctx.config)
+        quarkusDefaults(ctx.project, ctx.config)
     }
 
     companion object {

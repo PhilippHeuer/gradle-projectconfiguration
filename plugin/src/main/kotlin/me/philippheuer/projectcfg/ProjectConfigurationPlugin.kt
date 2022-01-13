@@ -3,6 +3,7 @@ package me.philippheuer.projectcfg
 import me.philippheuer.projectcfg.check.CheckstyleFeature
 import me.philippheuer.projectcfg.check.DetektFeature
 import me.philippheuer.projectcfg.cve.Log4JCVE
+import me.philippheuer.projectcfg.domain.ProjectContext
 import me.philippheuer.projectcfg.features.JUnit5Feature
 import me.philippheuer.projectcfg.features.JacksonFeature
 import me.philippheuer.projectcfg.features.JavadocFeature
@@ -35,6 +36,7 @@ abstract class ProjectConfigurationPlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
         val config = project.extensions.create(EXTENSION_NAME, ProjectConfigurationExtension::class.java)
+        val ctx = ProjectContext(project, config)
 
         // logger
         PluginLogger.project = project
@@ -43,31 +45,31 @@ abstract class ProjectConfigurationPlugin : Plugin<Project> {
         // process each module
         val modules = listOf(
             // policy
-            GradleWrapperVersionPolicy(project, config),
+            GradleWrapperVersionPolicy(ctx),
             // cve
-            Log4JCVE(project, config),
+            Log4JCVE(ctx),
             // type
-            JavaApplicationType(project, config),
-            JavaLibraryType(project, config),
+            JavaApplicationType(ctx),
+            JavaLibraryType(ctx),
             // frameworks
-            SpringBootFramework(project, config),
-            QuarkusFramework(project, config),
+            SpringBootFramework(ctx),
+            QuarkusFramework(ctx),
             // features
-            PublishFeature(project, config),
-            SigningFeature(project, config),
-            LombokFeature(project, config),
-            TestLoggingFeature(project, config),
-            JavadocFeature(project, config),
-            MockitoFeature(project, config),
-            ShadowFeature(project, config),
-            ManifestFeature(project, config),
-            JUnit5Feature(project, config),
-            VersionUpgradeFeature(project, config),
-            JacksonFeature(project, config),
-            LoggingLibraryFeature(project, config),
+            PublishFeature(ctx),
+            SigningFeature(ctx),
+            LombokFeature(ctx),
+            TestLoggingFeature(ctx),
+            JavadocFeature(ctx),
+            MockitoFeature(ctx),
+            ShadowFeature(ctx),
+            ManifestFeature(ctx),
+            JUnit5Feature(ctx),
+            VersionUpgradeFeature(ctx),
+            JacksonFeature(ctx),
+            LoggingLibraryFeature(ctx),
             // check
-            CheckstyleFeature(project, config),
-            DetektFeature(project, config),
+            CheckstyleFeature(ctx),
+            DetektFeature(ctx),
         )
 
         // init module

@@ -1,6 +1,7 @@
 package me.philippheuer.projectcfg.features
 
 import me.philippheuer.projectcfg.ProjectConfigurationExtension
+import me.philippheuer.projectcfg.domain.IProjectContext
 import me.philippheuer.projectcfg.domain.PluginModule
 import me.philippheuer.projectcfg.domain.ProjectType
 import me.philippheuer.projectcfg.util.PluginLogger
@@ -11,48 +12,54 @@ import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.publish.maven.MavenPublication
 import java.net.URI
 
-class PublishFeature constructor(override var project: Project, override var config: ProjectConfigurationExtension) : PluginModule {
+class PublishFeature constructor(override var ctx: IProjectContext) : PluginModule {
     override fun check(): Boolean {
-        return config.type.get() == ProjectType.LIBRARY
+        return isProjectType(ProjectType.LIBRARY)
     }
 
     override fun run() {
-        // plugin
-        project.applyProject("maven-publish")
+        configurePublish(ctx.project, ctx.config)
+    }
 
-        // configure
-        project.extensions.configure(PublishingExtension::class.java) { publish ->
-            // only configure if a target repository has been configured
-            if (config.artifactRepository.isPresent) {
-                publish.repositories.add(config.artifactRepository.get())
-            } else {
-                publish.repositories.add(
-                    project.repositories.maven { m ->
-                        val target = project.properties["repository.publish.target"] as String
-                        m.name = target
-                        m.url = URI(project.properties["repository.publish.$target.url"] as String)
-                        m.credentials.run {
-                            username = project.properties["repository.publish.$target.username"] as String
-                            password = project.properties["repository.publish.$target.password"] as String
+    companion object {
+        fun configurePublish(project: Project, config: ProjectConfigurationExtension) {
+            // plugin
+            project.applyProject("maven-publish")
+
+            // configure
+            project.extensions.configure(PublishingExtension::class.java) { publish ->
+                // only configure if a target repository has been configured
+                if (config.artifactRepository.isPresent) {
+                    publish.repositories.add(config.artifactRepository.get())
+                } else {
+                    publish.repositories.add(
+                        project.repositories.maven { m ->
+                            val target = project.properties["repository.publish.target"] as String
+                            m.name = target
+                            m.url = URI(project.properties["repository.publish.$target.url"] as String)
+                            m.credentials.run {
+                                username = project.properties["repository.publish.$target.username"] as String
+                                password = project.properties["repository.publish.$target.password"] as String
+                            }
                         }
-                    }
-                )
-            }
-
-            publish.publications.create("main", MavenPublication::class.java) { pub ->
-                pub.from(project.components.getByName("java"))
-                pub.groupId = config.artifactGroupId.get()
-                pub.artifactId = config.artifactId.get()
-                pub.version = config.artifactVersion.get()
-                pub.pom { pom ->
-                    pom.name.set(config.artifactDisplayName.getOrElse(project.displayName))
-                    pom.description.set(config.artifactDescription.getOrElse(""))
-
-                    // customize pom
-                    config.pom.invoke(pom)
+                    )
                 }
 
-                PluginLogger.log(LogLevel.INFO, "configured artifact: ${pub.groupId}:${pub.artifactId}:${pub.version}")
+                publish.publications.create("main", MavenPublication::class.java) { pub ->
+                    pub.from(project.components.getByName("java"))
+                    pub.groupId = config.artifactGroupId.get()
+                    pub.artifactId = config.artifactId.get()
+                    pub.version = config.artifactVersion.get()
+                    pub.pom { pom ->
+                        pom.name.set(config.artifactDisplayName.getOrElse(project.displayName))
+                        pom.description.set(config.artifactDescription.getOrElse(""))
+
+                        // customize pom
+                        config.pom.invoke(pom)
+                    }
+
+                    PluginLogger.log(LogLevel.INFO, "configured artifact: ${pub.groupId}:${pub.artifactId}:${pub.version}")
+                }
             }
         }
     }

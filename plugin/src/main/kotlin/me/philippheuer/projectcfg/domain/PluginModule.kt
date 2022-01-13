@@ -1,11 +1,9 @@
 package me.philippheuer.projectcfg.domain
 
-import me.philippheuer.projectcfg.ProjectConfigurationExtension
-import org.gradle.api.Project
+import me.philippheuer.projectcfg.util.DependencyUtils
 
 interface PluginModule {
-    var project: Project // reference to the current project context
-    var config: ProjectConfigurationExtension // reference to the plugin configuration
+    var ctx: IProjectContext
 
     /**
      * default init code, but always run before afterEvaluate when config is not available yet
@@ -27,5 +25,21 @@ interface PluginModule {
      */
     fun run() {
 
+    }
+
+    fun isProjectLanguage(language: IProjectLanguage): Boolean {
+        return language.valueEquals(ctx.config.language.get())
+    }
+
+    fun isProjectType(type: IProjectType): Boolean {
+        return type.valueEquals(ctx.config.type.get())
+    }
+
+    fun isProjectFramework(framework: IProjectFramework): Boolean {
+        return framework.valueEquals(ctx.config.framework.get())
+    }
+
+    fun hasProjectDependency(dependencyNotation: String): Boolean {
+        return DependencyUtils.hasDependency(ctx.project, listOf("implementation", "api"), dependencyNotation)
     }
 }

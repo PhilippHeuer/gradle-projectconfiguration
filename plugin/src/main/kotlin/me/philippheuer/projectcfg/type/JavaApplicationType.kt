@@ -1,6 +1,7 @@
 package me.philippheuer.projectcfg.type
 
 import me.philippheuer.projectcfg.ProjectConfigurationExtension
+import me.philippheuer.projectcfg.domain.IProjectContext
 import me.philippheuer.projectcfg.domain.PluginModule
 import me.philippheuer.projectcfg.domain.ProjectLanguage
 import me.philippheuer.projectcfg.domain.ProjectType
@@ -13,15 +14,15 @@ import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.tasks.compile.JavaCompile
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-class JavaApplicationType constructor(override var project: Project, override var config: ProjectConfigurationExtension) : PluginModule {
+class JavaApplicationType constructor(override var ctx: IProjectContext) : PluginModule {
     override fun check(): Boolean {
-        return ProjectType.APP.valueEquals(config.type.get()) || ProjectType.BATCH.valueEquals(config.type.get())
+        return isProjectType(ProjectType.APP) || isProjectType(ProjectType.BATCH)
     }
 
     override fun run() {
-        configureJavaApplication(project, config)
-        if (config.language.get() == ProjectLanguage.KOTLIN) {
-            configureKotlinApplication(project, config)
+        configureJavaApplication(ctx.project, ctx.config)
+        if (ctx.config.language.get() == ProjectLanguage.KOTLIN) {
+            configureKotlinApplication(ctx.project, ctx.config)
         }
     }
 

@@ -4,12 +4,23 @@ import io.gitlab.arturbosch.detekt.Detekt
 import io.gitlab.arturbosch.detekt.DetektCreateBaselineTask
 import io.gitlab.arturbosch.detekt.extensions.DetektExtension
 import me.philippheuer.projectcfg.ProjectConfigurationExtension
+import me.philippheuer.projectcfg.domain.IProjectContext
 import me.philippheuer.projectcfg.domain.PluginModule
 import me.philippheuer.projectcfg.domain.ProjectLanguage
 import me.philippheuer.projectcfg.util.applyProject
 import org.gradle.api.Project
 
-class DetektFeature constructor(override var project: Project, override var config: ProjectConfigurationExtension) : PluginModule {
+class DetektFeature constructor(override var ctx: IProjectContext) : PluginModule {
+    override fun check(): Boolean {
+        return isProjectLanguage(ProjectLanguage.KOTLIN)
+    }
+
+    override fun run() {
+        applyPlugin(ctx.project)
+        applyConfiguration(ctx.project, ctx.config)
+        applyReporting(ctx.project)
+    }
+
     companion object {
         fun applyPlugin(project: Project) {
             project.applyProject("io.gitlab.arturbosch.detekt")
@@ -36,15 +47,5 @@ class DetektFeature constructor(override var project: Project, override var conf
                 it.reports.xml.required.set(true)
             }
         }
-    }
-
-    override fun check(): Boolean {
-        return config.language.get() == ProjectLanguage.KOTLIN
-    }
-
-    override fun run() {
-        applyPlugin(project)
-        applyConfiguration(project, config)
-        applyReporting(project)
     }
 }

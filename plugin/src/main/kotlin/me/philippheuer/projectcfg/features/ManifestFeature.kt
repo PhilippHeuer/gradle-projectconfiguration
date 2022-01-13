@@ -2,6 +2,7 @@ package me.philippheuer.projectcfg.features
 
 import com.coditory.gradle.manifest.ManifestPluginExtension
 import me.philippheuer.projectcfg.ProjectConfigurationExtension
+import me.philippheuer.projectcfg.domain.IProjectContext
 import me.philippheuer.projectcfg.domain.PluginModule
 import me.philippheuer.projectcfg.domain.ProjectLanguage
 import me.philippheuer.projectcfg.util.PluginLogger
@@ -11,13 +12,13 @@ import org.gradle.api.logging.LogLevel
 import org.gradle.jvm.tasks.Jar
 import java.io.File
 
-class ManifestFeature constructor(override var project: Project, override var config: ProjectConfigurationExtension) : PluginModule {
+class ManifestFeature constructor(override var ctx: IProjectContext) : PluginModule {
     override fun check(): Boolean {
-        return ProjectLanguage.JAVA == config.language.get()
+        return isProjectLanguage(ProjectLanguage.JAVA)
     }
 
     override fun run() {
-        configurePlugin(project)
+        configurePlugin(ctx.project)
     }
 
     companion object {

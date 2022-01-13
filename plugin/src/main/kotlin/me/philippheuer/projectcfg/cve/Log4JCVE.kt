@@ -1,6 +1,7 @@
 package me.philippheuer.projectcfg.cve
 
 import me.philippheuer.projectcfg.ProjectConfigurationExtension
+import me.philippheuer.projectcfg.domain.IProjectContext
 import me.philippheuer.projectcfg.domain.PluginModule
 import org.gradle.api.Project
 
@@ -9,7 +10,15 @@ import org.gradle.api.Project
  *
  * The constraints will be applied to all project configurations regardless of usage.
  */
-class Log4JCVE constructor(override var project: Project, override var config: ProjectConfigurationExtension) : PluginModule {
+class Log4JCVE constructor(override var ctx: IProjectContext) : PluginModule {
+    override fun check(): Boolean {
+        return true
+    }
+
+    override fun run() {
+        applyConstraint(ctx.project)
+    }
+
     companion object {
         fun applyConstraint(project: Project) {
             project.configurations.forEach { configuration ->
@@ -22,13 +31,5 @@ class Log4JCVE constructor(override var project: Project, override var config: P
                 }
             }
         }
-    }
-
-    override fun check(): Boolean {
-        return true
-    }
-
-    override fun run() {
-        applyConstraint(project)
     }
 }

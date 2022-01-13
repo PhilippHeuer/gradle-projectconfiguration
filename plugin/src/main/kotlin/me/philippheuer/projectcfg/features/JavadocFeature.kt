@@ -1,6 +1,7 @@
 package me.philippheuer.projectcfg.features
 
 import me.philippheuer.projectcfg.ProjectConfigurationExtension
+import me.philippheuer.projectcfg.domain.IProjectContext
 import me.philippheuer.projectcfg.domain.PluginModule
 import me.philippheuer.projectcfg.domain.ProjectLanguage
 import me.philippheuer.projectcfg.domain.ProjectType
@@ -26,20 +27,20 @@ import java.net.URL
  * @property config the global configuration of this plugin
  * @constructor Creates a new instance of this module
  */
-class JavadocFeature constructor(override var project: Project, override var config: ProjectConfigurationExtension) : PluginModule {
+class JavadocFeature constructor(override var ctx: IProjectContext) : PluginModule {
     override fun check(): Boolean {
-        return ProjectLanguage.JAVA == config.language.get()
+        return isProjectLanguage(ProjectLanguage.JAVA)
     }
 
     override fun run() {
         // javadoc task
-        if (project.subprojects.size == 0 || (project.subprojects.size != 0 && project.rootProject != project)) {
-            configureJavadocTask(project, config)
-            configureHtml5JDK9(project)
+        if (ctx.project.subprojects.size == 0 || (ctx.project.subprojects.size != 0 && ctx.project.rootProject != ctx.project)) {
+            configureJavadocTask(ctx.project, ctx.config)
+            configureHtml5JDK9(ctx.project)
         }
 
         // javadoc aggregate task
-        configureJavadocAggregateTask(project, config)
+        configureJavadocAggregateTask(ctx.project, ctx.config)
     }
 
     companion object {

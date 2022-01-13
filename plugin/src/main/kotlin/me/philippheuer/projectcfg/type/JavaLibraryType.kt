@@ -1,6 +1,7 @@
 package me.philippheuer.projectcfg.type
 
 import me.philippheuer.projectcfg.ProjectConfigurationExtension
+import me.philippheuer.projectcfg.domain.IProjectContext
 import me.philippheuer.projectcfg.domain.PluginModule
 import me.philippheuer.projectcfg.domain.ProjectLanguage
 import me.philippheuer.projectcfg.domain.ProjectType
@@ -13,17 +14,17 @@ import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.tasks.compile.JavaCompile
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-class JavaLibraryType constructor(override var project: Project, override var config: ProjectConfigurationExtension) : PluginModule {
+class JavaLibraryType constructor(override var ctx: IProjectContext) : PluginModule {
     override fun check(): Boolean {
-        return config.type.get() == ProjectType.LIBRARY
+        return ctx.config.type.get() == ProjectType.LIBRARY
     }
 
     override fun run() {
-        if (config.language.get() == ProjectLanguage.JAVA) {
-            configureJavaLibrary(project, config)
-        } else if (config.language.get() == ProjectLanguage.KOTLIN) {
-            configureJavaLibrary(project, config)
-            configureKotlinLibrary(project, config)
+        if (ctx.config.language.get() == ProjectLanguage.JAVA) {
+            configureJavaLibrary(ctx.project, ctx.config)
+        } else if (ctx.config.language.get() == ProjectLanguage.KOTLIN) {
+            configureJavaLibrary(ctx.project, ctx.config)
+            configureKotlinLibrary(ctx.project, ctx.config)
         }
     }
 

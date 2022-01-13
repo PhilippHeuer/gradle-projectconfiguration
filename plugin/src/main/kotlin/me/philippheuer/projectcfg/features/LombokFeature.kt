@@ -2,6 +2,7 @@ package me.philippheuer.projectcfg.features
 
 import io.freefair.gradle.plugins.lombok.LombokExtension
 import me.philippheuer.projectcfg.ProjectConfigurationExtension
+import me.philippheuer.projectcfg.domain.IProjectContext
 import me.philippheuer.projectcfg.domain.PluginModule
 import me.philippheuer.projectcfg.domain.ProjectLanguage
 import me.philippheuer.projectcfg.util.PluginLogger
@@ -11,20 +12,20 @@ import org.gradle.api.Project
 import org.gradle.api.logging.LogLevel
 import org.gradle.api.tasks.javadoc.Javadoc
 
-class LombokFeature constructor(override var project: Project, override var config: ProjectConfigurationExtension) : PluginModule {
+class LombokFeature constructor(override var ctx: IProjectContext) : PluginModule {
     override fun check(): Boolean {
-        if (project.isRootProjectWithoutSubprojectsOrSubproject()) {
-            return ProjectLanguage.JAVA == config.language.get()
+        if (ctx.project.isRootProjectWithoutSubprojectsOrSubproject()) {
+            return isProjectLanguage(ProjectLanguage.JAVA)
         }
 
         return false
     }
 
     override fun run() {
-        configurePlugin(project, config)
-        if (config.javadocLombok.get()) {
-            PluginLogger.log(LogLevel.INFO, "option [javadocLombok] is [${config.javadocLombok.get()}]")
-            configureJavadoc(project)
+        configurePlugin(ctx.project, ctx.config)
+        if (ctx.config.javadocLombok.get()) {
+            PluginLogger.log(LogLevel.INFO, "option [javadocLombok] is [${ctx.config.javadocLombok.get()}]")
+            configureJavadoc(ctx.project)
         }
     }
 

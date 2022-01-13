@@ -3,6 +3,7 @@ package me.philippheuer.projectcfg.features
 import com.github.jengelman.gradle.plugins.shadow.tasks.ConfigureShadowRelocation
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import me.philippheuer.projectcfg.ProjectConfigurationExtension
+import me.philippheuer.projectcfg.domain.IProjectContext
 import me.philippheuer.projectcfg.domain.PluginModule
 import me.philippheuer.projectcfg.domain.ProjectLanguage
 import me.philippheuer.projectcfg.domain.ProjectType
@@ -10,14 +11,14 @@ import me.philippheuer.projectcfg.util.applyProject
 import org.gradle.api.Project
 import org.gradle.jvm.tasks.Jar
 
-class ShadowFeature constructor(override var project: Project, override var config: ProjectConfigurationExtension) : PluginModule {
+class ShadowFeature constructor(override var ctx: IProjectContext) : PluginModule {
     override fun check(): Boolean {
-        return ProjectLanguage.JAVA == config.language.get() && ProjectType.LIBRARY == config.type.get() && config.shadow.get()
+        return isProjectLanguage(ProjectLanguage.JAVA) && isProjectType(ProjectType.LIBRARY) && ctx.config.shadow.get()
     }
 
     override fun run() {
-        applyPlugin(project)
-        configurePlugin(project, config)
+        applyPlugin(ctx.project)
+        configurePlugin(ctx.project, ctx.config)
     }
 
     companion object {

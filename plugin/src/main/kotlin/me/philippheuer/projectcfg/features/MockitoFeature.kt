@@ -1,19 +1,20 @@
 package me.philippheuer.projectcfg.features
 
 import me.philippheuer.projectcfg.ProjectConfigurationExtension
+import me.philippheuer.projectcfg.domain.IProjectContext
 import me.philippheuer.projectcfg.domain.PluginModule
 import me.philippheuer.projectcfg.domain.ProjectLanguage
 import me.philippheuer.projectcfg.util.DependencyVersion
 import me.philippheuer.projectcfg.util.isRootProjectWithoutSubprojectsOrSubproject
 import org.gradle.api.Project
 
-class MockitoFeature constructor(override var project: Project, override var config: ProjectConfigurationExtension) : PluginModule {
+class MockitoFeature constructor(override var ctx: IProjectContext) : PluginModule {
     override fun check(): Boolean {
-        return project.isRootProjectWithoutSubprojectsOrSubproject()
+        return ctx.project.isRootProjectWithoutSubprojectsOrSubproject()
     }
 
     override fun run() {
-        applyDependencies(project, config)
+        applyDependencies(ctx.project, ctx.config)
     }
 
     companion object {

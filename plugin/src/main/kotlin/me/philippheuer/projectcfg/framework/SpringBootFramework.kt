@@ -1,6 +1,7 @@
 package me.philippheuer.projectcfg.framework
 
 import me.philippheuer.projectcfg.ProjectConfigurationExtension
+import me.philippheuer.projectcfg.domain.IProjectContext
 import me.philippheuer.projectcfg.domain.PluginModule
 import me.philippheuer.projectcfg.domain.ProjectFramework
 import me.philippheuer.projectcfg.domain.ProjectType
@@ -12,17 +13,17 @@ import me.philippheuer.projectcfg.util.applyProject
 import org.gradle.api.Project
 import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
 
-class SpringBootFramework constructor(override var project: Project, override var config: ProjectConfigurationExtension) : PluginModule {
+class SpringBootFramework constructor(override var ctx: IProjectContext) : PluginModule {
     override fun check(): Boolean {
-        return ProjectFramework.SPRINGBOOT.valueEquals(config.framework.get())
+        return isProjectFramework(ProjectFramework.SPRINGBOOT)
     }
 
     override fun run() {
-        if (ProjectType.LIBRARY == config.type.get()) {
-            configureLibrary(project, config)
-        } else if (ProjectType.APP == config.type.get()) {
-            configureApplication(project, config)
-            configDefaults(project, config)
+        if (ProjectType.LIBRARY == ctx.config.type.get()) {
+            configureLibrary(ctx.project, ctx.config)
+        } else if (ProjectType.APP == ctx.config.type.get()) {
+            configureApplication(ctx.project, ctx.config)
+            configDefaults(ctx.project, ctx.config)
         }
     }
 
