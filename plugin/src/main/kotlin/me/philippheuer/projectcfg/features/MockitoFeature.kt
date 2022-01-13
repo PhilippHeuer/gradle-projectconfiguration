@@ -13,12 +13,18 @@ class MockitoFeature constructor(override var project: Project, override var con
     }
 
     override fun run() {
-        project.dependencies.add("testImplementation", "org.mockito:mockito-core:${DependencyVersion.mockitoVersion}")
-        project.dependencies.add("testImplementation", "org.mockito:mockito-inline:${DependencyVersion.mockitoVersion}")
+        applyDependencies(project, config)
+    }
 
-        // kotlin
-        if (ProjectLanguage.KOTLIN == config.language.get()) {
-            project.dependencies.add("testImplementation", "org.mockito.kotlin:mockito-kotlin:${DependencyVersion.mockitoKotlinVersion}")
+    companion object {
+        fun applyDependencies(project: Project, config: ProjectConfigurationExtension) {
+            project.dependencies.add("testImplementation", "org.mockito:mockito-core:${DependencyVersion.mockitoVersion}")
+            project.dependencies.add("testImplementation", "org.mockito:mockito-inline:${DependencyVersion.mockitoVersion}")
+
+            // kotlin
+            if (ProjectLanguage.KOTLIN == config.language.get()) {
+                project.dependencies.add("testImplementation", "org.mockito.kotlin:mockito-kotlin:${DependencyVersion.mockitoKotlinVersion}")
+            }
         }
     }
 }

@@ -4,13 +4,11 @@ import com.adarshr.gradle.testlogger.TestLoggerExtension
 import com.adarshr.gradle.testlogger.theme.ThemeType
 import me.philippheuer.projectcfg.ProjectConfigurationExtension
 import me.philippheuer.projectcfg.domain.PluginModule
+import me.philippheuer.projectcfg.util.PluginHelper
 import me.philippheuer.projectcfg.util.applyProject
 import org.gradle.api.Project
 
 class TestLoggingFeature constructor(override var project: Project, override var config: ProjectConfigurationExtension) : PluginModule {
-    private val isIDEA = System.getProperty("idea.fatal.error.notification") != null
-    private val isCI = "true".equals(System.getenv("CI"), true)
-
     override fun check(): Boolean {
         return true
     }
@@ -21,7 +19,7 @@ class TestLoggingFeature constructor(override var project: Project, override var
 
         // configure
         project.extensions.configure(TestLoggerExtension::class.java) {
-            if (isCI || isIDEA) {
+            if (PluginHelper.isCI() || PluginHelper.isIDEA()) {
                 it.theme = ThemeType.PLAIN
             } else {
                 it.theme = ThemeType.MOCHA_PARALLEL

@@ -11,6 +11,15 @@ import org.gradle.api.Project
 import org.gradle.jvm.tasks.Jar
 
 class ShadowFeature constructor(override var project: Project, override var config: ProjectConfigurationExtension) : PluginModule {
+    override fun check(): Boolean {
+        return ProjectLanguage.JAVA == config.language.get() && ProjectType.LIBRARY == config.type.get() && config.shadow.get()
+    }
+
+    override fun run() {
+        applyPlugin(project)
+        configurePlugin(project, config)
+    }
+
     companion object {
         fun applyPlugin(project: Project) {
             project.applyProject("com.github.johnrengelman.shadow")
@@ -31,14 +40,5 @@ class ShadowFeature constructor(override var project: Project, override var conf
                 }
             }
         }
-    }
-
-    override fun check(): Boolean {
-        return ProjectLanguage.JAVA == config.language.get() && ProjectType.LIBRARY == config.type.get() && config.shadow.get()
-    }
-
-    override fun run() {
-        applyPlugin(project)
-        configurePlugin(project, config)
     }
 }

@@ -13,6 +13,19 @@ import org.gradle.api.Project
 import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
 
 class SpringBootFramework constructor(override var project: Project, override var config: ProjectConfigurationExtension) : PluginModule {
+    override fun check(): Boolean {
+        return ProjectFramework.SPRINGBOOT.valueEquals(config.framework.get())
+    }
+
+    override fun run() {
+        if (ProjectType.LIBRARY == config.type.get()) {
+            configureLibrary(project, config)
+        } else if (ProjectType.APP == config.type.get()) {
+            configureApplication(project, config)
+            configDefaults(project, config)
+        }
+    }
+
     companion object {
         fun configureLibrary(project: Project, config: ProjectConfigurationExtension) {
             project.run {
@@ -146,20 +159,7 @@ class SpringBootFramework constructor(override var project: Project, override va
             }
 
             // manage file
-            PluginHelper.createOrUpdatePropertyFile("src/main/resources/application-default.properties", properties, managed = true)
-        }
-    }
-
-    override fun check(): Boolean {
-        return ProjectFramework.SPRINGBOOT.valueEquals(config.framework.get())
-    }
-
-    override fun run() {
-        if (ProjectType.LIBRARY == config.type.get()) {
-            configureLibrary(project, config)
-        } else if (ProjectType.APP == config.type.get()) {
-            configureApplication(project, config)
-            configDefaults(project, config)
+            PluginHelper.createOrUpdatePropertyFile(project, project.file("src/main/resources/application-default.properties"), properties, managed = true)
         }
     }
 }

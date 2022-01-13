@@ -14,6 +14,15 @@ import org.gradle.api.Project
 import org.jetbrains.kotlin.allopen.gradle.AllOpenExtension
 
 class QuarkusFramework constructor(override var project: Project, override var config: ProjectConfigurationExtension) : PluginModule {
+    override fun check(): Boolean {
+        return ProjectFramework.QUARKUS.valueEquals(config.framework.get())
+    }
+
+    override fun run() {
+        applyPlugin(project, config)
+        quarkusDefaults(project, config)
+    }
+
     companion object {
         fun applyPlugin(project: Project, config: ProjectConfigurationExtension) {
             project.run {
@@ -176,16 +185,7 @@ class QuarkusFramework constructor(override var project: Project, override var c
             }
 
             // manage file
-            PluginHelper.createOrUpdatePropertyFile("src/main/resources/META-INF/microprofile-config.properties", properties, managed = true)
+            PluginHelper.createOrUpdatePropertyFile(project, project.file("src/main/resources/META-INF/microprofile-config.properties"), properties, managed = true)
         }
-    }
-
-    override fun check(): Boolean {
-        return ProjectFramework.QUARKUS.valueEquals(config.framework.get())
-    }
-
-    override fun run() {
-        applyPlugin(project, config)
-        quarkusDefaults(project, config)
     }
 }

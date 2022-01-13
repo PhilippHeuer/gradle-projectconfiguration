@@ -12,6 +12,22 @@ import org.gradle.api.logging.LogLevel
 import org.gradle.api.tasks.javadoc.Javadoc
 
 class LombokFeature constructor(override var project: Project, override var config: ProjectConfigurationExtension) : PluginModule {
+    override fun check(): Boolean {
+        if (project.isRootProjectWithoutSubprojectsOrSubproject()) {
+            return ProjectLanguage.JAVA == config.language.get()
+        }
+
+        return false
+    }
+
+    override fun run() {
+        configurePlugin(project, config)
+        if (config.javadocLombok.get()) {
+            PluginLogger.log(LogLevel.INFO, "option [javadocLombok] is [${config.javadocLombok.get()}]")
+            configureJavadoc(project)
+        }
+    }
+
     companion object {
         fun configurePlugin(project: Project, config: ProjectConfigurationExtension) {
             project.applyProject("io.freefair.lombok")
@@ -33,22 +49,6 @@ class LombokFeature constructor(override var project: Project, override var conf
                 PluginLogger.log(LogLevel.INFO, "set [tasks.javadoc.dependsOn] to [delombok]")
                 it.dependsOn(delombok)
             }
-        }
-    }
-
-    override fun check(): Boolean {
-        if (project.isRootProjectWithoutSubprojectsOrSubproject()) {
-            return ProjectLanguage.JAVA == config.language.get()
-        }
-
-        return false
-    }
-
-    override fun run() {
-        configurePlugin(project, config)
-        if (config.javadocLombok.get()) {
-            PluginLogger.log(LogLevel.INFO, "option [javadocLombok] is [${config.javadocLombok.get()}]")
-            configureJavadoc(project)
         }
     }
 }

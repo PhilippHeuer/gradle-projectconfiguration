@@ -27,54 +27,55 @@ class JavaLibraryType constructor(override var project: Project, override var co
         }
     }
 
-    fun configureJavaLibrary(project: Project, config: ProjectConfigurationExtension) {
-        project.applyProject("java-library")
-        project.applyProject("maven-publish")
+    companion object {
+        fun configureJavaLibrary(project: Project, config: ProjectConfigurationExtension) {
+            project.applyProject("java-library")
+            project.applyProject("maven-publish")
 
-        project.run {
-            group = config.artifactGroupId.get()
-            version = config.artifactVersion.get()
+            project.run {
+                group = config.artifactGroupId.get()
+                version = config.artifactVersion.get()
 
-            extensions.run {
-                configure(BasePluginExtension::class.java) {
-                    it.archivesName.set(config.artifactId.get())
+                extensions.run {
+                    configure(BasePluginExtension::class.java) {
+                        it.archivesName.set(config.artifactId.get())
+                    }
+
+                    configure(JavaPluginExtension::class.java) {
+                        // java version
+                        it.sourceCompatibility = config.javaVersion.get()
+
+                        // sources / javadocs
+                        it.withSourcesJar()
+                        it.withJavadocJar()
+
+                        // sourceSets
+                        listOf("main", "test").forEach { name ->
+                            it.sourceSets.getByName(name) { ss ->
+                                ss.java.setSrcDirs(listOf("src/$name/java", "src/$name/kotlin"))
+                            }
+                        }
+                    }
                 }
 
-                configure(JavaPluginExtension::class.java) {
-                    // java version
-                    it.sourceCompatibility = config.javaVersion.get()
-
-                    // sources / javadocs
-                    it.withSourcesJar()
-                    it.withJavadocJar()
-
-                    // sourceSets
-                    it.sourceSets.getByName("main") { ss ->
-                        ss.java.setSrcDirs(listOf("src/main/java", "src/main/kotlin"))
-                    }
-                    it.sourceSets.getByName("test") { ss ->
-                        ss.java.setSrcDirs(listOf("src/test/java", "src/test/kotlin"))
-                    }
+                tasks.withType(JavaCompile::class.java).configureEach {
+                    it.options.encoding = config.fileEncoding.get()
+                    it.options.isIncremental = true
                 }
-            }
-
-            tasks.withType(JavaCompile::class.java).configureEach {
-                it.options.encoding = config.fileEncoding.get()
-                it.options.isIncremental = true
             }
         }
-    }
 
-    fun configureKotlinLibrary(project: Project, config: ProjectConfigurationExtension) {
-        project.applyProject("org.jetbrains.kotlin.jvm")
+        fun configureKotlinLibrary(project: Project, config: ProjectConfigurationExtension) {
+            project.applyProject("org.jetbrains.kotlin.jvm")
 
-        project.run {
-            addDepdenency("api", "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${DependencyVersion.kotlinVersion}")
+            project.run {
+                addDepdenency("api", "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${DependencyVersion.kotlinVersion}")
 
-            tasks.withType(KotlinCompile::class.java).configureEach {
-                it.kotlinOptions.jvmTarget = config.javaVersionAsJvmVersion()
-                it.kotlinOptions.javaParameters = true
-                it.incremental = true
+                tasks.withType(KotlinCompile::class.java).configureEach {
+                    it.kotlinOptions.jvmTarget = config.javaVersionAsJvmVersion()
+                    it.kotlinOptions.javaParameters = true
+                    it.incremental = true
+                }
             }
         }
     }

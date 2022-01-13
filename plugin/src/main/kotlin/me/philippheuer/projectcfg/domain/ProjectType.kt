@@ -6,6 +6,11 @@ enum class ProjectType : IProjectType {
             return "APP"
         }
     },
+    BATCH {
+        override fun value(): String {
+            return "BATCH"
+        }
+    },
     LIBRARY {
         override fun value(): String {
             return "LIBRARY"

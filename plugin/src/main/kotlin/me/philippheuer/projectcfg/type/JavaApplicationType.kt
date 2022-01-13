@@ -14,6 +14,17 @@ import org.gradle.api.tasks.compile.JavaCompile
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 class JavaApplicationType constructor(override var project: Project, override var config: ProjectConfigurationExtension) : PluginModule {
+    override fun check(): Boolean {
+        return ProjectType.APP.valueEquals(config.type.get()) || ProjectType.BATCH.valueEquals(config.type.get())
+    }
+
+    override fun run() {
+        configureJavaApplication(project, config)
+        if (config.language.get() == ProjectLanguage.KOTLIN) {
+            configureKotlinApplication(project, config)
+        }
+    }
+
     companion object {
         fun configureJavaApplication(project: Project, config: ProjectConfigurationExtension) {
             project.applyProject("java")
@@ -61,16 +72,4 @@ class JavaApplicationType constructor(override var project: Project, override va
             }
         }
     }
-
-    override fun check(): Boolean {
-        return config.type.get() == ProjectType.APP
-    }
-
-    override fun run() {
-        configureJavaApplication(project, config)
-        if (config.language.get() == ProjectLanguage.KOTLIN) {
-            configureKotlinApplication(project, config)
-        }
-    }
-
 }

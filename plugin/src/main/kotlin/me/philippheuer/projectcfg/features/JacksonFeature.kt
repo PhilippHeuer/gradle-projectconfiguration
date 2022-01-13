@@ -8,12 +8,6 @@ import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 
 class JacksonFeature constructor(override var project: Project, override var config: me.philippheuer.projectcfg.ProjectConfigurationExtension) : PluginModule {
-    companion object {
-        fun applyConstraint(project: Project) {
-            project.dependencies.enforcedPlatform("com.fasterxml.jackson:jackson-bom:${DependencyVersion.jacksonVersion}")
-        }
-    }
-
     override fun init() {
         applyConstraint(project)
     }
@@ -29,6 +23,12 @@ class JacksonFeature constructor(override var project: Project, override var con
 
         if (config.javaVersion.get() >= JavaVersion.VERSION_11) {
             project.dependencies.add("implementation", "com.fasterxml.jackson.module:jackson-module-blackbird:${DependencyVersion.jacksonVersion}")
+        }
+    }
+
+    companion object {
+        fun applyConstraint(project: Project) {
+            project.dependencies.enforcedPlatform("com.fasterxml.jackson:jackson-bom:${DependencyVersion.jacksonVersion}")
         }
     }
 }

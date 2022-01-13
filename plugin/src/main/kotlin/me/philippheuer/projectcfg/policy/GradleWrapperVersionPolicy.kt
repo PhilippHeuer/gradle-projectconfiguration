@@ -13,9 +13,6 @@ import java.net.URL
  * Policy - this will ensure that a tested version of gradle is used with this plugin
  */
 class GradleWrapperVersionPolicy constructor(override var project: Project, override var config: ProjectConfigurationExtension) : PluginModule {
-    private val allowedVersions = listOf("7.3.3")
-    private val suggestedVersion = allowedVersions.last()
-
     override fun check(): Boolean {
         PluginLogger.log(LogLevel.DEBUG, "module check [$EXTENSION_NAME.gradleVersionCheckBypass] is [${config.gradleVersionPolicyEnabled.get()}]")
         return config.gradleVersionPolicyEnabled.get()
@@ -28,27 +25,32 @@ class GradleWrapperVersionPolicy constructor(override var project: Project, over
         }
     }
 
-    fun checkGradleVersion(project: Project) {
-        // configure wrapper task
-        PluginLogger.log(LogLevel.WARN, "set [gradle.version] to [${suggestedVersion}]")
-        project.tasks.withType(Wrapper::class.java).configureEach {
-            it.gradleVersion = suggestedVersion
-            it.distributionType = Wrapper.DistributionType.BIN
+    companion object {
+        private val allowedVersions = listOf("7.3.3")
+        private val suggestedVersion = allowedVersions.last()
 
-            try {
-                val wrapperDistTypeText = if (it.distributionType == Wrapper.DistributionType.BIN) "bin" else "all"
-                it.distributionSha256Sum = URL("https://services.gradle.org/distributions/gradle-${it.gradleVersion}-$wrapperDistTypeText.zip.sha256").openStream().bufferedReader().use { b -> b.readText() }
-            } catch (e: Exception) {
-                PluginLogger.log(LogLevel.WARN, "failed to fetch [gradle.checksum] - ${e.message}")
+        fun checkGradleVersion(project: Project) {
+            // configure wrapper task
+            PluginLogger.log(LogLevel.WARN, "set [gradle.version] to [${suggestedVersion}]")
+            project.tasks.withType(Wrapper::class.java).configureEach {
+                it.gradleVersion = suggestedVersion
+                it.distributionType = Wrapper.DistributionType.BIN
+
+                try {
+                    val wrapperDistTypeText = if (it.distributionType == Wrapper.DistributionType.BIN) "bin" else "all"
+                    it.distributionSha256Sum = URL("https://services.gradle.org/distributions/gradle-${it.gradleVersion}-$wrapperDistTypeText.zip.sha256").openStream().bufferedReader().use { b -> b.readText() }
+                } catch (e: Exception) {
+                    PluginLogger.log(LogLevel.WARN, "failed to fetch [gradle.checksum] - ${e.message}")
+                }
             }
-        }
 
-        // validate gradle version
-        if (!allowedVersions.contains(project.gradle.gradleVersion)) {
-            PluginLogger.log(LogLevel.WARN, "checking [gradle.version] is [${project.gradle.gradleVersion}] result [not valid - one of $allowedVersions]")
-            project.logger.error("Gradle ${project.gradle.gradleVersion} is not supported!")
-        } else {
-            PluginLogger.log(LogLevel.INFO, "checking [gradle.version] is [${project.gradle.gradleVersion}] result [valid]")
+            // validate gradle version
+            if (!allowedVersions.contains(project.gradle.gradleVersion)) {
+                PluginLogger.log(LogLevel.WARN, "checking [gradle.version] is [${project.gradle.gradleVersion}] result [not valid - one of $allowedVersions]")
+                project.logger.error("Gradle ${project.gradle.gradleVersion} is not supported!")
+            } else {
+                PluginLogger.log(LogLevel.INFO, "checking [gradle.version] is [${project.gradle.gradleVersion}] result [valid]")
+            }
         }
     }
 }
