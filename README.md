@@ -33,7 +33,7 @@ Options:
 | Option    | Description                         | allowed values      |
 |:----------|:------------------------------------|:--------------------|
 | language  | the language                        | JAVA, KOTLIN        |
-| type      | the project type                    | APP, LIBRARY        |
+| type      | the project type                    | APP, BATCH, LIBRARY |
 | framework | your framework of choice (optional) | SPRINGBOOT, QUARKUS |
 
 ## Example Configurations
@@ -65,7 +65,6 @@ There are options to further configure each `feature`, these links document what
 | Feature   | VersionUpgrade         | [view](docs/modules/feature-versionupgrade.md)        |
 | Check     | Checkstyle (Java)      | [view](docs/modules/check-checkstyle.md)              |
 | Check     | Detekt (Kotlin)        | [view](docs/modules/check-detekt.md)                  |
-| CVE       | Log4j                  | [view](docs/modules/cve-log4j.md)                     |
 
 ### Related Plugins ###
 

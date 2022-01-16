@@ -1,16 +1,17 @@
-package me.philippheuer.projectcfg.features
+package me.philippheuer.projectcfg.library
 
 import me.philippheuer.projectcfg.ProjectConfigurationExtension
 import me.philippheuer.projectcfg.domain.IProjectContext
 import me.philippheuer.projectcfg.domain.PluginModule
 import me.philippheuer.projectcfg.domain.ProjectLanguage
+import me.philippheuer.projectcfg.domain.ProjectLibrary
 import me.philippheuer.projectcfg.util.DependencyVersion
 import me.philippheuer.projectcfg.util.isRootProjectWithoutSubprojectsOrSubproject
 import org.gradle.api.Project
 
-class MockitoFeature constructor(override var ctx: IProjectContext) : PluginModule {
+class MockitoLibrary constructor(override var ctx: IProjectContext) : PluginModule {
     override fun check(): Boolean {
-        return ctx.project.isRootProjectWithoutSubprojectsOrSubproject()
+        return ctx.project.isRootProjectWithoutSubprojectsOrSubproject() && isProjectLibrary(ProjectLibrary.TEST_MOCKITO)
     }
 
     override fun run() {
@@ -21,6 +22,7 @@ class MockitoFeature constructor(override var ctx: IProjectContext) : PluginModu
         fun applyDependencies(project: Project, config: ProjectConfigurationExtension) {
             project.dependencies.add("testImplementation", "org.mockito:mockito-core:${DependencyVersion.mockitoVersion}")
             project.dependencies.add("testImplementation", "org.mockito:mockito-inline:${DependencyVersion.mockitoVersion}")
+            project.dependencies.add("testImplementation", "org.mockito:mockito-junit-jupiter:${DependencyVersion.mockitoVersion}")
 
             // kotlin
             if (ProjectLanguage.KOTLIN == config.language.get()) {

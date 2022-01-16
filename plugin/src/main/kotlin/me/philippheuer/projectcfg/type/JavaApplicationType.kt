@@ -6,7 +6,7 @@ import me.philippheuer.projectcfg.domain.PluginModule
 import me.philippheuer.projectcfg.domain.ProjectLanguage
 import me.philippheuer.projectcfg.domain.ProjectType
 import me.philippheuer.projectcfg.util.DependencyVersion
-import me.philippheuer.projectcfg.util.addDepdenency
+import me.philippheuer.projectcfg.util.addDependency
 import me.philippheuer.projectcfg.util.applyProject
 import org.gradle.api.Project
 import org.gradle.api.plugins.BasePluginExtension
@@ -64,7 +64,7 @@ class JavaApplicationType constructor(override var ctx: IProjectContext) : Plugi
             project.applyProject("org.jetbrains.kotlin.jvm")
 
             project.run {
-                addDepdenency("implementation", "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${DependencyVersion.kotlinVersion}")
+                addDependency("implementation", "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${DependencyVersion.kotlinVersion}")
 
                 tasks.withType(KotlinCompile::class.java).configureEach {
                     it.kotlinOptions.jvmTarget = config.javaVersionAsJvmVersion()

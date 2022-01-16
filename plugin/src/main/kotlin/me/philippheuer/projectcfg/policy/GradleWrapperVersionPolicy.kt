@@ -1,7 +1,6 @@
 package me.philippheuer.projectcfg.policy
 
 import me.philippheuer.projectcfg.EXTENSION_NAME
-import me.philippheuer.projectcfg.ProjectConfigurationExtension
 import me.philippheuer.projectcfg.domain.IProjectContext
 import me.philippheuer.projectcfg.domain.PluginModule
 import me.philippheuer.projectcfg.util.PluginLogger

@@ -1,11 +1,9 @@
 package me.philippheuer.projectcfg.features
 
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
-import me.philippheuer.projectcfg.ProjectConfigurationExtension
 import me.philippheuer.projectcfg.domain.IProjectContext
 import me.philippheuer.projectcfg.domain.PluginModule
 import me.philippheuer.projectcfg.util.PluginLogger
-import org.gradle.api.Project
 import org.gradle.api.logging.LogLevel
 
 class VersionUpgradeFeature constructor(override var ctx: IProjectContext) : PluginModule {

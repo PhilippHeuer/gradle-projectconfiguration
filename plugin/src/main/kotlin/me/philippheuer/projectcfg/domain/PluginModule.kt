@@ -39,6 +39,10 @@ interface PluginModule {
         return framework.valueEquals(ctx.config.framework.get())
     }
 
+    fun isProjectLibrary(library: IProjectLibrary): Boolean {
+        return ctx.config.libraries.get().filter { it.valueEquals(library) }.isNotEmpty()
+    }
+
     fun hasProjectDependency(dependencyNotation: String): Boolean {
         return DependencyUtils.hasDependency(ctx.project, listOf("implementation", "api"), dependencyNotation)
     }

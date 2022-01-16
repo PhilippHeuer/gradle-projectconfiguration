@@ -3,7 +3,6 @@ package me.philippheuer.projectcfg.features
 import me.philippheuer.projectcfg.domain.IProjectContext
 import me.philippheuer.projectcfg.domain.PluginModule
 import me.philippheuer.projectcfg.domain.ProjectLanguage
-import me.philippheuer.projectcfg.util.DependencyUtils
 import me.philippheuer.projectcfg.util.DependencyVersion
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project

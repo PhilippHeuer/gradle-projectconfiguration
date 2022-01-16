@@ -2,7 +2,6 @@ package me.philippheuer.projectcfg
 
 import me.philippheuer.projectcfg.check.CheckstyleFeature
 import me.philippheuer.projectcfg.check.DetektFeature
-import me.philippheuer.projectcfg.cve.Log4JCVE
 import me.philippheuer.projectcfg.domain.ProjectContext
 import me.philippheuer.projectcfg.features.JUnit5Feature
 import me.philippheuer.projectcfg.features.JacksonFeature
@@ -10,7 +9,6 @@ import me.philippheuer.projectcfg.features.JavadocFeature
 import me.philippheuer.projectcfg.features.LoggingLibraryFeature
 import me.philippheuer.projectcfg.features.LombokFeature
 import me.philippheuer.projectcfg.features.ManifestFeature
-import me.philippheuer.projectcfg.features.MockitoFeature
 import me.philippheuer.projectcfg.features.PublishFeature
 import me.philippheuer.projectcfg.features.ShadowFeature
 import me.philippheuer.projectcfg.features.SigningFeature
@@ -18,6 +16,9 @@ import me.philippheuer.projectcfg.features.TestLoggingFeature
 import me.philippheuer.projectcfg.features.VersionUpgradeFeature
 import me.philippheuer.projectcfg.framework.QuarkusFramework
 import me.philippheuer.projectcfg.framework.SpringBootFramework
+import me.philippheuer.projectcfg.library.AvailabilityLibrary
+import me.philippheuer.projectcfg.library.Events4JLibrary
+import me.philippheuer.projectcfg.library.MockitoLibrary
 import me.philippheuer.projectcfg.policy.GradleWrapperVersionPolicy
 import me.philippheuer.projectcfg.type.JavaApplicationType
 import me.philippheuer.projectcfg.type.JavaLibraryType
@@ -46,8 +47,6 @@ abstract class ProjectConfigurationPlugin : Plugin<Project> {
         val modules = listOf(
             // policy
             GradleWrapperVersionPolicy(ctx),
-            // cve
-            Log4JCVE(ctx),
             // type
             JavaApplicationType(ctx),
             JavaLibraryType(ctx),
@@ -60,13 +59,16 @@ abstract class ProjectConfigurationPlugin : Plugin<Project> {
             LombokFeature(ctx),
             TestLoggingFeature(ctx),
             JavadocFeature(ctx),
-            MockitoFeature(ctx),
             ShadowFeature(ctx),
             ManifestFeature(ctx),
             JUnit5Feature(ctx),
             VersionUpgradeFeature(ctx),
             JacksonFeature(ctx),
             LoggingLibraryFeature(ctx),
+            // library
+            MockitoLibrary(ctx),
+            AvailabilityLibrary(ctx),
+            Events4JLibrary(ctx),
             // check
             CheckstyleFeature(ctx),
             DetektFeature(ctx),

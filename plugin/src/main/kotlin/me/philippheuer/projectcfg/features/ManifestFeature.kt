@@ -1,7 +1,6 @@
 package me.philippheuer.projectcfg.features
 
 import com.coditory.gradle.manifest.ManifestPluginExtension
-import me.philippheuer.projectcfg.ProjectConfigurationExtension
 import me.philippheuer.projectcfg.domain.IProjectContext
 import me.philippheuer.projectcfg.domain.PluginModule
 import me.philippheuer.projectcfg.domain.ProjectLanguage

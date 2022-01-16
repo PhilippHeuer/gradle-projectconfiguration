@@ -1,13 +1,11 @@
 package me.philippheuer.projectcfg.features
 
-import me.philippheuer.projectcfg.ProjectConfigurationExtension
 import me.philippheuer.projectcfg.domain.IProjectContext
 import me.philippheuer.projectcfg.domain.PluginModule
 import me.philippheuer.projectcfg.domain.ProjectLanguage
 import me.philippheuer.projectcfg.domain.ProjectType
 import me.philippheuer.projectcfg.util.DependencyVersion
-import me.philippheuer.projectcfg.util.addDepdenency
-import org.gradle.api.Project
+import me.philippheuer.projectcfg.util.addDependency
 
 class LoggingLibraryFeature constructor(override var ctx: IProjectContext) : PluginModule {
     override fun check(): Boolean {
@@ -22,12 +20,12 @@ class LoggingLibraryFeature constructor(override var ctx: IProjectContext) : Plu
 
         // java
         if (ProjectLanguage.JAVA.valueEquals(ctx.config.language.get())) {
-            ctx.project.addDepdenency(configurationName, "org.slf4j:slf4j-api:1.7.32")
+            ctx.project.addDependency(configurationName, "org.slf4j:slf4j-api:${DependencyVersion.slf4jVersion}")
         }
 
         // kotlin
         if (ProjectLanguage.KOTLIN.valueEquals(ctx.config.language.get())) {
-            ctx.project.addDepdenency(configurationName, "io.github.microutils:kotlin-logging:${DependencyVersion.kotlinLoggingVersion}")
+            ctx.project.addDependency(configurationName, "io.github.microutils:kotlin-logging:${DependencyVersion.kotlinLoggingVersion}")
         }
     }
 }

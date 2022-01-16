@@ -6,7 +6,7 @@ import me.philippheuer.projectcfg.domain.PluginModule
 import me.philippheuer.projectcfg.domain.ProjectLanguage
 import me.philippheuer.projectcfg.util.DependencyVersion
 import me.philippheuer.projectcfg.util.PluginLogger
-import me.philippheuer.projectcfg.util.addDepdenency
+import me.philippheuer.projectcfg.util.addDependency
 import org.gradle.api.Project
 import org.gradle.api.logging.LogLevel
 import org.gradle.api.tasks.testing.Test
@@ -27,24 +27,12 @@ class JUnit5Feature constructor(override var ctx: IProjectContext) : PluginModul
 
     companion object {
         private fun configureJunitDependencies(project: Project, config: ProjectConfigurationExtension) {
-            project.addDepdenency(
-                "testImplementation",
-                "org.junit.jupiter:junit-jupiter-api:${DependencyVersion.junit5Version}"
-            )
-            project.addDepdenency(
-                "testImplementation",
-                "org.junit.jupiter:junit-jupiter-params:${DependencyVersion.junit5Version}"
-            )
-            project.addDepdenency(
-                "testRuntimeOnly",
-                "org.junit.jupiter:junit-jupiter-engine:${DependencyVersion.junit5Version}"
-            )
+            project.addDependency("testImplementation", "org.junit.jupiter:junit-jupiter-api:${DependencyVersion.junit5Version}")
+            project.addDependency("testImplementation", "org.junit.jupiter:junit-jupiter-params:${DependencyVersion.junit5Version}")
+            project.addDependency("testRuntimeOnly", "org.junit.jupiter:junit-jupiter-engine:${DependencyVersion.junit5Version}")
 
             if (ProjectLanguage.KOTLIN.valueEquals(config.language.get())) {
-                project.addDepdenency(
-                    "testImplementation",
-                    "org.jetbrains.kotlin:kotlin-test:${DependencyVersion.kotlinVersion}"
-                )
+                project.addDependency("testImplementation", "org.jetbrains.kotlin:kotlin-test:${DependencyVersion.kotlinVersion}")
             }
         }
 

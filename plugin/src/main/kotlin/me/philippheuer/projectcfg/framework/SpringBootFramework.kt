@@ -8,7 +8,7 @@ import me.philippheuer.projectcfg.domain.ProjectType
 import me.philippheuer.projectcfg.util.DependencyUtils
 import me.philippheuer.projectcfg.util.DependencyVersion
 import me.philippheuer.projectcfg.util.PluginHelper
-import me.philippheuer.projectcfg.util.addDepdenency
+import me.philippheuer.projectcfg.util.addDependency
 import me.philippheuer.projectcfg.util.applyProject
 import org.gradle.api.Project
 import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
@@ -20,7 +20,7 @@ class SpringBootFramework constructor(override var ctx: IProjectContext) : Plugi
 
     override fun run() {
         if (ProjectType.LIBRARY == ctx.config.type.get()) {
-            configureLibrary(ctx.project, ctx.config)
+            configureLibrary(ctx.project)
         } else if (ProjectType.APP == ctx.config.type.get()) {
             configureApplication(ctx.project, ctx.config)
             configDefaults(ctx.project, ctx.config)
@@ -28,14 +28,14 @@ class SpringBootFramework constructor(override var ctx: IProjectContext) : Plugi
     }
 
     companion object {
-        fun configureLibrary(project: Project, config: ProjectConfigurationExtension) {
+        fun configureLibrary(project: Project) {
             project.run {
                 // bom
                 dependencies.enforcedPlatform("org.springframework.boot:spring-boot-dependencies:${DependencyVersion.springBootVersion}")
 
                 // spring
-                addDepdenency("implementation", "org.springframework.boot:spring-boot-starter:${DependencyVersion.springBootVersion}")
-                addDepdenency("testImplementation", "org.springframework.boot:spring-boot-starter-test:${DependencyVersion.springBootVersion}")
+                addDependency("implementation", "org.springframework.boot:spring-boot-starter:${DependencyVersion.springBootVersion}")
+                addDependency("testImplementation", "org.springframework.boot:spring-boot-starter-test:${DependencyVersion.springBootVersion}")
             }
         }
 
@@ -49,21 +49,21 @@ class SpringBootFramework constructor(override var ctx: IProjectContext) : Plugi
                 dependencies.enforcedPlatform("org.springframework.boot:spring-boot-dependencies:${DependencyVersion.springBootVersion}")
 
                 // spring
-                addDepdenency("implementation", "org.springframework.boot:spring-boot-starter:${DependencyVersion.springBootVersion}")
-                addDepdenency("testImplementation", "org.springframework.boot:spring-boot-starter-test:${DependencyVersion.springBootVersion}")
+                addDependency("implementation", "org.springframework.boot:spring-boot-starter:${DependencyVersion.springBootVersion}")
+                addDependency("testImplementation", "org.springframework.boot:spring-boot-starter-test:${DependencyVersion.springBootVersion}")
 
                 // spring - log4j2
                 configurations.getByName("implementation").exclude(mapOf("group" to "org.springframework.boot", "module" to "spring-boot-starter-logging"))
-                addDepdenency("implementation", "org.springframework.boot:spring-boot-starter-log4j2:${DependencyVersion.springBootVersion}")
+                addDependency("implementation", "org.springframework.boot:spring-boot-starter-log4j2:${DependencyVersion.springBootVersion}")
 
                 // metrics
                 if (config.frameworkMetrics.get()) {
-                    addDepdenency("implementation", "io.micrometer:micrometer-core:1.8.1")
-                    addDepdenency("implementation", "io.micrometer:micrometer-registry-prometheus:1.8.1")
+                    addDependency("implementation", "io.micrometer:micrometer-core:1.8.1")
+                    addDependency("implementation", "io.micrometer:micrometer-registry-prometheus:1.8.1")
 
                     // web project
                     if (DependencyUtils.hasDependency(project, listOf("implementation"), "org.springframework.boot:spring-boot-starter-web")) {
-                        addDepdenency("implementation", "org.springframework.boot:spring-boot-starter-actuator:${DependencyVersion.springBootVersion}")
+                        addDependency("implementation", "org.springframework.boot:spring-boot-starter-actuator:${DependencyVersion.springBootVersion}")
                     }
                 }
 
@@ -75,7 +75,7 @@ class SpringBootFramework constructor(override var ctx: IProjectContext) : Plugi
                     repositories.add(repositories.maven {
                         it.url = uri("https://repo.spring.io/release")
                     })
-                    addDepdenency("implementation", "org.springframework.experimental:spring-native:${DependencyVersion.springNativeVersion}")
+                    addDependency("implementation", "org.springframework.experimental:spring-native:${DependencyVersion.springNativeVersion}")
 
                     // task
                     tasks.withType(BootBuildImage::class.java).configureEach { image ->
