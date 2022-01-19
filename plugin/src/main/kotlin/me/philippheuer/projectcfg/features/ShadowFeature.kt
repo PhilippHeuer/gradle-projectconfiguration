@@ -6,14 +6,13 @@ import me.philippheuer.projectcfg.ProjectConfigurationExtension
 import me.philippheuer.projectcfg.domain.IProjectContext
 import me.philippheuer.projectcfg.domain.PluginModule
 import me.philippheuer.projectcfg.domain.ProjectLanguage
-import me.philippheuer.projectcfg.domain.ProjectType
 import me.philippheuer.projectcfg.util.applyProject
 import org.gradle.api.Project
 import org.gradle.jvm.tasks.Jar
 
 class ShadowFeature constructor(override var ctx: IProjectContext) : PluginModule {
     override fun check(): Boolean {
-        return isProjectLanguage(ProjectLanguage.JAVA) && isProjectType(ProjectType.LIBRARY) && ctx.config.shadow.get()
+        return isProjectLanguage(ProjectLanguage.JAVA) && ctx.config.shadow.get()
     }
 
     override fun run() {

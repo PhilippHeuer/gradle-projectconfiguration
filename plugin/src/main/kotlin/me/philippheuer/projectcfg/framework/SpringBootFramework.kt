@@ -19,9 +19,9 @@ class SpringBootFramework constructor(override var ctx: IProjectContext) : Plugi
     }
 
     override fun run() {
-        if (ProjectType.LIBRARY == ctx.config.type.get()) {
+        if (isProjectType(ProjectType.LIBRARY) || isProjectType(ProjectType.LIBRARY_INTERNAL)) {
             configureLibrary(ctx.project)
-        } else if (ProjectType.APP == ctx.config.type.get()) {
+        } else if (isProjectType(ProjectType.APP)) {
             configureApplication(ctx.project, ctx.config)
             configDefaults(ctx.project, ctx.config)
         }

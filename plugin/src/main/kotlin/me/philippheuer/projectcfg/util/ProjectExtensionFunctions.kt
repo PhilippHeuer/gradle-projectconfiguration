@@ -1,6 +1,5 @@
 package me.philippheuer.projectcfg.util
 
-import me.philippheuer.projectcfg.domain.ProjectType
 import org.gradle.api.Project
 import org.gradle.api.logging.LogLevel
 

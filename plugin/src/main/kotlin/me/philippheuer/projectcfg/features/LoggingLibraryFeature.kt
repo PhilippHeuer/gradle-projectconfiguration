@@ -14,7 +14,7 @@ class LoggingLibraryFeature constructor(override var ctx: IProjectContext) : Plu
 
     override fun run() {
         var configurationName = "implementation"
-        if (ProjectType.LIBRARY.valueEquals(ctx.config.type.get())) {
+        if (isProjectType(ProjectType.LIBRARY) || isProjectType(ProjectType.LIBRARY_INTERNAL)) {
             configurationName = "api"
         }
 

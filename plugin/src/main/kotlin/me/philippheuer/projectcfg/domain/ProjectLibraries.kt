@@ -1,6 +1,6 @@
 package me.philippheuer.projectcfg.domain
 
-enum class ProjectLibrary : IProjectLibrary {
+enum class ProjectLibraries : IProjectLibrary {
     TEST_MOCKITO {
         override fun value(): String {
             return "TEST_MOCKITO"
@@ -15,5 +15,11 @@ enum class ProjectLibrary : IProjectLibrary {
         override fun value(): String {
             return "EVENTS4J"
         }
-    },
+    };
+
+    companion object {
+        fun default(): List<IProjectLibrary> {
+            return listOf(TEST_MOCKITO, TEST_AWAITABILITY)
+        }
+    }
 }

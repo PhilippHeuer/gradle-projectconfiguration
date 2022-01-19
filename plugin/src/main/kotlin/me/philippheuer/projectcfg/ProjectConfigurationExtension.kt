@@ -14,7 +14,7 @@ import me.philippheuer.projectcfg.domain.IProjectLibrary
 import me.philippheuer.projectcfg.domain.IProjectType
 import me.philippheuer.projectcfg.domain.ProjectFramework
 import me.philippheuer.projectcfg.domain.ProjectLanguage
-import me.philippheuer.projectcfg.domain.ProjectLibrary
+import me.philippheuer.projectcfg.domain.ProjectLibraries
 import me.philippheuer.projectcfg.domain.ProjectType
 import me.philippheuer.projectcfg.util.PluginLogger.Companion.project
 import org.gradle.api.JavaVersion
@@ -37,7 +37,7 @@ open class ProjectConfigurationExtension @Inject constructor(project: Project) :
     override val javaVersion: Property<JavaVersion> = objects.property(JavaVersion::class.java).convention(JavaVersion.VERSION_11)
     override val type: Property<IProjectType> = objects.property(IProjectType::class.java).convention(ProjectType.DEFAULT)
     override val framework: Property<IProjectFramework> = objects.property(IProjectFramework::class.java).convention(ProjectFramework.NONE)
-    override val libraries: ListProperty<IProjectLibrary> = objects.listProperty(IProjectLibrary::class.java).convention(listOf(ProjectLibrary.TEST_MOCKITO, ProjectLibrary.TEST_AWAITABILITY))
+    override val libraries: ListProperty<IProjectLibrary> = objects.listProperty(IProjectLibrary::class.java).convention(ProjectLibraries.default())
     override val fileEncoding: Property<String> = objects.property(String::class.java).convention("UTF-8")
     override val artifactRepository: Property<ArtifactRepository> = objects.property(ArtifactRepository::class.java)
     override val artifactGroupId: Property<String> = objects.property(String::class.java)
