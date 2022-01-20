@@ -5,33 +5,45 @@ import me.philippheuer.projectcfg.domain.IProjectContext
 import me.philippheuer.projectcfg.domain.PluginModule
 import me.philippheuer.projectcfg.domain.ProjectFramework
 import me.philippheuer.projectcfg.domain.ProjectLanguage
+import me.philippheuer.projectcfg.domain.ProjectType
 import me.philippheuer.projectcfg.util.DependencyUtils
 import me.philippheuer.projectcfg.util.DependencyVersion
 import me.philippheuer.projectcfg.util.PluginHelper
 import me.philippheuer.projectcfg.util.PluginLogger
+import me.philippheuer.projectcfg.util.PluginLogger.Companion.config
 import me.philippheuer.projectcfg.util.addDependency
+import me.philippheuer.projectcfg.util.addPlatformDependency
 import me.philippheuer.projectcfg.util.applyProject
 import org.gradle.api.Project
 import org.jetbrains.kotlin.allopen.gradle.AllOpenExtension
 
 class QuarkusFramework constructor(override var ctx: IProjectContext) : PluginModule {
+    override fun init() {
+        applyConstraint(ctx)
+    }
+
     override fun check(): Boolean {
         return isProjectFramework(ProjectFramework.QUARKUS)
     }
 
     override fun run() {
-        applyPlugin(ctx.project, ctx.config)
-        quarkusDefaults(ctx.project, ctx.config)
+        if (isProjectType(ProjectType.LIBRARY)) {
+            configureLibrary(ctx)
+        } else {
+            applyPlugin(ctx.project, ctx.config)
+            quarkusDefaults(ctx.project, ctx.config)
+        }
     }
 
     companion object {
+        fun applyConstraint(ctx: IProjectContext) {
+            ctx.project.addPlatformDependency("io.quarkus.platform:quarkus-bom:${DependencyVersion.quarkusVersion}")
+        }
+
         fun applyPlugin(project: Project, config: ProjectConfigurationExtension) {
             project.run {
                 // plugin
                 applyProject("io.quarkus")
-
-                // bom
-                dependencies.enforcedPlatform("io.quarkus.platform:quarkus-bom:${DependencyVersion.quarkusVersion}")
 
                 // health
                 addDependency("implementation", "io.quarkus:quarkus-smallrye-health:${DependencyVersion.quarkusVersion}")
@@ -96,6 +108,26 @@ class QuarkusFramework constructor(override var ctx: IProjectContext) : PluginMo
                         }
                         constraint.because("quarkus > 2.2 is not compatible with jandex < 2.4 (jandex index format version 10)")
                     }
+                }
+            }
+        }
+
+        fun configureLibrary(ctx: IProjectContext) {
+            // core
+            ctx.project.addDependency("io.quarkus:quarkus-core")
+
+            // cache
+            ctx.project.addDependency("io.quarkus:quarkus-cache")
+
+            // scheduling
+            ctx.project.addDependency("io.quarkus:quarkus-scheduler")
+
+            // db
+            if (config.frameworkDb.get()) {
+                if (config.language.get() == ProjectLanguage.JAVA) {
+                    ctx.project.addDependency("io.quarkus:quarkus-hibernate-orm-panache")
+                } else if (config.language.get() == ProjectLanguage.KOTLIN) {
+                    ctx.project.addDependency("io.quarkus:quarkus-hibernate-orm-panache-kotlin")
                 }
             }
         }

@@ -9,17 +9,22 @@ import me.philippheuer.projectcfg.util.DependencyUtils
 import me.philippheuer.projectcfg.util.DependencyVersion
 import me.philippheuer.projectcfg.util.PluginHelper
 import me.philippheuer.projectcfg.util.addDependency
+import me.philippheuer.projectcfg.util.addPlatformDependency
 import me.philippheuer.projectcfg.util.applyProject
 import org.gradle.api.Project
 import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
 
 class SpringBootFramework constructor(override var ctx: IProjectContext) : PluginModule {
+    override fun init() {
+        applyConstraint(ctx)
+    }
+
     override fun check(): Boolean {
         return isProjectFramework(ProjectFramework.SPRINGBOOT)
     }
 
     override fun run() {
-        if (isProjectType(ProjectType.LIBRARY) || isProjectType(ProjectType.LIBRARY_INTERNAL)) {
+        if (isProjectType(ProjectType.LIBRARY)) {
             configureLibrary(ctx.project)
         } else if (isProjectType(ProjectType.APP)) {
             configureApplication(ctx.project, ctx.config)
@@ -28,6 +33,10 @@ class SpringBootFramework constructor(override var ctx: IProjectContext) : Plugi
     }
 
     companion object {
+        fun applyConstraint(ctx: IProjectContext) {
+            ctx.project.addPlatformDependency("org.springframework.boot:spring-boot-dependencies:${DependencyVersion.springBootVersion}")
+        }
+
         fun configureLibrary(project: Project) {
             project.run {
                 // bom

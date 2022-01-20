@@ -20,6 +20,17 @@ fun Project.addDependency(configurationName: String, dependencyNotation: String)
     dependencies.add(configurationName, dependencyNotation)
 }
 
+fun Project.addDependency(dependencyNotation: String) {
+    val configurationName = getPrimaryConfigurationName()
+    PluginLogger.log(LogLevel.INFO, "applying dependency [$configurationName] $dependencyNotation")
+    dependencies.add(configurationName, dependencyNotation)
+}
+
+fun Project.addPlatformDependency(dependencyNotation: String) {
+    PluginLogger.log(LogLevel.INFO, "applying bom $dependencyNotation")
+    dependencies.enforcedPlatform(dependencyNotation)
+}
+
 fun Project.addConstraint(dependencyNotation: String, version: String) {
     val configurationNames = mutableListOf<String>();
 
@@ -33,4 +44,14 @@ fun Project.addConstraint(dependencyNotation: String, version: String) {
     configurationNames.forEach { configurationName ->
         dependencies.constraints.add(configurationName, dependencyNotation) { constraint -> constraint.version { v -> v.strictly(version) } }
     }
+}
+
+fun Project.getPrimaryConfigurationName(): String {
+    if (pluginManager.hasPlugin("java")) {
+        return "implementation"
+    } else if (pluginManager.hasPlugin("java-library")) {
+        return "api"
+    }
+
+    throw NotImplementedError("can't determinate default configurationName project. Didn't find either one of java or the java-library plugin.")
 }

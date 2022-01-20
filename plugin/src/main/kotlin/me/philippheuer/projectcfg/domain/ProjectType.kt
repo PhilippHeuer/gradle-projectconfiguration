@@ -19,12 +19,6 @@ enum class ProjectType : IProjectType {
             return "LIBRARY"
         }
     },
-    // internal library component
-    LIBRARY_INTERNAL {
-        override fun value(): String {
-            return "LIBRARY"
-        }
-    },
     // default (unknown)
     DEFAULT {
         override fun value(): String {

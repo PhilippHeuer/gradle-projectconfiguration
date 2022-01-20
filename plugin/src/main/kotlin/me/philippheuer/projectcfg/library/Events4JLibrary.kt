@@ -22,7 +22,7 @@ class Events4JLibrary constructor(override var ctx: IProjectContext) : PluginMod
     }
 
     override fun run() {
-        if (isProjectType(ProjectType.LIBRARY) || isProjectType(ProjectType.LIBRARY_INTERNAL)) {
+        if (isProjectType(ProjectType.LIBRARY)) {
             applyLibraryDependencies(ctx)
         } else {
             applyAppDependencies(ctx)

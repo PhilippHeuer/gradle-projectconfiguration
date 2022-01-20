@@ -14,7 +14,7 @@ import java.net.URI
 
 class PublishFeature constructor(override var ctx: IProjectContext) : PluginModule {
     override fun check(): Boolean {
-        return isProjectType(ProjectType.LIBRARY)
+        return isProjectType(ProjectType.LIBRARY) && (ctx.project.properties["repository.publish.target"] as String).isNotEmpty()
     }
 
     override fun run() {
