@@ -34,14 +34,12 @@ class SpringBootFramework constructor(override var ctx: IProjectContext) : Plugi
 
     companion object {
         fun applyConstraint(ctx: IProjectContext) {
+            // bom
             ctx.project.addPlatformDependency("org.springframework.boot:spring-boot-dependencies:${DependencyVersion.springBootVersion}")
         }
 
         fun configureLibrary(project: Project) {
             project.run {
-                // bom
-                dependencies.enforcedPlatform("org.springframework.boot:spring-boot-dependencies:${DependencyVersion.springBootVersion}")
-
                 // spring
                 addDependency("implementation", "org.springframework.boot:spring-boot-starter:${DependencyVersion.springBootVersion}")
                 addDependency("testImplementation", "org.springframework.boot:spring-boot-starter-test:${DependencyVersion.springBootVersion}")
@@ -52,11 +50,6 @@ class SpringBootFramework constructor(override var ctx: IProjectContext) : Plugi
             project.applyProject("org.springframework.boot")
 
             project.run {
-                tasks.getByName("jar").enabled = false // disable jar task, this would generate a plain jar
-
-                // bom
-                dependencies.enforcedPlatform("org.springframework.boot:spring-boot-dependencies:${DependencyVersion.springBootVersion}")
-
                 // spring
                 addDependency("implementation", "org.springframework.boot:spring-boot-starter:${DependencyVersion.springBootVersion}")
                 addDependency("testImplementation", "org.springframework.boot:spring-boot-starter-test:${DependencyVersion.springBootVersion}")
@@ -64,6 +57,9 @@ class SpringBootFramework constructor(override var ctx: IProjectContext) : Plugi
                 // spring - log4j2
                 configurations.getByName("implementation").exclude(mapOf("group" to "org.springframework.boot", "module" to "spring-boot-starter-logging"))
                 addDependency("implementation", "org.springframework.boot:spring-boot-starter-log4j2:${DependencyVersion.springBootVersion}")
+
+                // disable plain-jar task
+                tasks.getByName("jar").enabled = false // disable jar task, this would generate a plain jar
 
                 // metrics
                 if (config.frameworkMetrics.get()) {
