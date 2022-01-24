@@ -15,6 +15,8 @@
 
 ```java
 System.setProperty("spring.config.location", "optional:classpath:application-default.properties,optional:classpath:application.yml,optional:classpath:application.properties");
+System.setProperty("Log4jContextSelector", "org.apache.logging.log4j.core.async.AsyncLoggerContextSelector");
+System.setProperty("log4j2.noFormatMsgLookup", "true");
 ```
 
 ## Configuration

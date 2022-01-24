@@ -10,10 +10,9 @@ import me.philippheuer.projectcfg.util.DependencyUtils
 import me.philippheuer.projectcfg.util.DependencyVersion
 import me.philippheuer.projectcfg.util.PluginHelper
 import me.philippheuer.projectcfg.util.PluginLogger
-import me.philippheuer.projectcfg.util.PluginLogger.Companion.config
 import me.philippheuer.projectcfg.util.addDependency
 import me.philippheuer.projectcfg.util.addPlatformDependency
-import me.philippheuer.projectcfg.util.applyProject
+import me.philippheuer.projectcfg.util.applyPlugin
 import org.gradle.api.Project
 import org.jetbrains.kotlin.allopen.gradle.AllOpenExtension
 
@@ -29,7 +28,7 @@ class QuarkusFramework constructor(override var ctx: IProjectContext) : PluginMo
     override fun run() {
         if (isProjectType(ProjectType.LIBRARY)) {
             configureLibrary(ctx)
-        } else {
+        } else if (isProjectType(ProjectType.APP)) {
             applyPlugin(ctx.project, ctx.config)
             quarkusDefaults(ctx.project, ctx.config)
         }
@@ -40,10 +39,25 @@ class QuarkusFramework constructor(override var ctx: IProjectContext) : PluginMo
             ctx.project.addPlatformDependency("io.quarkus.platform:quarkus-bom:${DependencyVersion.quarkusVersion}")
         }
 
+        fun configureLibrary(ctx: IProjectContext) {
+            // core
+            ctx.project.addDependency("io.quarkus:quarkus-core:${DependencyVersion.quarkusVersion}")
+            // health
+            ctx.project.addDependency("io.quarkus:quarkus-smallrye-health:${DependencyVersion.quarkusVersion}")
+            // metrics
+            ctx.project.addDependency("io.quarkus:quarkus-micrometer:${DependencyVersion.quarkusVersion}")
+
+            // add empty beans.xml to make quarkus scan classes in each library module
+            val beansFile = ctx.project.file("src/main/resources/META-INF/beans.xml")
+            if (!beansFile.exists()) {
+                beansFile.createNewFile()
+            }
+        }
+
         fun applyPlugin(project: Project, config: ProjectConfigurationExtension) {
             project.run {
                 // plugin
-                applyProject("io.quarkus")
+                applyPlugin("io.quarkus")
 
                 // health
                 addDependency("implementation", "io.quarkus:quarkus-smallrye-health:${DependencyVersion.quarkusVersion}")
@@ -57,7 +71,7 @@ class QuarkusFramework constructor(override var ctx: IProjectContext) : PluginMo
 
                 // kotlin
                 if (config.language.get() == ProjectLanguage.KOTLIN) {
-                    applyProject("org.jetbrains.kotlin.plugin.allopen")
+                    applyPlugin("org.jetbrains.kotlin.plugin.allopen")
 
                     addDependency("implementation", "io.quarkus:quarkus-kotlin:${DependencyVersion.quarkusVersion}")
 
@@ -108,26 +122,6 @@ class QuarkusFramework constructor(override var ctx: IProjectContext) : PluginMo
                         }
                         constraint.because("quarkus > 2.2 is not compatible with jandex < 2.4 (jandex index format version 10)")
                     }
-                }
-            }
-        }
-
-        fun configureLibrary(ctx: IProjectContext) {
-            // core
-            ctx.project.addDependency("io.quarkus:quarkus-core")
-
-            // cache
-            ctx.project.addDependency("io.quarkus:quarkus-cache")
-
-            // scheduling
-            ctx.project.addDependency("io.quarkus:quarkus-scheduler")
-
-            // db
-            if (config.frameworkDb.get()) {
-                if (config.language.get() == ProjectLanguage.JAVA) {
-                    ctx.project.addDependency("io.quarkus:quarkus-hibernate-orm-panache")
-                } else if (config.language.get() == ProjectLanguage.KOTLIN) {
-                    ctx.project.addDependency("io.quarkus:quarkus-hibernate-orm-panache-kotlin")
                 }
             }
         }

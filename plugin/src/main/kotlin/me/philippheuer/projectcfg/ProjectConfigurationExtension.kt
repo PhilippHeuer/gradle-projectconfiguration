@@ -16,7 +16,6 @@ import me.philippheuer.projectcfg.domain.ProjectFramework
 import me.philippheuer.projectcfg.domain.ProjectLanguage
 import me.philippheuer.projectcfg.domain.ProjectLibraries
 import me.philippheuer.projectcfg.domain.ProjectType
-import me.philippheuer.projectcfg.util.PluginLogger.Companion.project
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.api.artifacts.repositories.ArtifactRepository
@@ -29,7 +28,7 @@ import java.util.*
 import javax.inject.Inject
 
 @Suppress("UnnecessaryAbstractClass")
-open class ProjectConfigurationExtension @Inject constructor(project: Project) : PluginConfig, FrameworkConfig, JavaTypeConfig, LombokConfig, JavadocConfig, ShadowConfig, GradleWrapperVersionConfig, CheckstyleConfig {
+open class ProjectConfigurationExtension @Inject constructor(val project: Project) : PluginConfig, FrameworkConfig, JavaTypeConfig, LombokConfig, JavadocConfig, ShadowConfig, GradleWrapperVersionConfig, CheckstyleConfig {
     private val objects = project.objects
 
     override val logLevel: Property<LogLevel> = objects.property(LogLevel::class.java)
@@ -81,10 +80,10 @@ open class ProjectConfigurationExtension @Inject constructor(project: Project) :
     fun defaults() {
         // auto-detect project type
         if (type.get() == ProjectType.DEFAULT) {
-            if (project.pluginManager.hasPlugin("java")) {
-                type.set(ProjectType.APP)
-            } else if (project.pluginManager.hasPlugin("java-library")) {
+            if (project.pluginManager.hasPlugin("java-library")) {
                 type.set(ProjectType.LIBRARY)
+            } else if (project.pluginManager.hasPlugin("java")) {
+                type.set(ProjectType.APP)
             }
         }
 

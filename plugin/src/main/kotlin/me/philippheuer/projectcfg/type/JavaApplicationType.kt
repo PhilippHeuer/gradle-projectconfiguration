@@ -7,7 +7,7 @@ import me.philippheuer.projectcfg.domain.ProjectLanguage
 import me.philippheuer.projectcfg.domain.ProjectType
 import me.philippheuer.projectcfg.util.DependencyVersion
 import me.philippheuer.projectcfg.util.addDependency
-import me.philippheuer.projectcfg.util.applyProject
+import me.philippheuer.projectcfg.util.applyPlugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.BasePluginExtension
 import org.gradle.api.plugins.JavaPluginExtension
@@ -28,7 +28,7 @@ class JavaApplicationType constructor(override var ctx: IProjectContext) : Plugi
 
     companion object {
         fun configureJavaApplication(project: Project, config: ProjectConfigurationExtension) {
-            project.applyProject("java")
+            project.applyPlugin("java")
 
             project.run {
                 group = config.artifactGroupId.get()
@@ -61,7 +61,7 @@ class JavaApplicationType constructor(override var ctx: IProjectContext) : Plugi
         }
 
         fun configureKotlinApplication(project: Project, config: ProjectConfigurationExtension) {
-            project.applyProject("org.jetbrains.kotlin.jvm")
+            project.applyPlugin("org.jetbrains.kotlin.jvm")
 
             project.run {
                 addDependency("implementation", "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${DependencyVersion.kotlinVersion}")

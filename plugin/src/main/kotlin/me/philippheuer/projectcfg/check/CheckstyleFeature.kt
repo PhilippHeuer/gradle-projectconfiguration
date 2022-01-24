@@ -6,7 +6,7 @@ import me.philippheuer.projectcfg.domain.IProjectContext
 import me.philippheuer.projectcfg.domain.PluginModule
 import me.philippheuer.projectcfg.domain.ProjectLanguage
 import me.philippheuer.projectcfg.util.PluginLogger
-import me.philippheuer.projectcfg.util.applyProject
+import me.philippheuer.projectcfg.util.applyPlugin
 import org.gradle.api.GradleException
 import org.gradle.api.Project
 import org.gradle.api.logging.LogLevel
@@ -29,7 +29,7 @@ class CheckstyleFeature constructor(override var ctx: IProjectContext) : PluginM
     companion object {
         fun applyPlugin(project: Project, config: ProjectConfigurationExtension) {
             // plugin
-            project.applyProject("checkstyle")
+            project.applyPlugin("checkstyle")
 
             // checkstyle
             project.tasks.register("checkstyleAll", Checkstyle::class.java) { task ->

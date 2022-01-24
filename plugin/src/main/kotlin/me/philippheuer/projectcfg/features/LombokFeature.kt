@@ -6,7 +6,7 @@ import me.philippheuer.projectcfg.domain.IProjectContext
 import me.philippheuer.projectcfg.domain.PluginModule
 import me.philippheuer.projectcfg.domain.ProjectLanguage
 import me.philippheuer.projectcfg.util.PluginLogger
-import me.philippheuer.projectcfg.util.applyProject
+import me.philippheuer.projectcfg.util.applyPlugin
 import me.philippheuer.projectcfg.util.isRootProjectWithoutSubprojectsOrSubproject
 import org.gradle.api.Project
 import org.gradle.api.logging.LogLevel
@@ -31,7 +31,7 @@ class LombokFeature constructor(override var ctx: IProjectContext) : PluginModul
 
     companion object {
         fun configurePlugin(project: Project, config: ProjectConfigurationExtension) {
-            project.applyProject("io.freefair.lombok")
+            project.applyPlugin("io.freefair.lombok")
 
             project.extensions.configure(LombokExtension::class.java) {
                 it.disableConfig.set(true) // don't generate lombok.config files

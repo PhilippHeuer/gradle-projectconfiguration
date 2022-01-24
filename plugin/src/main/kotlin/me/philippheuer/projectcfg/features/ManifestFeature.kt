@@ -5,7 +5,7 @@ import me.philippheuer.projectcfg.domain.IProjectContext
 import me.philippheuer.projectcfg.domain.PluginModule
 import me.philippheuer.projectcfg.domain.ProjectLanguage
 import me.philippheuer.projectcfg.util.PluginLogger
-import me.philippheuer.projectcfg.util.applyProject
+import me.philippheuer.projectcfg.util.applyPlugin
 import org.gradle.api.Project
 import org.gradle.api.logging.LogLevel
 import org.gradle.jvm.tasks.Jar
@@ -22,7 +22,7 @@ class ManifestFeature constructor(override var ctx: IProjectContext) : PluginMod
 
     companion object {
         fun configurePlugin(project: Project) {
-            project.applyProject("com.coditory.manifest")
+            project.applyPlugin("com.coditory.manifest")
 
             project.extensions.configure(ManifestPluginExtension::class.java) {
                 it.buildAttributes = false

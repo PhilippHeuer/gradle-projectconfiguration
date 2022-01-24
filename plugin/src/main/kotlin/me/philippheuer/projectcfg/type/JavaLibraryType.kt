@@ -7,7 +7,7 @@ import me.philippheuer.projectcfg.domain.ProjectLanguage
 import me.philippheuer.projectcfg.domain.ProjectType
 import me.philippheuer.projectcfg.util.DependencyVersion
 import me.philippheuer.projectcfg.util.addDependency
-import me.philippheuer.projectcfg.util.applyProject
+import me.philippheuer.projectcfg.util.applyPlugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.BasePluginExtension
 import org.gradle.api.plugins.JavaPluginExtension
@@ -30,8 +30,8 @@ class JavaLibraryType constructor(override var ctx: IProjectContext) : PluginMod
 
     companion object {
         fun configureJavaLibrary(project: Project, config: ProjectConfigurationExtension) {
-            project.applyProject("java-library")
-            project.applyProject("maven-publish")
+            project.applyPlugin("java-library")
+            project.applyPlugin("maven-publish")
 
             project.run {
                 group = config.artifactGroupId.get()
@@ -67,7 +67,7 @@ class JavaLibraryType constructor(override var ctx: IProjectContext) : PluginMod
         }
 
         fun configureKotlinLibrary(project: Project, config: ProjectConfigurationExtension) {
-            project.applyProject("org.jetbrains.kotlin.jvm")
+            project.applyPlugin("org.jetbrains.kotlin.jvm")
 
             project.run {
                 addDependency("api", "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${DependencyVersion.kotlinVersion}")

@@ -7,6 +7,7 @@ import me.philippheuer.projectcfg.domain.ProjectLanguage
 import me.philippheuer.projectcfg.util.DependencyVersion
 import me.philippheuer.projectcfg.util.PluginLogger
 import me.philippheuer.projectcfg.util.addDependency
+import me.philippheuer.projectcfg.util.applyPlugin
 import org.gradle.api.Project
 import org.gradle.api.logging.LogLevel
 import org.gradle.api.tasks.testing.Test
@@ -38,6 +39,8 @@ class JUnit5Feature constructor(override var ctx: IProjectContext) : PluginModul
         }
 
         private fun configureTestTask(project: Project) {
+            project.applyPlugin("org.gradle.test-retry")
+
             project.tasks.withType(Test::class.java).configureEach { test ->
                 // use junit5
                 PluginLogger.log(LogLevel.DEBUG, "setting [test.useJUnitPlatform()]")

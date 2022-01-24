@@ -7,7 +7,7 @@ import me.philippheuer.projectcfg.ProjectConfigurationExtension
 import me.philippheuer.projectcfg.domain.IProjectContext
 import me.philippheuer.projectcfg.domain.PluginModule
 import me.philippheuer.projectcfg.domain.ProjectLanguage
-import me.philippheuer.projectcfg.util.applyProject
+import me.philippheuer.projectcfg.util.applyPlugin
 import org.gradle.api.Project
 
 class DetektFeature constructor(override var ctx: IProjectContext) : PluginModule {
@@ -23,7 +23,7 @@ class DetektFeature constructor(override var ctx: IProjectContext) : PluginModul
 
     companion object {
         fun applyPlugin(project: Project) {
-            project.applyProject("io.gitlab.arturbosch.detekt")
+            project.applyPlugin("io.gitlab.arturbosch.detekt")
         }
 
         fun applyConfiguration(project: Project, config: ProjectConfigurationExtension) {
