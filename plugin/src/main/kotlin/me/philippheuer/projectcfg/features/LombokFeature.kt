@@ -14,7 +14,7 @@ import org.gradle.api.tasks.javadoc.Javadoc
 
 class LombokFeature constructor(override var ctx: IProjectContext) : PluginModule {
     override fun check(): Boolean {
-        if (ctx.project.isRootProjectWithoutSubprojectsOrSubproject() && isProjectLanguage(ProjectLanguage.JAVA)) {
+        if (ctx.project.isRootProjectWithoutSubprojectsOrSubproject() && ctx.isProjectLanguage(ProjectLanguage.JAVA)) {
             return true
         }
 

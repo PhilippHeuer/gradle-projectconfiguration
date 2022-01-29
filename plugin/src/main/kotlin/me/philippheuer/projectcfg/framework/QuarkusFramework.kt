@@ -22,13 +22,13 @@ class QuarkusFramework constructor(override var ctx: IProjectContext) : PluginMo
     }
 
     override fun check(): Boolean {
-        return isProjectFramework(ProjectFramework.QUARKUS)
+        return ctx.isProjectFramework(ProjectFramework.QUARKUS)
     }
 
     override fun run() {
-        if (isProjectType(ProjectType.LIBRARY)) {
+        if (ctx.isProjectType(ProjectType.LIBRARY)) {
             configureLibrary(ctx)
-        } else if (isProjectType(ProjectType.APP)) {
+        } else if (ctx.isProjectType(ProjectType.APP)) {
             applyPlugin(ctx.project, ctx.config)
             quarkusDefaults(ctx.project, ctx.config)
         }

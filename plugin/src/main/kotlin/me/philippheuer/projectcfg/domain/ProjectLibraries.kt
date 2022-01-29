@@ -15,6 +15,11 @@ enum class ProjectLibraries : IProjectLibrary {
         override fun value(): String {
             return "EVENTS4J"
         }
+    },
+    SENTRYIO {
+        override fun value(): String {
+            return "SENTRYIO"
+        }
     };
 
     companion object {

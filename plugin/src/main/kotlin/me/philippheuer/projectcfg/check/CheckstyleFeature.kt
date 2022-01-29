@@ -16,7 +16,7 @@ import org.gradle.api.plugins.quality.CheckstyleExtension
 
 class CheckstyleFeature constructor(override var ctx: IProjectContext) : PluginModule {
     override fun check(): Boolean {
-        return isProjectLanguage(ProjectLanguage.JAVA)
+        return ctx.isProjectLanguage(ProjectLanguage.JAVA)
     }
 
     override fun run() {

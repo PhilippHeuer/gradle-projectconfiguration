@@ -11,7 +11,7 @@ import org.gradle.api.Project
 
 class MockitoLibrary constructor(override var ctx: IProjectContext) : PluginModule {
     override fun check(): Boolean {
-        return ctx.project.isRootProjectWithoutSubprojectsOrSubproject() && isProjectLibrary(ProjectLibraries.TEST_MOCKITO)
+        return ctx.project.isRootProjectWithoutSubprojectsOrSubproject() && ctx.isProjectLibrary(ProjectLibraries.TEST_MOCKITO)
     }
 
     override fun run() {

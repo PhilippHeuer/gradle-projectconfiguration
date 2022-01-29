@@ -12,7 +12,7 @@ import org.gradle.api.Project
 
 class DetektFeature constructor(override var ctx: IProjectContext) : PluginModule {
     override fun check(): Boolean {
-        return isProjectLanguage(ProjectLanguage.KOTLIN)
+        return ctx.isProjectLanguage(ProjectLanguage.KOTLIN)
     }
 
     override fun run() {

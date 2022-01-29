@@ -15,5 +15,6 @@ open class DependencyVersion {
         @JvmStatic var events4jVersion: String = "0.9.9" // https://mvnrepository.com/artifact/com.github.philippheuer.events4j/events4j-core
         @JvmStatic var slf4jVersion: String = "1.7.33" // https://mvnrepository.com/artifact/org.slf4j/slf4j-api
         @JvmStatic var disruptorVersion: String = "3.4.4" // https://mvnrepository.com/artifact/com.lmax/disruptor
+        @JvmStatic var sentryVersion: String = "5.6.0" // https://mvnrepository.com/artifact/io.sentry/sentry
     }
 }

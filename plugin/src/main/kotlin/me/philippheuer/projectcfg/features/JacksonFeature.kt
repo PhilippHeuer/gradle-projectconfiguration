@@ -13,7 +13,7 @@ class JacksonFeature constructor(override var ctx: IProjectContext) : PluginModu
     }
 
     override fun check(): Boolean {
-        return hasProjectDependency("com.fasterxml.jackson.core:jackson-databind")
+        return ctx.hasProjectDependency("com.fasterxml.jackson.core:jackson-databind")
     }
 
     override fun run() {

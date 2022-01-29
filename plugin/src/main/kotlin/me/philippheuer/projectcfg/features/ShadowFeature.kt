@@ -12,7 +12,7 @@ import org.gradle.jvm.tasks.Jar
 
 class ShadowFeature constructor(override var ctx: IProjectContext) : PluginModule {
     override fun check(): Boolean {
-        return isProjectLanguage(ProjectLanguage.JAVA) && ctx.config.shadow.get()
+        return ctx.isProjectLanguage(ProjectLanguage.JAVA) && ctx.config.shadow.get()
     }
 
     override fun run() {

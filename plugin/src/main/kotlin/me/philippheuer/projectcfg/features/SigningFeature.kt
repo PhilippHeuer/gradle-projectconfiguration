@@ -12,7 +12,7 @@ import org.gradle.plugins.signing.SigningExtension
 
 class SigningFeature constructor(override var ctx: IProjectContext) : PluginModule {
     override fun check(): Boolean {
-        return isProjectType(ProjectType.LIBRARY)
+        return ctx.isProjectType(ProjectType.LIBRARY)
     }
 
     override fun run() {

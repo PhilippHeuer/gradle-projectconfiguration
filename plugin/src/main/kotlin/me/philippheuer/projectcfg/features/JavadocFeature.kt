@@ -29,7 +29,7 @@ import java.net.URL
  */
 class JavadocFeature constructor(override var ctx: IProjectContext) : PluginModule {
     override fun check(): Boolean {
-        return isProjectLanguage(ProjectLanguage.JAVA)
+        return ctx.isProjectLanguage(ProjectLanguage.JAVA)
     }
 
     override fun run() {

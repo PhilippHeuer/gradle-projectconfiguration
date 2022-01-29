@@ -19,6 +19,7 @@ import me.philippheuer.projectcfg.framework.SpringBootFramework
 import me.philippheuer.projectcfg.library.AvailabilityLibrary
 import me.philippheuer.projectcfg.library.Events4JLibrary
 import me.philippheuer.projectcfg.library.MockitoLibrary
+import me.philippheuer.projectcfg.library.SentryLibrary
 import me.philippheuer.projectcfg.policy.GradleWrapperVersionPolicy
 import me.philippheuer.projectcfg.type.JavaApplicationType
 import me.philippheuer.projectcfg.type.JavaLibraryType
@@ -69,6 +70,7 @@ abstract class ProjectConfigurationPlugin : Plugin<Project> {
             MockitoLibrary(ctx),
             AvailabilityLibrary(ctx),
             Events4JLibrary(ctx),
+            SentryLibrary(ctx),
             // check
             CheckstyleFeature(ctx),
             DetektFeature(ctx),

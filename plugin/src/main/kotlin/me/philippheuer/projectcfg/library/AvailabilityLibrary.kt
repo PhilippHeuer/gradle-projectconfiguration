@@ -9,7 +9,7 @@ import org.gradle.api.Project
 
 class AvailabilityLibrary constructor(override var ctx: IProjectContext) : PluginModule {
     override fun check(): Boolean {
-        return ctx.project.isRootProjectWithoutSubprojectsOrSubproject() && isProjectLibrary(ProjectLibraries.TEST_AWAITABILITY)
+        return ctx.project.isRootProjectWithoutSubprojectsOrSubproject() && ctx.isProjectLibrary(ProjectLibraries.TEST_AWAITABILITY)
     }
 
     override fun run() {

@@ -18,11 +18,11 @@ class Events4JLibrary constructor(override var ctx: IProjectContext) : PluginMod
     }
 
     override fun check(): Boolean {
-        return ctx.project.isRootProjectWithoutSubprojectsOrSubproject() && isProjectLibrary(ProjectLibraries.EVENTS4J)
+        return ctx.project.isRootProjectWithoutSubprojectsOrSubproject() && ctx.isProjectLibrary(ProjectLibraries.EVENTS4J)
     }
 
     override fun run() {
-        if (isProjectType(ProjectType.LIBRARY)) {
+        if (ctx.isProjectType(ProjectType.LIBRARY)) {
             applyLibraryDependencies(ctx)
         } else {
             applyAppDependencies(ctx)

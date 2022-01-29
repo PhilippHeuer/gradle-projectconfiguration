@@ -26,24 +26,4 @@ interface PluginModule {
     fun run() {
 
     }
-
-    fun isProjectLanguage(language: IProjectLanguage): Boolean {
-        return language.valueEquals(ctx.config.language.get())
-    }
-
-    fun isProjectType(type: IProjectType): Boolean {
-        return type.valueEquals(ctx.config.type.get())
-    }
-
-    fun isProjectFramework(framework: IProjectFramework): Boolean {
-        return framework.valueEquals(ctx.config.framework.get())
-    }
-
-    fun isProjectLibrary(library: IProjectLibrary): Boolean {
-        return ctx.config.libraries.get().filter { it.valueEquals(library) }.isNotEmpty()
-    }
-
-    fun hasProjectDependency(dependencyNotation: String): Boolean {
-        return DependencyUtils.hasDependency(ctx.project, listOf("implementation", "api"), dependencyNotation)
-    }
 }

@@ -16,7 +16,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 class JavaApplicationType constructor(override var ctx: IProjectContext) : PluginModule {
     override fun check(): Boolean {
-        return isProjectType(ProjectType.APP) || isProjectType(ProjectType.BATCH)
+        return ctx.isProjectType(ProjectType.APP) || ctx.isProjectType(ProjectType.BATCH)
     }
 
     override fun run() {
