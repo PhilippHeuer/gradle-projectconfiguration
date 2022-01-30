@@ -1,28 +1,28 @@
 package me.philippheuer.projectcfg
 
-import me.philippheuer.projectcfg.check.CheckstyleFeature
-import me.philippheuer.projectcfg.check.DetektFeature
+import me.philippheuer.projectcfg.modules.check.CheckstyleFeature
+import me.philippheuer.projectcfg.modules.check.DetektFeature
 import me.philippheuer.projectcfg.domain.ProjectContext
-import me.philippheuer.projectcfg.features.JUnit5Feature
-import me.philippheuer.projectcfg.features.JacksonFeature
-import me.philippheuer.projectcfg.features.JavadocFeature
-import me.philippheuer.projectcfg.features.LoggingLibraryFeature
-import me.philippheuer.projectcfg.features.LombokFeature
-import me.philippheuer.projectcfg.features.ManifestFeature
-import me.philippheuer.projectcfg.features.PublishFeature
-import me.philippheuer.projectcfg.features.ShadowFeature
-import me.philippheuer.projectcfg.features.SigningFeature
-import me.philippheuer.projectcfg.features.TestLoggingFeature
-import me.philippheuer.projectcfg.features.VersionUpgradeFeature
-import me.philippheuer.projectcfg.framework.QuarkusFramework
-import me.philippheuer.projectcfg.framework.SpringBootFramework
-import me.philippheuer.projectcfg.library.AvailabilityLibrary
-import me.philippheuer.projectcfg.library.Events4JLibrary
-import me.philippheuer.projectcfg.library.MockitoLibrary
-import me.philippheuer.projectcfg.library.SentryLibrary
-import me.philippheuer.projectcfg.policy.GradleWrapperVersionPolicy
-import me.philippheuer.projectcfg.type.JavaApplicationType
-import me.philippheuer.projectcfg.type.JavaLibraryType
+import me.philippheuer.projectcfg.modules.features.JUnit5Feature
+import me.philippheuer.projectcfg.modules.features.JacksonFeature
+import me.philippheuer.projectcfg.modules.documentation.JavadocDocumentation
+import me.philippheuer.projectcfg.modules.features.LoggingLibraryFeature
+import me.philippheuer.projectcfg.modules.features.LombokFeature
+import me.philippheuer.projectcfg.modules.features.ManifestFeature
+import me.philippheuer.projectcfg.modules.features.PublishFeature
+import me.philippheuer.projectcfg.modules.features.ShadowFeature
+import me.philippheuer.projectcfg.modules.features.SigningFeature
+import me.philippheuer.projectcfg.modules.features.TestLoggingFeature
+import me.philippheuer.projectcfg.modules.features.VersionUpgradeFeature
+import me.philippheuer.projectcfg.modules.framework.QuarkusFramework
+import me.philippheuer.projectcfg.modules.framework.SpringBootFramework
+import me.philippheuer.projectcfg.modules.library.AvailabilityLibrary
+import me.philippheuer.projectcfg.modules.library.Events4JLibrary
+import me.philippheuer.projectcfg.modules.library.MockitoLibrary
+import me.philippheuer.projectcfg.modules.library.SentryLibrary
+import me.philippheuer.projectcfg.modules.policy.GradleWrapperVersionPolicy
+import me.philippheuer.projectcfg.modules.type.JavaApplicationType
+import me.philippheuer.projectcfg.modules.type.JavaLibraryType
 import me.philippheuer.projectcfg.util.PluginLogger
 import me.philippheuer.projectcfg.util.isRootProjectWithoutSubprojectsOrSubproject
 import org.gradle.api.Plugin
@@ -54,12 +54,13 @@ abstract class ProjectConfigurationPlugin : Plugin<Project> {
             // frameworks
             SpringBootFramework(ctx),
             QuarkusFramework(ctx),
+            // documentation
+            JavadocDocumentation(ctx),
             // features
             PublishFeature(ctx),
             SigningFeature(ctx),
             LombokFeature(ctx),
             TestLoggingFeature(ctx),
-            JavadocFeature(ctx),
             ShadowFeature(ctx),
             ManifestFeature(ctx),
             JUnit5Feature(ctx),
