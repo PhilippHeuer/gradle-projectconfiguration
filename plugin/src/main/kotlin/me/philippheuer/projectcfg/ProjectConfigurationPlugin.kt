@@ -21,6 +21,7 @@ import me.philippheuer.projectcfg.modules.library.Events4JLibrary
 import me.philippheuer.projectcfg.modules.library.MockitoLibrary
 import me.philippheuer.projectcfg.modules.library.SentryLibrary
 import me.philippheuer.projectcfg.modules.policy.GradleWrapperVersionPolicy
+import me.philippheuer.projectcfg.modules.report.DependencyReport
 import me.philippheuer.projectcfg.modules.type.JavaApplicationType
 import me.philippheuer.projectcfg.modules.type.JavaLibraryType
 import me.philippheuer.projectcfg.util.PluginLogger
@@ -75,6 +76,8 @@ abstract class ProjectConfigurationPlugin : Plugin<Project> {
             // check
             CheckstyleFeature(ctx),
             DetektFeature(ctx),
+            // reporting
+            DependencyReport(ctx),
         )
 
         // init module

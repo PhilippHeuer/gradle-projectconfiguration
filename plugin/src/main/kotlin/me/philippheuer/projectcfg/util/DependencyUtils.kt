@@ -63,6 +63,23 @@ class DependencyUtils {
 
             return false
         }
+
+        /**
+         * resolves a configuration and returns all artifact versions
+         *
+         * use with caution: dependencies can not be modified after this!
+         */
+        fun getResolvedDependencies(project: Project, configurationNames: List<String>): Set<String> {
+            val deps = mutableSetOf<String>()
+
+            project.configurations.filter { configurationNames.contains(it.name) }.forEach { configuration ->
+                configuration.resolvedConfiguration.resolvedArtifacts.filter { !it.id.componentIdentifier.displayName.startsWith("project :") }.forEach { dep ->
+                    deps.add(dep.id.componentIdentifier.displayName)
+                }
+            }
+
+            return deps
+        }
     }
 
 }
