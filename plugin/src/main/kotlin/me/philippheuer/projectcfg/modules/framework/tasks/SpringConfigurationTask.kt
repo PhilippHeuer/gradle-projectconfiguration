@@ -2,11 +2,14 @@ package me.philippheuer.projectcfg.modules.framework.tasks
 
 import me.philippheuer.projectcfg.ProjectConfigurationExtension
 import me.philippheuer.projectcfg.util.DependencyUtils
+import me.philippheuer.projectcfg.util.DependencyVersion
 import me.philippheuer.projectcfg.util.TaskUtils
+import me.philippheuer.projectcfg.util.addDependency
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.TaskAction
 import java.io.File
+import java.nio.file.Files
 import java.util.*
 
 abstract class SpringConfigurationTask : DefaultTask() {
@@ -27,6 +30,14 @@ abstract class SpringConfigurationTask : DefaultTask() {
         val propertiesFile = TaskUtils.getOutputResourcesFile(project, "application.properties")
         if (propertiesFile.toFile().isFile) {
             processProperties(propertiesFile.toFile(), configuration)
+        }
+
+        // use default log4j2.xml if nothing is provided
+        val log4j2File = TaskUtils.getOutputResourcesFile(project, "log4j2.xml")
+        if (!log4j2File.toFile().isFile && DependencyUtils.hasDependency(project, listOf("compileClasspath"), "org.apache.logging.log4j:log4j-core")) {
+            javaClass.classLoader.getResourceAsStream("logging/log4j2.xml").use {
+                Files.copy(it, log4j2File)
+            }
         }
     }
 
