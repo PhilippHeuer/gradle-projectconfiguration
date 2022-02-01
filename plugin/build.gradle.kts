@@ -15,12 +15,12 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-allopen:${BuildPluginsVersion.KOTLIN}")
 
     // third party - spring
-    implementation("org.springframework.boot:spring-boot-gradle-plugin:2.6.2")
+    implementation("org.springframework.boot:spring-boot-gradle-plugin:2.6.3")
     //implementation("org.springframework.experimental:spring-native:0.11.1")
     //implementation("org.springframework.experimental:spring-aot-gradle-plugin:0.11.1")
 
     // third party - quarkus
-    implementation("io.quarkus:gradle-application-plugin:2.6.1.Final")
+    implementation("io.quarkus:gradle-application-plugin:2.6.3.Final")
 
     // third party - plugins
     implementation("org.gradle:test-retry-gradle-plugin:1.3.1")
@@ -28,13 +28,13 @@ dependencies {
     implementation("com.adarshr:gradle-test-logger-plugin:3.1.0")
     implementation("gradle.plugin.com.github.johnrengelman:shadow:7.1.2")
     implementation("com.coditory.gradle:manifest-plugin:0.1.14")
-    implementation("com.github.ben-manes:gradle-versions-plugin:0.39.0")
+    implementation("com.github.ben-manes:gradle-versions-plugin:0.41.0")
     implementation("io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.19.0")
 
     // test
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
     testImplementation("org.junit.jupiter:junit-jupiter-engine:5.8.2")
-    testImplementation("org.jetbrains.kotlin:kotlin-test:1.6.0")
+    testImplementation("org.jetbrains.kotlin:kotlin-test:${BuildPluginsVersion.KOTLIN}")
 }
 
 configurations {
