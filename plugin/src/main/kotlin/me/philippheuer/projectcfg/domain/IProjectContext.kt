@@ -28,7 +28,7 @@ interface IProjectContext {
     }
 
     fun isProjectLibrary(library: IProjectLibrary): Boolean {
-        return config.libraries.get().filter { it.valueEquals(library) }.isNotEmpty()
+        return config.libraries.get().any { it.valueEquals(library) }
     }
 
     fun hasProjectDependency(dependencyNotation: String): Boolean {

@@ -1,6 +1,5 @@
 package me.philippheuer.projectcfg.modules.framework
 
-import me.philippheuer.projectcfg.ProjectConfigurationExtension
 import me.philippheuer.projectcfg.domain.IProjectContext
 import me.philippheuer.projectcfg.domain.PluginModule
 import me.philippheuer.projectcfg.domain.ProjectFramework
@@ -12,7 +11,6 @@ import me.philippheuer.projectcfg.util.addDependency
 import me.philippheuer.projectcfg.util.addPlatformDependency
 import me.philippheuer.projectcfg.util.applyPlugin
 import org.gradle.api.Project
-import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
 
 private const val CONFIG_TASK_NAME = "projectcfg-resources-springapp-properties"
 
@@ -29,7 +27,7 @@ class SpringBootFramework constructor(override var ctx: IProjectContext) : Plugi
         if (ctx.isProjectType(ProjectType.LIBRARY)) {
             configureLibrary(ctx.project)
         } else if (ctx.isProjectType(ProjectType.APP)) {
-            configureApplication(ctx.project, ctx.config)
+            configureApplication(ctx)
             configDefaults(ctx)
         }
     }
@@ -48,10 +46,10 @@ class SpringBootFramework constructor(override var ctx: IProjectContext) : Plugi
             }
         }
 
-        fun configureApplication(project: Project, config: ProjectConfigurationExtension) {
-            project.applyPlugin("org.springframework.boot")
+        fun configureApplication(ctx: IProjectContext) {
+            ctx.project.applyPlugin("org.springframework.boot")
 
-            project.run {
+            ctx.project.run {
                 // spring
                 addDependency("implementation", "org.springframework.boot:spring-boot-starter:${DependencyVersion.springBootVersion}")
                 addDependency("testImplementation", "org.springframework.boot:spring-boot-starter-test:${DependencyVersion.springBootVersion}")
@@ -65,36 +63,50 @@ class SpringBootFramework constructor(override var ctx: IProjectContext) : Plugi
                 addDependency("implementation", "com.lmax:disruptor:${DependencyVersion.disruptorVersion}")
 
                 // metrics
-                if (config.frameworkMetrics.get()) {
-                    addDependency("implementation", "io.micrometer:micrometer-core:1.8.1")
-                    addDependency("implementation", "io.micrometer:micrometer-registry-prometheus:1.8.1")
-
-                    // web project
-                    if (DependencyUtils.hasDependency(project, listOf("implementation"), "org.springframework.boot:spring-boot-starter-web")) {
-                        addDependency("implementation", "org.springframework.boot:spring-boot-starter-actuator:${DependencyVersion.springBootVersion}")
-                    }
+                if (ctx.config.frameworkMetrics.get()) {
+                    configureMetrics(ctx)
                 }
 
                 // native
-                if (config.native.get()) {
-                    project.applyPlugin("org.springframework.experimental.aot")
-
-                    // repository and dependency
-                    repositories.add(repositories.maven {
-                        it.url = uri("https://repo.spring.io/release")
-                    })
-                    addDependency("implementation", "org.springframework.experimental:spring-native:${DependencyVersion.springNativeVersion}")
-
-                    // task
-                    tasks.withType(BootBuildImage::class.java).configureEach { image ->
-                        image.builder = "paketobuildpacks/builder:tiny"
-                        image.buildpacks = listOf("gcr.io/paketo-buildpacks/java-native-image:7.4.0")
-                        image.environment = mapOf(
-                            "BP_NATIVE_IMAGE" to "true"
-                        )
-                    }
+                if (ctx.config.native.get()) {
+                    configureNative(ctx)
                 }
             }
+        }
+
+        fun configureMetrics(ctx: IProjectContext) {
+            ctx.project.run {
+                addDependency("implementation", "io.micrometer:micrometer-core:1.8.1")
+                addDependency("implementation", "io.micrometer:micrometer-registry-prometheus:1.8.1")
+
+                // web project
+                if (DependencyUtils.hasDependency(project, listOf("implementation"), "org.springframework.boot:spring-boot-starter-web")) {
+                    addDependency("implementation", "org.springframework.boot:spring-boot-starter-actuator:${DependencyVersion.springBootVersion}")
+                }
+            }
+        }
+
+        fun configureNative(ctx: IProjectContext) {
+            /*
+            ctx.project.run {
+                applyPlugin("org.springframework.experimental.aot")
+
+                // repository and dependency
+                repositories.add(repositories.maven {
+                    it.url = uri("https://repo.spring.io/release")
+                })
+                addDependency("implementation", "org.springframework.experimental:spring-native:${DependencyVersion.springNativeVersion}")
+
+                // task
+                tasks.withType(BootBuildImage::class.java).configureEach { image ->
+                    image.builder = "paketobuildpacks/builder:tiny"
+                    image.buildpacks = listOf("gcr.io/paketo-buildpacks/java-native-image:7.4.0")
+                    image.environment = mapOf(
+                        "BP_NATIVE_IMAGE" to "true"
+                    )
+                }
+            }
+            */
         }
 
         fun configDefaults(ctx: IProjectContext) {

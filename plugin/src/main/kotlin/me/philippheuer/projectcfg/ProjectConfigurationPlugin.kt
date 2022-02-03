@@ -1,11 +1,12 @@
 package me.philippheuer.projectcfg
 
+import me.philippheuer.projectcfg.domain.ProjectContext
 import me.philippheuer.projectcfg.modules.check.CheckstyleFeature
 import me.philippheuer.projectcfg.modules.check.DetektFeature
-import me.philippheuer.projectcfg.domain.ProjectContext
+import me.philippheuer.projectcfg.modules.documentation.JavadocDocumentation
+import me.philippheuer.projectcfg.modules.features.GitPropertiesFeature
 import me.philippheuer.projectcfg.modules.features.JUnit5Feature
 import me.philippheuer.projectcfg.modules.features.JacksonFeature
-import me.philippheuer.projectcfg.modules.documentation.JavadocDocumentation
 import me.philippheuer.projectcfg.modules.features.LoggingLibraryFeature
 import me.philippheuer.projectcfg.modules.features.LombokFeature
 import me.philippheuer.projectcfg.modules.features.ManifestFeature
@@ -68,6 +69,7 @@ abstract class ProjectConfigurationPlugin : Plugin<Project> {
             VersionUpgradeFeature(ctx),
             JacksonFeature(ctx),
             LoggingLibraryFeature(ctx),
+            GitPropertiesFeature(ctx),
             // library
             MockitoLibrary(ctx),
             AvailabilityLibrary(ctx),

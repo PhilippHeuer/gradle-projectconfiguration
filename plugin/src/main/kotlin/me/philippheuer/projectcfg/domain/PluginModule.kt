@@ -1,7 +1,5 @@
 package me.philippheuer.projectcfg.domain
 
-import me.philippheuer.projectcfg.util.DependencyUtils
-
 interface PluginModule {
     var ctx: IProjectContext
 

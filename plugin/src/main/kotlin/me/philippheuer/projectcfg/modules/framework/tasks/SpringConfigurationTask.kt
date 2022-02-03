@@ -1,10 +1,9 @@
 package me.philippheuer.projectcfg.modules.framework.tasks
 
 import me.philippheuer.projectcfg.ProjectConfigurationExtension
+import me.philippheuer.projectcfg.domain.ProjectLibraries
 import me.philippheuer.projectcfg.util.DependencyUtils
-import me.philippheuer.projectcfg.util.DependencyVersion
 import me.philippheuer.projectcfg.util.TaskUtils
-import me.philippheuer.projectcfg.util.addDependency
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.TaskAction
@@ -35,8 +34,13 @@ abstract class SpringConfigurationTask : DefaultTask() {
         // use default log4j2.xml if nothing is provided
         val log4j2File = TaskUtils.getOutputResourcesFile(project, "log4j2.xml")
         if (!log4j2File.toFile().isFile && DependencyUtils.hasDependency(project, listOf("compileClasspath"), "org.apache.logging.log4j:log4j-core")) {
-            javaClass.classLoader.getResourceAsStream("logging/log4j2.xml").use {
-                Files.copy(it, log4j2File)
+            var configFile = "logging/log4j2.xml"
+            if (config.libraries.get().any { it.valueEquals(ProjectLibraries.SENTRYIO) }) {
+                configFile = "logging/log4j2-sentry.xml"
+            }
+
+            javaClass.classLoader.getResourceAsStream(configFile).use {
+                Files.copy(it!!, log4j2File)
             }
         }
     }
@@ -93,18 +97,22 @@ abstract class SpringConfigurationTask : DefaultTask() {
 
         // actuator
         if (DependencyUtils.hasDependency(project, listOf("implementation"), "org.springframework.boot:spring-boot-starter-actuator")) {
-            // disable discovery
-            properties["management.endpoints.web.discovery.enabled"] = "false"
+            // discovery
+            properties["management.endpoints.web.discovery.enabled"] = "true"
 
-            // use a different port for management endpoints
+            // use a different port for management endpoints (this port should not be exposed to the outside)
             properties["management.server.port"] = "8081"
 
             // expose endpoints
-            var exposeEndpoints = mutableListOf("health", "heapdump", "prometheus")
+            properties["management.endpoint.health.probes.add-additional-paths"] = "true"
+            var exposeEndpoints = mutableListOf("info", "scheduledtasks", "beans", "caches", "conditions", "quartz", "loggers", "health", "heapdump", "threaddump", "prometheus")
             if (config.frameworkDbMigrate.get()) {
                 exposeEndpoints.add("flyway")
             }
             properties["management.endpoints.web.exposure.include"] = exposeEndpoints.joinToString(",")
+
+            // git details (provided by GitPropertiesFeature)
+            properties["management.info.git.mode"] = "full"
 
             // expose /livez and /readyz and show more details
             properties["management.endpoint.health.probes.add-additional-paths"] = "true"
