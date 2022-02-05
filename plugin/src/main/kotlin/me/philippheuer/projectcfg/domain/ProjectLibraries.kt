@@ -20,6 +20,11 @@ enum class ProjectLibraries : IProjectLibrary {
         override fun value(): String {
             return "SENTRYIO"
         }
+    },
+    JACKSON {
+        override fun value(): String {
+            return "JACKSON"
+        }
     };
 
     companion object {

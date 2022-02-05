@@ -28,7 +28,13 @@ abstract class SpringConfigurationTask : DefaultTask() {
         // application.properties
         val propertiesFile = TaskUtils.getOutputResourcesFile(project, "application.properties")
         if (propertiesFile.toFile().isFile) {
-            processProperties(propertiesFile.toFile(), configuration)
+            TaskUtils.processProperties(propertiesFile.toFile(), configuration, false)
+        }
+
+        // system-default.properties
+        val systemDefaultPropFile = TaskUtils.getOutputResourcesFile(project, "system-default.properties")
+        if (!systemDefaultPropFile.toFile().isFile) {
+            TaskUtils.processProperties(systemDefaultPropFile.toFile(), getSystemConfiguration(), true)
         }
 
         // use default log4j2.xml if nothing is provided
@@ -43,13 +49,6 @@ abstract class SpringConfigurationTask : DefaultTask() {
                 Files.copy(it!!, log4j2File)
             }
         }
-    }
-
-    private fun processProperties(file: File, defaultProperties: Map<String, String>) {
-        val prop = Properties()
-        defaultProperties.forEach { (key, value) -> prop.setProperty(key, value) }
-        prop.load(file.bufferedReader())
-        prop.store(file.bufferedWriter(), null)
     }
 
     private fun getConfiguration(): Map<String, String> {
@@ -124,6 +123,22 @@ abstract class SpringConfigurationTask : DefaultTask() {
             properties["spring.flyway.baselineOnMigrate"] = "true"
             properties["spring.flyway.baselineVersion"] = "0"
             properties["spring.flyway.locations"] = "classpath:db/migration"
+        }
+
+        return properties
+    }
+
+    private fun getSystemConfiguration(): Map<String, String> {
+        val properties = mutableMapOf<String, String>()
+
+        // log4j2 - see https://logging.apache.org/log4j/2.x/manual/async.html
+        if (DependencyUtils.hasDependency(project, listOf("implementation"), "org.apache.logging.log4j:log4j-core")) {
+            // - disable lookups
+            properties["log4j2.formatMsgNoLookups"] = "true"
+            // - lmax disruptor for async logging
+            if (DependencyUtils.hasDependency(project, listOf("implementation"), "com.lmax:disruptor")) {
+                properties["log4j2.contextSelector"] = "org.apache.logging.log4j.core.async.AsyncLoggerContextSelector"
+            }
         }
 
         return properties

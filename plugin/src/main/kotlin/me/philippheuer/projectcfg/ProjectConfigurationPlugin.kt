@@ -19,6 +19,7 @@ import me.philippheuer.projectcfg.modules.framework.QuarkusFramework
 import me.philippheuer.projectcfg.modules.framework.SpringBootFramework
 import me.philippheuer.projectcfg.modules.library.AvailabilityLibrary
 import me.philippheuer.projectcfg.modules.library.Events4JLibrary
+import me.philippheuer.projectcfg.modules.library.JacksonLibrary
 import me.philippheuer.projectcfg.modules.library.MockitoLibrary
 import me.philippheuer.projectcfg.modules.library.SentryLibrary
 import me.philippheuer.projectcfg.modules.policy.GradleWrapperVersionPolicy
@@ -75,6 +76,7 @@ abstract class ProjectConfigurationPlugin : Plugin<Project> {
             AvailabilityLibrary(ctx),
             Events4JLibrary(ctx),
             SentryLibrary(ctx),
+            JacksonLibrary(ctx),
             // check
             CheckstyleFeature(ctx),
             DetektFeature(ctx),

@@ -41,7 +41,7 @@ class SpringBootFramework constructor(override var ctx: IProjectContext) : Plugi
         fun configureLibrary(project: Project) {
             project.run {
                 // spring
-                addDependency("implementation", "org.springframework.boot:spring-boot-starter:${DependencyVersion.springBootVersion}")
+                addDependency("api", "org.springframework.boot:spring-boot-starter:${DependencyVersion.springBootVersion}")
                 addDependency("testImplementation", "org.springframework.boot:spring-boot-starter-test:${DependencyVersion.springBootVersion}")
             }
         }
@@ -60,6 +60,7 @@ class SpringBootFramework constructor(override var ctx: IProjectContext) : Plugi
                 // spring - log4j2
                 configurations.getByName("implementation").exclude(mapOf("group" to "org.springframework.boot", "module" to "spring-boot-starter-logging"))
                 addDependency("implementation", "org.springframework.boot:spring-boot-starter-log4j2:${DependencyVersion.springBootVersion}")
+                addDependency("implementation", "org.apache.logging.log4j:log4j:${DependencyVersion.log4j2Version}")
                 addDependency("implementation", "com.lmax:disruptor:${DependencyVersion.disruptorVersion}")
 
                 // metrics
@@ -102,7 +103,9 @@ class SpringBootFramework constructor(override var ctx: IProjectContext) : Plugi
                     image.builder = "paketobuildpacks/builder:tiny"
                     image.buildpacks = listOf("gcr.io/paketo-buildpacks/java-native-image:7.4.0")
                     image.environment = mapOf(
-                        "BP_NATIVE_IMAGE" to "true"
+                        "BP_NATIVE_IMAGE" to "true",
+                        "HTTP_PROXY" to "",
+                        "HTTPS_PROXY" to ""
                     )
                 }
             }
