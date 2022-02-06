@@ -49,6 +49,8 @@ class QuarkusFramework constructor(override var ctx: IProjectContext) : PluginMo
             ctx.project.addDependency("io.quarkus:quarkus-smallrye-health:${DependencyVersion.quarkusVersion}")
             // metrics
             ctx.project.addDependency("io.quarkus:quarkus-micrometer:${DependencyVersion.quarkusVersion}")
+            // test
+            ctx.project.addDependency("io.quarkus:quarkus-junit5:${DependencyVersion.quarkusVersion}")
         }
 
         fun applyPlugin(project: Project, config: ProjectConfigurationExtension) {

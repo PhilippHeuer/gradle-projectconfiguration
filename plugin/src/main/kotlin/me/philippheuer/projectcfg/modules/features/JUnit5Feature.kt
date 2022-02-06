@@ -29,13 +29,18 @@ class JUnit5Feature constructor(override var ctx: IProjectContext) : PluginModul
 
     companion object {
         private fun configureJunitDependencies(project: Project, config: ProjectConfigurationExtension) {
+            // junit
             project.addDependency("testImplementation", "org.junit.jupiter:junit-jupiter-api:${DependencyVersion.junit5Version}")
             project.addDependency("testImplementation", "org.junit.jupiter:junit-jupiter-params:${DependencyVersion.junit5Version}")
             project.addDependency("testRuntimeOnly", "org.junit.jupiter:junit-jupiter-engine:${DependencyVersion.junit5Version}")
 
+            // kotlin
             if (ProjectLanguage.KOTLIN.valueEquals(config.language.get())) {
                 project.addDependency("testImplementation", "org.jetbrains.kotlin:kotlin-test:${DependencyVersion.kotlinVersion}")
             }
+
+            // test logging
+            project.addDependency("testImplementation", "org.slf4j:slf4j-simple:${DependencyVersion.slf4jVersion}")
         }
 
         private fun configureTestTask(project: Project) {
