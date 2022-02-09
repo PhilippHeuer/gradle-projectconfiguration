@@ -15,9 +15,12 @@ import me.philippheuer.projectcfg.util.addDependency
 import me.philippheuer.projectcfg.util.addPlatformDependency
 import me.philippheuer.projectcfg.util.applyPlugin
 import org.gradle.api.Project
+import org.gradle.api.tasks.SourceSet
+import org.gradle.api.tasks.SourceSetContainer
 import org.jetbrains.kotlin.allopen.gradle.AllOpenExtension
 
 private const val CONFIG_TASK_NAME = "projectcfg-resources-quarkus-properties"
+private const val CONFIG_RESOURCES_DIR = "quarkus-properties"
 
 class QuarkusFramework constructor(override var ctx: IProjectContext) : PluginModule {
     override fun init() {
@@ -142,8 +145,10 @@ class QuarkusFramework constructor(override var ctx: IProjectContext) : PluginMo
             properties["quarkus.native.builder-image"] = "quay.io/quarkus/ubi-quarkus-native-image:21.3.0-java17"
             properties["quarkus.ssl.native"] = "true"
 
-            // TODO: copy this into a different resources directory and add it to resource paths
-            PluginHelper.createOrUpdatePropertyFile(ctx.project, ctx.project.file("src/main/resources/META-INF/microprofile-config.properties"), properties, managed = true)
+            // create file in a custom build resources dir
+            val configDirectory = ctx.project.layout.buildDirectory.dir(CONFIG_RESOURCES_DIR).get()
+            PluginHelper.createOrUpdatePropertyFile(ctx.project, configDirectory.file("META-INF/microprofile-config.properties").asFile, properties, managed = true)
+            PluginHelper.addResourcesSource(ctx.project, configDirectory.toString())
         }
 
         private fun configRuntime(ctx: IProjectContext) {

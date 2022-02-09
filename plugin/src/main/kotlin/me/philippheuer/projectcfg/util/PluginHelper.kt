@@ -2,6 +2,8 @@ package me.philippheuer.projectcfg.util
 
 import org.gradle.api.Project
 import org.gradle.api.logging.LogLevel
+import org.gradle.api.tasks.SourceSet
+import org.gradle.api.tasks.SourceSetContainer
 import java.io.File
 
 class PluginHelper {
@@ -39,6 +41,19 @@ class PluginHelper {
 
         fun isCI(): Boolean {
             return isCI
+        }
+
+        /**
+         * adds the directory as source to the main sourceSet resources
+         *
+         * @param project project
+         * @param directory directory
+         */
+        fun addResourcesSource(project: Project, directory: String) {
+            val sourceSets = project.extensions.getByType(SourceSetContainer::class.java)
+            sourceSets.named(SourceSet.MAIN_SOURCE_SET_NAME).configure {
+                it.resources.srcDir(directory)
+            }
         }
     }
 }
