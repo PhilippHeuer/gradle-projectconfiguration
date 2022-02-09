@@ -9,6 +9,7 @@ import me.philippheuer.projectcfg.domain.ProjectType
 import me.philippheuer.projectcfg.modules.framework.tasks.QuarkusConfigurationTask
 import me.philippheuer.projectcfg.util.DependencyUtils
 import me.philippheuer.projectcfg.util.DependencyVersion
+import me.philippheuer.projectcfg.util.PluginHelper
 import me.philippheuer.projectcfg.util.PluginLogger
 import me.philippheuer.projectcfg.util.addDependency
 import me.philippheuer.projectcfg.util.addPlatformDependency
@@ -126,6 +127,26 @@ class QuarkusFramework constructor(override var ctx: IProjectContext) : PluginMo
         }
 
         fun configDefaults(ctx: IProjectContext) {
+            configBuildTime(ctx)
+            configRuntime(ctx)
+        }
+
+        private fun configBuildTime(ctx: IProjectContext) {
+            val properties = mutableMapOf<String, String>()
+            if (ctx.config.native.get()) {
+                properties["quarkus.package.type"] = "native"
+            } else {
+                properties["quarkus.package.type"] = "fast-jar"
+            }
+            properties["quarkus.native.container-build"] = "true"
+            properties["quarkus.native.builder-image"] = "quay.io/quarkus/ubi-quarkus-native-image:21.3.0-java17"
+            properties["quarkus.ssl.native"] = "true"
+
+            // TODO: copy this into a different resources directory and add it to resource paths
+            PluginHelper.createOrUpdatePropertyFile(ctx.project, ctx.project.file("src/main/resources/META-INF/microprofile-config.properties"), properties, managed = true)
+        }
+
+        private fun configRuntime(ctx: IProjectContext) {
             // properties edit task
             val task = ctx.project.tasks.register(CONFIG_TASK_NAME, QuarkusConfigurationTask::class.java) {
                 it.config = ctx.config
@@ -135,5 +156,6 @@ class QuarkusFramework constructor(override var ctx: IProjectContext) : PluginMo
                 it.mustRunAfter("processResources")
             }
         }
+
     }
 }

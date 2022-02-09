@@ -22,6 +22,7 @@ import me.philippheuer.projectcfg.modules.library.Events4JLibrary
 import me.philippheuer.projectcfg.modules.library.JacksonLibrary
 import me.philippheuer.projectcfg.modules.library.MockitoLibrary
 import me.philippheuer.projectcfg.modules.library.SentryLibrary
+import me.philippheuer.projectcfg.modules.library.VaultLibrary
 import me.philippheuer.projectcfg.modules.policy.GradleWrapperVersionPolicy
 import me.philippheuer.projectcfg.modules.report.DependencyReport
 import me.philippheuer.projectcfg.modules.type.JavaApplicationType
@@ -76,6 +77,7 @@ abstract class ProjectConfigurationPlugin : Plugin<Project> {
             AvailabilityLibrary(ctx),
             Events4JLibrary(ctx),
             SentryLibrary(ctx),
+            VaultLibrary(ctx),
             JacksonLibrary(ctx),
             // check
             CheckstyleFeature(ctx),

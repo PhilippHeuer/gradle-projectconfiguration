@@ -3,6 +3,7 @@ package me.philippheuer.projectcfg.modules.framework.tasks
 import me.philippheuer.projectcfg.ProjectConfigurationExtension
 import me.philippheuer.projectcfg.domain.ProjectType
 import me.philippheuer.projectcfg.util.DependencyUtils
+import me.philippheuer.projectcfg.util.PluginHelper
 import me.philippheuer.projectcfg.util.TaskUtils
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.Input
@@ -120,16 +121,6 @@ abstract class QuarkusConfigurationTask : DefaultTask() {
             properties["quarkus.flyway.clean-disabled"] = "true"
             properties["quarkus.flyway.migrate-at-start"] = "true"
             properties["quarkus.flyway.baseline-on-migrate"] = "true"
-        }
-
-        // native image package config
-        if (config.native.get()) {
-            properties["quarkus.package.type"] = "native"
-            properties["quarkus.native.container-build"] = "true"
-            properties["quarkus.native.builder-image"] = "quay.io/quarkus/ubi-quarkus-native-image:21.3.0-java17"
-            properties["quarkus.ssl.native"] = "true"
-        } else {
-            properties["quarkus.package.type"] = "fast-jar"
         }
 
         return properties

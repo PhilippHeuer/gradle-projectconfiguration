@@ -21,6 +21,11 @@ enum class ProjectLibraries : IProjectLibrary {
             return "SENTRYIO"
         }
     },
+    VAULT {
+        override fun value(): String {
+            return "VAULT"
+        }
+    },
     JACKSON {
         override fun value(): String {
             return "JACKSON"
