@@ -24,7 +24,7 @@ dependencies {
 
     // third party - plugins
     implementation("org.gradle:test-retry-gradle-plugin:1.3.1")
-    implementation("io.freefair.gradle:lombok-plugin:6.3.0")
+    implementation("io.freefair.gradle:lombok-plugin:6.4.0")
     implementation("com.adarshr:gradle-test-logger-plugin:3.1.0")
     implementation("gradle.plugin.com.github.johnrengelman:shadow:7.1.2")
     implementation("com.coditory.gradle:manifest-plugin:0.1.14")
