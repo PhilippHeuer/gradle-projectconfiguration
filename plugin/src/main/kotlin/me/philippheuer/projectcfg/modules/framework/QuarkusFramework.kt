@@ -34,9 +34,11 @@ class QuarkusFramework constructor(override var ctx: IProjectContext) : PluginMo
     override fun run() {
         if (ctx.isProjectType(ProjectType.LIBRARY)) {
             configureLibrary(ctx)
+            configureAllOpen(ctx.project, ctx.config)
             configDefaults(ctx)
         } else if (ctx.isProjectType(ProjectType.APP)) {
             applyPlugin(ctx.project, ctx.config)
+            configureAllOpen(ctx.project, ctx.config)
             configDefaults(ctx)
         }
     }
@@ -74,14 +76,7 @@ class QuarkusFramework constructor(override var ctx: IProjectContext) : PluginMo
 
                 // kotlin
                 if (config.language.get() == ProjectLanguage.KOTLIN) {
-                    applyPlugin("org.jetbrains.kotlin.plugin.allopen")
-
                     addDependency("implementation", "io.quarkus:quarkus-kotlin:${DependencyVersion.quarkusVersion}")
-
-                    extensions.configure(AllOpenExtension::class.java) {
-                        it.annotation("io.quarkus.test.junit.QuarkusTest")
-                        it.annotation("javax.enterprise.context.ApplicationScoped")
-                    }
                 }
 
                 // rest
@@ -121,10 +116,23 @@ class QuarkusFramework constructor(override var ctx: IProjectContext) : PluginMo
                     project.dependencies.constraints.add("implementation", "org.jboss:jandex") { constraint ->
                         constraint.version { v ->
                             v.strictly("[2.4, 3[")
-                            v.prefer("2.4.1.Final")
+                            v.prefer(DependencyVersion.jandexVersion)
                         }
                         constraint.because("quarkus > 2.2 is not compatible with jandex < 2.4 (jandex index format version 10)")
                     }
+                }
+            }
+        }
+
+        fun configureAllOpen(project: Project, config: ProjectConfigurationExtension) {
+            // kotlin
+            if (config.language.get() == ProjectLanguage.KOTLIN) {
+                project.applyPlugin("org.jetbrains.kotlin.plugin.allopen")
+
+                project.extensions.configure(AllOpenExtension::class.java) {
+                    it.annotation("io.quarkus.test.junit.QuarkusTest")
+                    it.annotation("javax.enterprise.context.ApplicationScoped")
+                    it.annotation("javax.persistence.Entity")
                 }
             }
         }

@@ -17,5 +17,6 @@ open class DependencyVersion {
         @JvmStatic var disruptorVersion: String = "3.4.4" // https://mvnrepository.com/artifact/com.lmax/disruptor
         @JvmStatic var sentryVersion: String = "5.6.0" // https://mvnrepository.com/artifact/io.sentry/sentry
         @JvmStatic var log4j2Version: String = "2.17.1" // https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j
+        @JvmStatic var jandexVersion: String = "2.4.2.Final" // https://mvnrepository.com/artifact/org.jboss/jandex
     }
 }
