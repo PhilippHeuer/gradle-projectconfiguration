@@ -15,8 +15,6 @@ import me.philippheuer.projectcfg.util.addDependency
 import me.philippheuer.projectcfg.util.addPlatformDependency
 import me.philippheuer.projectcfg.util.applyPlugin
 import org.gradle.api.Project
-import org.gradle.api.tasks.SourceSet
-import org.gradle.api.tasks.SourceSetContainer
 import org.jetbrains.kotlin.allopen.gradle.AllOpenExtension
 
 private const val CONFIG_TASK_NAME = "projectcfg-resources-quarkus-properties"
@@ -35,10 +33,12 @@ class QuarkusFramework constructor(override var ctx: IProjectContext) : PluginMo
         if (ctx.isProjectType(ProjectType.LIBRARY)) {
             configureLibrary(ctx)
             configureAllOpen(ctx.project, ctx.config)
+            configureJPA(ctx.project, ctx.config)
             configDefaults(ctx)
         } else if (ctx.isProjectType(ProjectType.APP)) {
             applyPlugin(ctx.project, ctx.config)
             configureAllOpen(ctx.project, ctx.config)
+            configureJPA(ctx.project, ctx.config)
             configDefaults(ctx)
         }
     }
@@ -134,6 +134,13 @@ class QuarkusFramework constructor(override var ctx: IProjectContext) : PluginMo
                     it.annotation("javax.enterprise.context.ApplicationScoped")
                     it.annotation("javax.persistence.Entity")
                 }
+            }
+        }
+
+        fun configureJPA(project: Project, config: ProjectConfigurationExtension) {
+            // kotlin
+            if (config.language.get() == ProjectLanguage.KOTLIN) {
+                project.applyPlugin("org.jetbrains.kotlin.plugin.jpa")
             }
         }
 

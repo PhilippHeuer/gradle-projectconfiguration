@@ -13,6 +13,7 @@ dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:${BuildPluginsVersion.KOTLIN}")
     implementation("org.jetbrains.kotlin:kotlin-allopen:${BuildPluginsVersion.KOTLIN}")
+    implementation("org.jetbrains.kotlin:kotlin-noarg:${BuildPluginsVersion.KOTLIN}")
 
     // third party - spring
     implementation("org.springframework.boot:spring-boot-gradle-plugin:2.6.3")

@@ -45,6 +45,7 @@ class JavaLibraryType constructor(override var ctx: IProjectContext) : PluginMod
                     configure(JavaPluginExtension::class.java) {
                         // java version
                         it.sourceCompatibility = config.javaVersion.get()
+                        it.targetCompatibility = config.javaVersion.get()
 
                         // sources / javadocs
                         it.withSourcesJar()
