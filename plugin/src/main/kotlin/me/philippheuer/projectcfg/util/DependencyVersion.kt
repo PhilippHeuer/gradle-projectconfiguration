@@ -2,7 +2,7 @@ package me.philippheuer.projectcfg.util
 
 open class DependencyVersion {
     companion object {
-        @JvmStatic var kotlinVersion: String = "1.6.10" // https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-stdlib
+        @JvmStatic var kotlinVersion: String = "1.6.20" // https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-stdlib
         @JvmStatic var junit5Version: String = "5.8.2" // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api
         @JvmStatic var mockitoVersion: String = "4.4.0" // https://mvnrepository.com/artifact/org.mockito/mockito-core
         @JvmStatic var mockitoKotlinVersion: String = "4.0.0" // https://mvnrepository.com/artifact/org.mockito.kotlin/mockito-kotlin
