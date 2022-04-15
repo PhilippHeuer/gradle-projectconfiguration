@@ -16,7 +16,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-noarg:${BuildPluginsVersion.KOTLIN}")
 
     // third party - spring
-    implementation("org.springframework.boot:spring-boot-gradle-plugin:2.6.5")
+    implementation("org.springframework.boot:spring-boot-gradle-plugin:2.6.6")
     //implementation("org.springframework.experimental:spring-native:0.11.2")
     //implementation("org.springframework.experimental:spring-aot-gradle-plugin:0.11.2")
 
