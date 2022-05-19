@@ -16,21 +16,21 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-noarg:${BuildPluginsVersion.KOTLIN}")
 
     // third party - spring
-    implementation("org.springframework.boot:spring-boot-gradle-plugin:2.6.6")
+    implementation("org.springframework.boot:spring-boot-gradle-plugin:2.7.0")
     //implementation("org.springframework.experimental:spring-native:0.11.2")
     //implementation("org.springframework.experimental:spring-aot-gradle-plugin:0.11.2")
 
     // third party - quarkus
-    implementation("io.quarkus:gradle-application-plugin:2.7.5.Final")
+    implementation("io.quarkus:gradle-application-plugin:2.9.1.Final")
 
     // third party - plugins
-    implementation("org.gradle:test-retry-gradle-plugin:1.3.1")
-    implementation("io.freefair.gradle:lombok-plugin:6.4.1")
+    implementation("org.gradle:test-retry-gradle-plugin:1.4.0")
+    implementation("io.freefair.gradle:lombok-plugin:6.4.3")
     implementation("com.adarshr:gradle-test-logger-plugin:3.2.0")
     implementation("gradle.plugin.com.github.johnrengelman:shadow:7.1.2")
     implementation("com.coditory.gradle:manifest-plugin:0.1.14")
     implementation("com.github.ben-manes:gradle-versions-plugin:0.42.0")
-    implementation("io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.19.0")
+    implementation("io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.20.0")
     implementation("com.gorylenko.gradle-git-properties:gradle-git-properties:2.4.0")
 
     // test

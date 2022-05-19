@@ -5,7 +5,6 @@ import me.philippheuer.projectcfg.domain.PluginModule
 import me.philippheuer.projectcfg.domain.ProjectFramework
 import me.philippheuer.projectcfg.domain.ProjectLibraries
 import me.philippheuer.projectcfg.domain.ProjectType
-import me.philippheuer.projectcfg.util.DependencyVersion
 import me.philippheuer.projectcfg.util.addDependency
 import me.philippheuer.projectcfg.util.isRootProjectWithoutSubprojectsOrSubproject
 

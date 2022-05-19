@@ -2,7 +2,7 @@ package me.philippheuer.projectcfg.util
 
 open class DependencyVersion {
     companion object {
-        @JvmStatic var kotlinVersion: String = "1.6.20" // https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-stdlib
+        @JvmStatic var kotlinVersion: String = "1.6.21" // https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-stdlib
         @JvmStatic var junit5Version: String = "5.8.2" // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api
         @JvmStatic var mockitoVersion: String = "4.4.0" // https://mvnrepository.com/artifact/org.mockito/mockito-core
         @JvmStatic var mockitoKotlinVersion: String = "4.0.0" // https://mvnrepository.com/artifact/org.mockito.kotlin/mockito-kotlin
@@ -18,5 +18,6 @@ open class DependencyVersion {
         @JvmStatic var sentryVersion: String = "5.7.0" // https://mvnrepository.com/artifact/io.sentry/sentry
         @JvmStatic var log4j2Version: String = "2.17.2" // https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j
         @JvmStatic var jandexVersion: String = "2.4.2.Final" // https://mvnrepository.com/artifact/org.jboss/jandex
+        @JvmStatic var micrometerVersion: String = "1.9.0" // https://mvnrepository.com/artifact/io.micrometer/micrometer-bom
     }
 }

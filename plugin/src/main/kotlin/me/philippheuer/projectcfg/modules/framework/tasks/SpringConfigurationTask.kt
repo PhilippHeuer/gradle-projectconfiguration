@@ -7,9 +7,7 @@ import me.philippheuer.projectcfg.util.TaskUtils
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.TaskAction
-import java.io.File
 import java.nio.file.Files
-import java.util.*
 
 abstract class SpringConfigurationTask : DefaultTask() {
 

@@ -77,11 +77,13 @@ class SpringBootFramework constructor(override var ctx: IProjectContext) : Plugi
 
         fun configureMetrics(ctx: IProjectContext) {
             ctx.project.run {
-                addDependency("implementation", "io.micrometer:micrometer-core:1.8.1")
-                addDependency("implementation", "io.micrometer:micrometer-registry-prometheus:1.8.1")
+                addDependency("implementation", "io.micrometer:micrometer-core:${DependencyVersion.micrometerVersion}")
+                addDependency("implementation", "io.micrometer:micrometer-registry-prometheus:${DependencyVersion.micrometerVersion}")
 
                 // web project
                 if (DependencyUtils.hasDependency(project, listOf("implementation"), "org.springframework.boot:spring-boot-starter-web")) {
+                    addDependency("implementation", "org.springframework.boot:spring-boot-starter-actuator:${DependencyVersion.springBootVersion}")
+                } else if (DependencyUtils.hasDependency(project, listOf("implementation"), "org.springframework.boot:spring-boot-starter-webflux")) {
                     addDependency("implementation", "org.springframework.boot:spring-boot-starter-actuator:${DependencyVersion.springBootVersion}")
                 }
             }

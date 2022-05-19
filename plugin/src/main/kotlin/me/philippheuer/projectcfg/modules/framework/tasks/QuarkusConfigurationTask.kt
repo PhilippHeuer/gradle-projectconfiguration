@@ -3,7 +3,6 @@ package me.philippheuer.projectcfg.modules.framework.tasks
 import me.philippheuer.projectcfg.ProjectConfigurationExtension
 import me.philippheuer.projectcfg.domain.ProjectType
 import me.philippheuer.projectcfg.util.DependencyUtils
-import me.philippheuer.projectcfg.util.PluginHelper
 import me.philippheuer.projectcfg.util.TaskUtils
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.Input
