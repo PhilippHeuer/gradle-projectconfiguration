@@ -3,6 +3,7 @@ package me.philippheuer.projectcfg
 import me.philippheuer.projectcfg.domain.ProjectContext
 import me.philippheuer.projectcfg.modules.check.CheckstyleFeature
 import me.philippheuer.projectcfg.modules.check.DetektFeature
+import me.philippheuer.projectcfg.modules.documentation.DokkaDocumentation
 import me.philippheuer.projectcfg.modules.documentation.JavadocDocumentation
 import me.philippheuer.projectcfg.modules.features.GitPropertiesFeature
 import me.philippheuer.projectcfg.modules.features.JUnit5Feature
@@ -60,6 +61,7 @@ abstract class ProjectConfigurationPlugin : Plugin<Project> {
             QuarkusFramework(ctx),
             // documentation
             JavadocDocumentation(ctx),
+            DokkaDocumentation(ctx),
             // features
             PublishFeature(ctx),
             SigningFeature(ctx),

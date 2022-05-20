@@ -6,7 +6,7 @@ import me.philippheuer.projectcfg.domain.PluginModule
 import me.philippheuer.projectcfg.domain.ProjectLanguage
 import me.philippheuer.projectcfg.domain.ProjectType
 import me.philippheuer.projectcfg.util.DependencyUtils
-import me.philippheuer.projectcfg.util.HashUtils
+import me.philippheuer.projectcfg.util.JavadocIOUtils
 import me.philippheuer.projectcfg.util.PluginLogger
 import org.gradle.api.Action
 import org.gradle.api.JavaVersion
@@ -18,13 +18,11 @@ import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.tasks.javadoc.Javadoc
 import org.gradle.external.javadoc.StandardJavadocDocletOptions
-import java.net.URL
 
 /**
  * Javadoc Module
  *
- * @param project the reference to the gradle project
- * @property config the global configuration of this plugin
+ * @param ctx plugin context
  * @constructor Creates a new instance of this module
  */
 class JavadocDocumentation constructor(override var ctx: IProjectContext) : PluginModule {
@@ -68,37 +66,13 @@ class JavadocDocumentation constructor(override var ctx: IProjectContext) : Plug
                         (it.options as StandardJavadocDocletOptions).links(*config.javadocLinks.get().toTypedArray())
                     }
 
-                    // javadoc auto-linking
+                    // javadoc auto-linking via javadoc.io
                     if (config.javadocAutoLinking.get()) {
                         DependencyUtils.getDependencies(it.project, listOf("implementation", "api", "default")).forEach { dep ->
-                            // try to auto-link all external javadocs via javadoc.io
-                            if (dep.version != null && !DependencyUtils.isProjectModule(project, dep)) {
-                                val link = "https://javadoc.io/doc/${dep.group}/${dep.name}/${dep.version}"
-                                val depHash = HashUtils.stringToSha256Hash("${dep.group}/${dep.name}/${dep.version}")
-                                val checkCacheFile = project.file("$rootDir/build/javadocio-check/$depHash")
-
-                                // check if javadoc exists using file (package-list, element-list)
-                                var found = false
-                                if (checkCacheFile.exists()) {
-                                    found = checkCacheFile.readText() == "true"
-                                } else {
-                                    listOf("package-list", "element-list").forEach { file ->
-                                        try {
-                                            URL("$link/$file").openStream()
-                                            found = true
-                                        } catch (ex: Exception) {
-                                            // ignore
-                                        }
-                                    }
-                                }
-
-                                if (found) {
-                                    PluginLogger.log(LogLevel.DEBUG, "append [tasks.javadoc.options.links] element [${link}]")
+                            if (dep.version != null) {
+                                JavadocIOUtils.getLinkForDependency(project, dep.group, dep.name, dep.version)?.let { link ->
+                                    PluginLogger.log(LogLevel.DEBUG,"append [tasks.javadoc.options.links] element [${link}]")
                                     (it.options as StandardJavadocDocletOptions).links?.add(link)
-                                }
-                                if (!checkCacheFile.exists()) {
-                                    checkCacheFile.parentFile.mkdirs()
-                                    checkCacheFile.writeText(found.toString())
                                 }
                             }
                         }

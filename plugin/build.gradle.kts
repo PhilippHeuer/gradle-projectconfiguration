@@ -14,6 +14,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:${BuildPluginsVersion.KOTLIN}")
     implementation("org.jetbrains.kotlin:kotlin-allopen:${BuildPluginsVersion.KOTLIN}")
     implementation("org.jetbrains.kotlin:kotlin-noarg:${BuildPluginsVersion.KOTLIN}")
+    implementation("org.jetbrains.dokka:dokka-gradle-plugin:${BuildPluginsVersion.KOTLIN}")
 
     // third party - spring
     implementation("org.springframework.boot:spring-boot-gradle-plugin:2.7.0")
