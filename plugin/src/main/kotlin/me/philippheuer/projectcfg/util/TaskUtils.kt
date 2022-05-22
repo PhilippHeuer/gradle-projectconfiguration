@@ -17,6 +17,7 @@ class TaskUtils {
 
         fun writeContentToOutputResources(project: Project, fileName: String, content: String) {
             val outputFile = getOutputResourcesFile(project, fileName)
+            outputFile.parent.toFile().mkdirs()
             outputFile.writeText(content)
         }
 
