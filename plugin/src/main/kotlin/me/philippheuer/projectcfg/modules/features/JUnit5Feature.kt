@@ -24,7 +24,7 @@ class JUnit5Feature constructor(override var ctx: IProjectContext) : PluginModul
 
     override fun run() {
         configureJunitDependencies(ctx.project, ctx.config)
-        configureTestTask(ctx.project)
+        configureTestTask(ctx)
     }
 
     companion object {
@@ -43,10 +43,12 @@ class JUnit5Feature constructor(override var ctx: IProjectContext) : PluginModul
             project.addDependency("testImplementation", "org.slf4j:slf4j-simple:${DependencyVersion.slf4jVersion}")
         }
 
-        private fun configureTestTask(project: Project) {
-            project.applyPlugin("org.gradle.test-retry")
+        private fun configureTestTask(ctx: IProjectContext) {
+            ctx.project.applyPlugin("org.gradle.test-retry")
 
-            project.tasks.withType(Test::class.java).configureEach { test ->
+            ctx.project.tasks.withType(Test::class.java).configureEach { test ->
+                PluginLogger.setContext(ctx.project, ctx.config, "${JUnit5Feature::class.java}")
+
                 // use junit5
                 PluginLogger.log(LogLevel.DEBUG, "setting [test.useJUnitPlatform()]")
                 test.useJUnitPlatform()

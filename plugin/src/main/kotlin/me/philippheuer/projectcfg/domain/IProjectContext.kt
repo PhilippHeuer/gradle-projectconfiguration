@@ -27,10 +27,6 @@ interface IProjectContext {
         return framework.valueEquals(config.framework.get())
     }
 
-    fun isProjectLibrary(library: IProjectLibrary): Boolean {
-        return config.libraries.get().any { it.valueEquals(library) }
-    }
-
     fun hasProjectDependency(dependencyNotation: String): Boolean {
         return DependencyUtils.hasDependency(project, listOf("implementation", "api"), dependencyNotation)
     }

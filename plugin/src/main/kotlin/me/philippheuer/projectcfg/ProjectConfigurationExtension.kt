@@ -10,11 +10,9 @@ import me.philippheuer.projectcfg.config.PluginConfig
 import me.philippheuer.projectcfg.config.ShadowConfig
 import me.philippheuer.projectcfg.domain.IProjectFramework
 import me.philippheuer.projectcfg.domain.IProjectLanguage
-import me.philippheuer.projectcfg.domain.IProjectLibrary
 import me.philippheuer.projectcfg.domain.IProjectType
 import me.philippheuer.projectcfg.domain.ProjectFramework
 import me.philippheuer.projectcfg.domain.ProjectLanguage
-import me.philippheuer.projectcfg.domain.ProjectLibraries
 import me.philippheuer.projectcfg.domain.ProjectType
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
@@ -36,7 +34,6 @@ open class ProjectConfigurationExtension @Inject constructor(val project: Projec
     override val javaVersion: Property<JavaVersion> = objects.property(JavaVersion::class.java).convention(JavaVersion.VERSION_11)
     override val type: Property<IProjectType> = objects.property(IProjectType::class.java).convention(ProjectType.DEFAULT)
     override val framework: Property<IProjectFramework> = objects.property(IProjectFramework::class.java).convention(ProjectFramework.NONE)
-    override val libraries: ListProperty<IProjectLibrary> = objects.listProperty(IProjectLibrary::class.java).convention(ProjectLibraries.default())
     override val fileEncoding: Property<String> = objects.property(String::class.java).convention("UTF-8")
     override val artifactRepository: Property<ArtifactRepository> = objects.property(ArtifactRepository::class.java)
     override val artifactGroupId: Property<String> = objects.property(String::class.java)
@@ -89,20 +86,24 @@ open class ProjectConfigurationExtension @Inject constructor(val project: Projec
 
         // artifact
         if (!artifactGroupId.isPresent) {
-            if (project.properties.containsKey("artifact.group")) {
+            if (project.properties["artifact.group"] is String) {
                 artifactGroupId.set(project.properties["artifact.group"] as String)
+            } else if (project.properties["group"] is String) {
+                artifactGroupId.set(project.properties["group"] as String)
             } else {
-                artifactGroupId.set(project.group as String)
+                artifactGroupId.set(project.group as String?)
             }
         }
         if (!artifactId.isPresent) {
             artifactId.set(project.name)
         }
         if (!artifactVersion.isPresent) {
-            if (project.properties.containsKey("artifact.version")) {
+            if (project.properties["artifact.version"] is String) {
                 artifactVersion.set(project.properties["artifact.version"] as String)
+            } else if (project.properties["version"] is String) {
+                artifactVersion.set(project.properties["version"] as String)
             } else if (project.version != "undefined") {
-                artifactVersion.set(project.version as String)
+                artifactVersion.set(project.version as String?)
             }
         }
     }

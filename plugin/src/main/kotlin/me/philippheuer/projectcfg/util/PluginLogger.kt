@@ -12,7 +12,7 @@ class PluginLogger {
 
         lateinit var project: Project
         lateinit var config: ProjectConfigurationExtension
-        var module: PluginModule? = null
+        var module: String? = null
 
         /**
          * logs a message
@@ -24,7 +24,7 @@ class PluginLogger {
             if (config.logLevel.isPresent) {
                 if (config.logLevel.get() <= logLevel) {
                     if (module != null) {
-                        println("$logLevel: [${project.name}] ${module!!::class.java} -> $message")
+                        println("$logLevel: [${project.name}] $module -> $message")
                     } else {
                         println("$logLevel: [${project.name}] -> $message")
                     }
@@ -48,7 +48,7 @@ class PluginLogger {
         /**
          * updates the logger context
          */
-        fun setContext(project: Project, config: ProjectConfigurationExtension, module: PluginModule) {
+        fun setContext(project: Project, config: ProjectConfigurationExtension, module: String?) {
             this.project = project
             this.config = config
             this.module = module

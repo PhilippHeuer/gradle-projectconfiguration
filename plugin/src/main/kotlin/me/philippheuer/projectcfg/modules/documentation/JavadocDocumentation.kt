@@ -8,6 +8,8 @@ import me.philippheuer.projectcfg.domain.ProjectType
 import me.philippheuer.projectcfg.util.DependencyUtils
 import me.philippheuer.projectcfg.util.JavadocIOUtils
 import me.philippheuer.projectcfg.util.PluginLogger
+import me.philippheuer.projectcfg.util.isRootProject
+import me.philippheuer.projectcfg.util.isRootProjectWithoutSubprojectsOrSubproject
 import org.gradle.api.Action
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
@@ -32,13 +34,15 @@ class JavadocDocumentation constructor(override var ctx: IProjectContext) : Plug
 
     override fun run() {
         // javadoc task
-        if (ctx.project.subprojects.size == 0 || (ctx.project.subprojects.size != 0 && ctx.project.rootProject != ctx.project)) {
+        if (ctx.project.isRootProjectWithoutSubprojectsOrSubproject()) {
             configureJavadocTask(ctx.project, ctx.config)
             configureHtml5JDK9(ctx.project)
         }
 
         // javadoc aggregate task
-        configureJavadocAggregateTask(ctx.project, ctx.config)
+        if (ctx.project.isRootProject()) {
+            configureJavadocAggregateTask(ctx.project, ctx.config)
+        }
     }
 
     companion object {

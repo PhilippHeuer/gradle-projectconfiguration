@@ -1,7 +1,6 @@
 package me.philippheuer.projectcfg.modules.framework.tasks
 
 import me.philippheuer.projectcfg.ProjectConfigurationExtension
-import me.philippheuer.projectcfg.domain.ProjectLibraries
 import me.philippheuer.projectcfg.util.DependencyUtils
 import me.philippheuer.projectcfg.util.TaskUtils
 import org.gradle.api.DefaultTask
@@ -39,9 +38,6 @@ abstract class SpringConfigurationTask : DefaultTask() {
         val log4j2File = TaskUtils.getOutputResourcesFile(project, "log4j2.xml")
         if (!log4j2File.toFile().isFile && DependencyUtils.hasDependency(project, listOf("compileClasspath"), "org.apache.logging.log4j:log4j-core")) {
             var configFile = "logging/log4j2.xml"
-            if (config.libraries.get().any { it.valueEquals(ProjectLibraries.SENTRYIO) }) {
-                configFile = "logging/log4j2-sentry.xml"
-            }
 
             javaClass.classLoader.getResourceAsStream(configFile).use {
                 Files.copy(it!!, log4j2File)

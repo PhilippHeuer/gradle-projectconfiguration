@@ -9,10 +9,17 @@ fun Project.applyPlugin(pluginId: String) {
 }
 
 /**
- * some plugins should only be applied to the root project, if there are no subprojects
+ * checks if the current project is the root project
+ */
+fun Project.isRootProject() : Boolean {
+    return this.project == this.rootProject
+}
+
+/**
+ * checks if the current project is the root project without subprojects OR a subproject
  */
 fun Project.isRootProjectWithoutSubprojectsOrSubproject() : Boolean {
-    return this.subprojects.size == 0 || (this.subprojects.size != 0 && this.rootProject != this)
+    return this.subprojects.size == 0 || (this.subprojects.size != 0 && this.project != this.rootProject)
 }
 
 fun Project.addDependency(configurationName: String, dependencyNotation: String) {

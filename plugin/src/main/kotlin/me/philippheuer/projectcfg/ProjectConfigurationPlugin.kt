@@ -7,7 +7,6 @@ import me.philippheuer.projectcfg.modules.documentation.DokkaDocumentation
 import me.philippheuer.projectcfg.modules.documentation.JavadocDocumentation
 import me.philippheuer.projectcfg.modules.features.GitPropertiesFeature
 import me.philippheuer.projectcfg.modules.features.JUnit5Feature
-import me.philippheuer.projectcfg.modules.features.JacksonFeature
 import me.philippheuer.projectcfg.modules.features.LoggingLibraryFeature
 import me.philippheuer.projectcfg.modules.features.LombokFeature
 import me.philippheuer.projectcfg.modules.features.ManifestFeature
@@ -18,12 +17,6 @@ import me.philippheuer.projectcfg.modules.features.TestLoggingFeature
 import me.philippheuer.projectcfg.modules.features.VersionUpgradeFeature
 import me.philippheuer.projectcfg.modules.framework.QuarkusFramework
 import me.philippheuer.projectcfg.modules.framework.SpringBootFramework
-import me.philippheuer.projectcfg.modules.library.AvailabilityLibrary
-import me.philippheuer.projectcfg.modules.library.Events4JLibrary
-import me.philippheuer.projectcfg.modules.library.JacksonLibrary
-import me.philippheuer.projectcfg.modules.library.MockitoLibrary
-import me.philippheuer.projectcfg.modules.library.SentryLibrary
-import me.philippheuer.projectcfg.modules.library.VaultLibrary
 import me.philippheuer.projectcfg.modules.policy.GradleWrapperVersionPolicy
 import me.philippheuer.projectcfg.modules.report.DependencyReport
 import me.philippheuer.projectcfg.modules.type.JavaApplicationType
@@ -60,8 +53,8 @@ abstract class ProjectConfigurationPlugin : Plugin<Project> {
             SpringBootFramework(ctx),
             QuarkusFramework(ctx),
             // documentation
-            JavadocDocumentation(ctx),
             DokkaDocumentation(ctx),
+            JavadocDocumentation(ctx),
             // features
             PublishFeature(ctx),
             SigningFeature(ctx),
@@ -71,16 +64,8 @@ abstract class ProjectConfigurationPlugin : Plugin<Project> {
             ManifestFeature(ctx),
             JUnit5Feature(ctx),
             VersionUpgradeFeature(ctx),
-            JacksonFeature(ctx),
             LoggingLibraryFeature(ctx),
             GitPropertiesFeature(ctx),
-            // library
-            MockitoLibrary(ctx),
-            AvailabilityLibrary(ctx),
-            Events4JLibrary(ctx),
-            SentryLibrary(ctx),
-            VaultLibrary(ctx),
-            JacksonLibrary(ctx),
             // check
             CheckstyleFeature(ctx),
             DetektFeature(ctx),
@@ -90,7 +75,7 @@ abstract class ProjectConfigurationPlugin : Plugin<Project> {
 
         // init module
         modules.forEach {
-            PluginLogger.setContext(project, config, it)
+            PluginLogger.setContext(project, config, "${it::class.java}")
             it.init()
         }
 
@@ -101,7 +86,7 @@ abstract class ProjectConfigurationPlugin : Plugin<Project> {
 
             // process module
             modules.forEach {
-                PluginLogger.setContext(project, config, it)
+                PluginLogger.setContext(project, config, "${it::class.java}")
                 val enabled = it.check()
                 if (enabled) {
                     if (project.isRootProjectWithoutSubprojectsOrSubproject()) {

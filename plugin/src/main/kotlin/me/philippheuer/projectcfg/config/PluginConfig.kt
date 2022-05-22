@@ -2,11 +2,9 @@ package me.philippheuer.projectcfg.config
 
 import me.philippheuer.projectcfg.domain.IProjectFramework
 import me.philippheuer.projectcfg.domain.IProjectLanguage
-import me.philippheuer.projectcfg.domain.IProjectLibrary
 import me.philippheuer.projectcfg.domain.IProjectType
 import org.gradle.api.artifacts.repositories.ArtifactRepository
 import org.gradle.api.logging.LogLevel
-import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.publish.maven.MavenPom
 
@@ -23,9 +21,6 @@ interface PluginConfig {
 
     // framework used in the project
     val framework: Property<IProjectFramework>
-
-    // libraries to include
-    val libraries: ListProperty<IProjectLibrary>
 
     // file encoding used in the project
     val fileEncoding: Property<String>
