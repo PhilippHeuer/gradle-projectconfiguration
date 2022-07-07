@@ -17,6 +17,7 @@ import me.philippheuer.projectcfg.modules.features.TestLoggingFeature
 import me.philippheuer.projectcfg.modules.features.VersionUpgradeFeature
 import me.philippheuer.projectcfg.modules.framework.QuarkusFramework
 import me.philippheuer.projectcfg.modules.framework.SpringBootFramework
+import me.philippheuer.projectcfg.modules.policy.DefaultRepositoryPolicy
 import me.philippheuer.projectcfg.modules.policy.GradleWrapperVersionPolicy
 import me.philippheuer.projectcfg.modules.report.DependencyReport
 import me.philippheuer.projectcfg.modules.type.JavaApplicationType
@@ -46,6 +47,7 @@ abstract class ProjectConfigurationPlugin : Plugin<Project> {
         val modules = listOf(
             // policy
             GradleWrapperVersionPolicy(ctx),
+            DefaultRepositoryPolicy(ctx),
             // type
             JavaApplicationType(ctx),
             JavaLibraryType(ctx),

@@ -7,10 +7,6 @@ import me.philippheuer.projectcfg.modules.report.tasks.DependenciesReportResourc
 private const val DEPENDENCY_REPORT_TASK_NAME = "projectcfg-dependency-report-resources"
 
 class DependencyReport constructor(override var ctx: IProjectContext) : PluginModule {
-    override fun init() {
-
-    }
-
     override fun check(): Boolean {
         return true
     }

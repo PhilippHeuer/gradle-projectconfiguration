@@ -1,6 +1,8 @@
 package me.philippheuer.projectcfg.util
 
 import org.gradle.api.Project
+import org.gradle.api.UnknownDomainObjectException
+import org.gradle.api.UnknownTaskException
 import org.gradle.api.logging.LogLevel
 
 fun Project.applyPlugin(pluginId: String) {
@@ -50,6 +52,17 @@ fun Project.addConstraint(dependencyNotation: String, version: String) {
 
     configurationNames.forEach { configurationName ->
         dependencies.constraints.add(configurationName, dependencyNotation) { constraint -> constraint.version { v -> v.strictly(version) } }
+    }
+}
+
+fun Project.hasTask(name: String): Boolean {
+    return try {
+        tasks.named(name)
+        true
+    } catch (e: UnknownTaskException) {
+        false
+    } catch (e: UnknownDomainObjectException) {
+        false
     }
 }
 

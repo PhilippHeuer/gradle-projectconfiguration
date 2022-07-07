@@ -6,9 +6,11 @@ import me.philippheuer.projectcfg.domain.PluginModule
 import me.philippheuer.projectcfg.domain.ProjectLanguage
 import me.philippheuer.projectcfg.domain.ProjectType
 import me.philippheuer.projectcfg.util.DependencyVersion
+import me.philippheuer.projectcfg.util.PluginLogger
 import me.philippheuer.projectcfg.util.addDependency
 import me.philippheuer.projectcfg.util.applyPlugin
 import org.gradle.api.Project
+import org.gradle.api.logging.LogLevel
 import org.gradle.api.plugins.BasePluginExtension
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.tasks.compile.JavaCompile
@@ -46,10 +48,12 @@ class JavaLibraryType constructor(override var ctx: IProjectContext) : PluginMod
                         // java version
                         it.sourceCompatibility = config.javaVersion.get()
                         it.targetCompatibility = config.javaVersion.get()
+                        PluginLogger.log(LogLevel.INFO, "set sourceCompatibility = ${it.sourceCompatibility}, targetCompatibility = ${it.targetCompatibility}")
 
                         // sources / javadocs
                         it.withSourcesJar()
                         it.withJavadocJar()
+                        PluginLogger.log(LogLevel.INFO, "add tasks SourcesJar, JavadocJar")
 
                         // sourceSets
                         listOf("main", "test").forEach { name ->
