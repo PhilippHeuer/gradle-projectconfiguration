@@ -17,7 +17,7 @@ dependencies {
     implementation("org.jetbrains.dokka:dokka-gradle-plugin:${BuildPluginsVersion.KOTLIN}")
 
     // third party - spring
-    implementation("org.springframework.boot:spring-boot-gradle-plugin:2.7.0")
+    implementation("org.springframework.boot:spring-boot-gradle-plugin:2.7.1")
     //implementation("org.springframework.experimental:spring-native:0.11.2")
     //implementation("org.springframework.experimental:spring-aot-gradle-plugin:0.11.2")
 
