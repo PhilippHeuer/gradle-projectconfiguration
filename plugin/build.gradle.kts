@@ -32,7 +32,7 @@ dependencies {
     implementation("com.coditory.gradle:manifest-plugin:0.1.14")
     implementation("com.github.ben-manes:gradle-versions-plugin:0.42.0")
     implementation("io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.20.0")
-    implementation("com.gorylenko.gradle-git-properties:gradle-git-properties:2.4.0")
+    implementation("com.gorylenko.gradle-git-properties:gradle-git-properties:2.4.1")
 
     // test
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
