@@ -31,7 +31,7 @@ dependencies {
     implementation("gradle.plugin.com.github.johnrengelman:shadow:7.1.2")
     implementation("com.coditory.gradle:manifest-plugin:0.2.0")
     implementation("com.github.ben-manes:gradle-versions-plugin:0.42.0")
-    implementation("io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.20.0")
+    implementation("io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.21.0")
     implementation("com.gorylenko.gradle-git-properties:gradle-git-properties:2.4.1")
 
     // test
