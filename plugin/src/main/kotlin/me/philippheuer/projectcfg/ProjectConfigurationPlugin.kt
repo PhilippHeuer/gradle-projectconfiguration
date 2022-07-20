@@ -7,6 +7,7 @@ import me.philippheuer.projectcfg.modules.documentation.DokkaDocumentation
 import me.philippheuer.projectcfg.modules.documentation.JavadocDocumentation
 import me.philippheuer.projectcfg.modules.features.GitPropertiesFeature
 import me.philippheuer.projectcfg.modules.features.JUnit5Feature
+import me.philippheuer.projectcfg.modules.features.JacocoFeature
 import me.philippheuer.projectcfg.modules.features.LoggingLibraryFeature
 import me.philippheuer.projectcfg.modules.features.LombokFeature
 import me.philippheuer.projectcfg.modules.features.ManifestFeature
@@ -58,6 +59,7 @@ abstract class ProjectConfigurationPlugin : Plugin<Project> {
             DokkaDocumentation(ctx),
             JavadocDocumentation(ctx),
             // features
+            JacocoFeature(ctx),
             PublishFeature(ctx),
             SigningFeature(ctx),
             LombokFeature(ctx),

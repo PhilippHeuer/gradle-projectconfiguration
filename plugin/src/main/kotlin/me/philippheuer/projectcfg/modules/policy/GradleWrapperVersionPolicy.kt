@@ -26,7 +26,7 @@ class GradleWrapperVersionPolicy constructor(override var ctx: IProjectContext) 
     }
 
     companion object {
-        private val allowedVersions = listOf("7.3.3", "7.4", "7.4.2")
+        private val allowedVersions = listOf("7.3.3", "7.4", "7.4.1", "7.4.2", "7.5")
         private val suggestedVersion = allowedVersions.last()
 
         fun checkGradleVersion(project: Project) {
