@@ -32,17 +32,22 @@ class PublishFeature constructor(override var ctx: IProjectContext) : PluginModu
                 if (config.artifactRepository.isPresent) {
                     publish.repositories.add(config.artifactRepository.get())
                 } else {
-                    publish.repositories.add(
-                        project.repositories.maven { m ->
-                            val target = project.properties["repository.publish.target"] as String
-                            m.name = target
-                            m.url = URI(project.properties["repository.publish.$target.url"] as String)
-                            m.credentials.run {
-                                username = project.properties["repository.publish.$target.username"] as String
-                                password = project.properties["repository.publish.$target.password"] as String
+                    val target = project.properties.getOrDefault("repository.publish.target", "") as String
+                    if (project.properties.containsKey("repository.publish.$target.url")) {
+                        PluginLogger.log(LogLevel.INFO, "configuring repository for publication for $target")
+                        publish.repositories.add(
+                            project.repositories.maven { m ->
+                                m.name = target
+                                m.url = URI(project.properties["repository.publish.$target.url"] as String)
+                                m.credentials.run {
+                                    username = project.properties["repository.publish.$target.username"] as String
+                                    password = project.properties["repository.publish.$target.password"] as String
+                                }
                             }
-                        }
-                    )
+                        )
+                    } else {
+                        PluginLogger.log(LogLevel.INFO, "not configuring repository for publication, repository.publish.$target.url is not set")
+                    }
                 }
 
                 publish.publications.create("main", MavenPublication::class.java) { pub ->
