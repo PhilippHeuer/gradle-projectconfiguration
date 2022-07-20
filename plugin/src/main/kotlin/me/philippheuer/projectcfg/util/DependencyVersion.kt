@@ -24,7 +24,7 @@ open class DependencyVersion {
         // renovate: datasource=maven depName=com.lmax:disruptor
         @JvmStatic var disruptorVersion: String = "3.4.4"
         // renovate: datasource=maven depName=io.sentry:sentry
-        @JvmStatic var sentryVersion: String = "6.2.1"
+        @JvmStatic var sentryVersion: String = "6.3.0"
         // renovate: datasource=maven depName=org.apache.logging.log4j:log4j
         @JvmStatic var log4j2Version: String = "2.18.0"
         // renovate: datasource=maven depName=org.jboss:jandex
