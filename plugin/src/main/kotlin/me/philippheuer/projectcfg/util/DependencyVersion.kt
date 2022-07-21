@@ -11,7 +11,7 @@ open class DependencyVersion {
         // renovate: datasource=maven depName=org.mockito.kotlin:mockito-kotlin
         @JvmStatic var mockitoKotlinVersion: String = "4.0.0"
         // renovate: datasource=maven depName=org.springframework.boot:spring-boot-starter
-        @JvmStatic var springBootVersion: String = "2.7.1"
+        @JvmStatic var springBootVersion: String = "2.7.2"
         @JvmStatic var springNativeVersion: String = "0.11.2"
         // renovate: datasource=maven depName=io.quarkus:quarkus-core
         @JvmStatic var quarkusVersion: String = "2.11.0.Final"
