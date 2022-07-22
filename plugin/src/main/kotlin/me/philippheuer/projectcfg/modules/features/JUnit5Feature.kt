@@ -4,6 +4,7 @@ import me.philippheuer.projectcfg.ProjectConfigurationExtension
 import me.philippheuer.projectcfg.domain.IProjectContext
 import me.philippheuer.projectcfg.domain.PluginModule
 import me.philippheuer.projectcfg.domain.ProjectLanguage
+import me.philippheuer.projectcfg.domain.ProjectType
 import me.philippheuer.projectcfg.util.DependencyVersion
 import me.philippheuer.projectcfg.util.PluginLogger
 import me.philippheuer.projectcfg.util.addDependency
@@ -19,7 +20,7 @@ import org.gradle.testretry.TestRetryTaskExtension
  */
 class JUnit5Feature constructor(override var ctx: IProjectContext) : PluginModule {
     override fun check(): Boolean {
-        return true
+        return !ctx.project.pluginManager.hasPlugin("java-platform")
     }
 
     override fun run() {

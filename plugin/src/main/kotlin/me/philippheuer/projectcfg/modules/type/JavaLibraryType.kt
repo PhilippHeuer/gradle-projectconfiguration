@@ -32,7 +32,9 @@ class JavaLibraryType constructor(override var ctx: IProjectContext) : PluginMod
 
     companion object {
         fun configureJavaLibrary(project: Project, config: ProjectConfigurationExtension) {
-            project.applyPlugin("java-library")
+            if (!project.pluginManager.hasPlugin("java-platform")) {
+                project.applyPlugin("java-library")
+            }
             project.applyPlugin("maven-publish")
 
             project.run {
@@ -44,21 +46,23 @@ class JavaLibraryType constructor(override var ctx: IProjectContext) : PluginMod
                         it.archivesName.set(config.artifactId.get())
                     }
 
-                    configure(JavaPluginExtension::class.java) {
-                        // java version
-                        it.sourceCompatibility = config.javaVersion.get()
-                        it.targetCompatibility = config.javaVersion.get()
-                        PluginLogger.log(LogLevel.INFO, "set sourceCompatibility = ${it.sourceCompatibility}, targetCompatibility = ${it.targetCompatibility}")
+                    if (!project.pluginManager.hasPlugin("java-platform")) {
+                        configure(JavaPluginExtension::class.java) {
+                            // java version
+                            it.sourceCompatibility = config.javaVersion.get()
+                            it.targetCompatibility = config.javaVersion.get()
+                            PluginLogger.log(LogLevel.INFO, "set sourceCompatibility = ${it.sourceCompatibility}, targetCompatibility = ${it.targetCompatibility}")
 
-                        // sources / javadocs
-                        it.withSourcesJar()
-                        it.withJavadocJar()
-                        PluginLogger.log(LogLevel.INFO, "add tasks SourcesJar, JavadocJar")
+                            // sources / javadocs
+                            it.withSourcesJar()
+                            it.withJavadocJar()
+                            PluginLogger.log(LogLevel.INFO, "add tasks SourcesJar, JavadocJar")
 
-                        // sourceSets
-                        listOf("main", "test").forEach { name ->
-                            it.sourceSets.getByName(name) { ss ->
-                                ss.java.setSrcDirs(listOf("src/$name/java", "src/$name/kotlin"))
+                            // sourceSets
+                            listOf("main", "test").forEach { name ->
+                                it.sourceSets.getByName(name) { ss ->
+                                    ss.java.setSrcDirs(listOf("src/$name/java", "src/$name/kotlin"))
+                                }
                             }
                         }
                     }

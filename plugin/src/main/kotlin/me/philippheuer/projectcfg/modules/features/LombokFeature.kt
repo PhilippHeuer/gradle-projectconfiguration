@@ -5,6 +5,7 @@ import me.philippheuer.projectcfg.ProjectConfigurationExtension
 import me.philippheuer.projectcfg.domain.IProjectContext
 import me.philippheuer.projectcfg.domain.PluginModule
 import me.philippheuer.projectcfg.domain.ProjectLanguage
+import me.philippheuer.projectcfg.domain.ProjectType
 import me.philippheuer.projectcfg.util.PluginLogger
 import me.philippheuer.projectcfg.util.applyPlugin
 import me.philippheuer.projectcfg.util.isRootProjectWithoutSubprojectsOrSubproject
@@ -14,7 +15,7 @@ import org.gradle.api.tasks.javadoc.Javadoc
 
 class LombokFeature constructor(override var ctx: IProjectContext) : PluginModule {
     override fun check(): Boolean {
-        if (ctx.project.isRootProjectWithoutSubprojectsOrSubproject() && ctx.isProjectLanguage(ProjectLanguage.JAVA)) {
+        if (ctx.project.isRootProjectWithoutSubprojectsOrSubproject() && ctx.isProjectLanguage(ProjectLanguage.JAVA) && !ctx.project.pluginManager.hasPlugin("java-platform")) {
             return true
         }
 

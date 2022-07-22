@@ -4,6 +4,7 @@ import com.coditory.gradle.manifest.ManifestPluginExtension
 import me.philippheuer.projectcfg.domain.IProjectContext
 import me.philippheuer.projectcfg.domain.PluginModule
 import me.philippheuer.projectcfg.domain.ProjectLanguage
+import me.philippheuer.projectcfg.domain.ProjectType
 import me.philippheuer.projectcfg.util.PluginLogger
 import me.philippheuer.projectcfg.util.applyPlugin
 import org.gradle.api.Project
@@ -13,7 +14,7 @@ import java.io.File
 
 class ManifestFeature constructor(override var ctx: IProjectContext) : PluginModule {
     override fun check(): Boolean {
-        return ctx.isProjectLanguage(ProjectLanguage.JAVA)
+        return ctx.isProjectLanguage(ProjectLanguage.JAVA) && !ctx.project.pluginManager.hasPlugin("java-platform")
     }
 
     override fun run() {

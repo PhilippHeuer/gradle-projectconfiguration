@@ -51,7 +51,12 @@ class PublishFeature constructor(override var ctx: IProjectContext) : PluginModu
                 }
 
                 publish.publications.create("main", MavenPublication::class.java) { pub ->
-                    pub.from(project.components.getByName("java"))
+                    if (project.pluginManager.hasPlugin("java-platform")) {
+                        pub.from(project.components.getByName("javaPlatform")) // BOM
+                    } else {
+                        pub.from(project.components.getByName("java"))
+                    }
+
                     pub.groupId = config.artifactGroupId.get()
                     pub.artifactId = config.artifactId.get()
                     pub.version = config.artifactVersion.get()
