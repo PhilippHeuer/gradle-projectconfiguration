@@ -5,7 +5,7 @@ open class DependencyVersion {
         // renovate: datasource=maven depName=org.jetbrains.kotlin:kotlin-stdlib
         @JvmStatic var kotlinVersion: String = "1.7.10"
         // renovate: datasource=maven depName=org.junit.jupiter:junit-jupiter-api
-        @JvmStatic var junit5Version: String = "5.8.2"
+        @JvmStatic var junit5Version: String = "5.9.0"
         // renovate: datasource=maven depName=org.mockito:mockito-core
         @JvmStatic var mockitoVersion: String = "4.6.1"
         // renovate: datasource=maven depName=org.mockito.kotlin:mockito-kotlin
