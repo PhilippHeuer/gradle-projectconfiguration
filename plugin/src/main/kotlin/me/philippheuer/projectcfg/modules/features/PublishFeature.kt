@@ -64,6 +64,10 @@ class PublishFeature constructor(override var ctx: IProjectContext) : PluginModu
                         pom.name.set(config.artifactDisplayName.getOrElse(project.displayName))
                         pom.description.set(config.artifactDescription.getOrElse(""))
 
+                        if (project.pluginManager.hasPlugin("java-platform")) {
+                            pom.packaging = "pom"
+                        }
+
                         // customize pom
                         config.pom.invoke(pom)
                     }
