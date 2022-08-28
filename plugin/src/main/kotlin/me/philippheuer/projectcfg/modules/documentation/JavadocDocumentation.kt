@@ -29,7 +29,7 @@ import org.gradle.external.javadoc.StandardJavadocDocletOptions
  */
 class JavadocDocumentation constructor(override var ctx: IProjectContext) : PluginModule {
     override fun check(): Boolean {
-        return ctx.isProjectLanguage(ProjectLanguage.JAVA)
+        return ctx.isProjectLanguage(ProjectLanguage.JAVA) && ctx.isProjectType(ProjectType.LIBRARY)
     }
 
     override fun run() {

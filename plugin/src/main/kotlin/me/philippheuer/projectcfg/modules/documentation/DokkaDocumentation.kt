@@ -3,6 +3,7 @@ package me.philippheuer.projectcfg.modules.documentation
 import me.philippheuer.projectcfg.domain.IProjectContext
 import me.philippheuer.projectcfg.domain.PluginModule
 import me.philippheuer.projectcfg.domain.ProjectLanguage
+import me.philippheuer.projectcfg.domain.ProjectType
 import me.philippheuer.projectcfg.util.DependencyUtils
 import me.philippheuer.projectcfg.util.JavadocIOUtils
 import me.philippheuer.projectcfg.util.PluginLogger
@@ -21,7 +22,7 @@ import org.jetbrains.dokka.gradle.DokkaTask
  */
 class DokkaDocumentation constructor(override var ctx: IProjectContext) : PluginModule {
     override fun check(): Boolean {
-        return ctx.isProjectLanguage(ProjectLanguage.KOTLIN)
+        return ctx.isProjectLanguage(ProjectLanguage.KOTLIN) && ctx.isProjectType(ProjectType.LIBRARY)
     }
 
     override fun run() {

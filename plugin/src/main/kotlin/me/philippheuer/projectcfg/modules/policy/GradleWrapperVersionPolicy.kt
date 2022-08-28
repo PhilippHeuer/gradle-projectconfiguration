@@ -26,8 +26,7 @@ class GradleWrapperVersionPolicy constructor(override var ctx: IProjectContext) 
     }
 
     companion object {
-        private val allowedVersions = listOf("7.3.3", "7.4", "7.4.1", "7.4.2", "7.5")
-        private val suggestedVersion = allowedVersions.last()
+        private const val suggestedVersion = "7.5.1"
 
         fun checkGradleVersion(project: Project) {
             // configure wrapper task
@@ -42,14 +41,6 @@ class GradleWrapperVersionPolicy constructor(override var ctx: IProjectContext) 
                 } catch (e: Exception) {
                     PluginLogger.log(LogLevel.WARN, "failed to fetch [gradle.checksum] - ${e.message}")
                 }
-            }
-
-            // validate gradle version
-            if (!allowedVersions.contains(project.gradle.gradleVersion)) {
-                PluginLogger.log(LogLevel.WARN, "checking [gradle.version] is [${project.gradle.gradleVersion}] result [not valid - one of $allowedVersions]")
-                project.logger.error("Gradle ${project.gradle.gradleVersion} is not supported!")
-            } else {
-                PluginLogger.log(LogLevel.INFO, "checking [gradle.version] is [${project.gradle.gradleVersion}] result [valid]")
             }
         }
     }
