@@ -25,7 +25,7 @@ dependencies {
     implementation("io.quarkus:gradle-application-plugin:2.12.0.Final")
 
     // third party - plugins
-    implementation("org.gradle:test-retry-gradle-plugin:1.4.0")
+    implementation("org.gradle:test-retry-gradle-plugin:1.4.1")
     implementation("io.freefair.gradle:lombok-plugin:6.5.0.3")
     implementation("com.adarshr:gradle-test-logger-plugin:3.2.0")
     implementation("gradle.plugin.com.github.johnrengelman:shadow:7.1.2")
