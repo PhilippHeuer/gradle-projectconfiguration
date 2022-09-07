@@ -22,7 +22,7 @@ dependencies {
     //implementation("org.springframework.experimental:spring-aot-gradle-plugin:0.11.2")
 
     // third party - quarkus
-    implementation("io.quarkus:gradle-application-plugin:2.12.0.Final")
+    implementation("io.quarkus:gradle-application-plugin:2.12.1.Final")
 
     // third party - plugins
     implementation("org.gradle:test-retry-gradle-plugin:1.4.1")
