@@ -53,6 +53,7 @@ class SpringBootFramework constructor(override var ctx: IProjectContext) : Plugi
                 // spring
                 addDependency("implementation", "org.springframework.boot:spring-boot-starter:${DependencyVersion.springBootVersion}")
                 addDependency("testImplementation", "org.springframework.boot:spring-boot-starter-test:${DependencyVersion.springBootVersion}")
+                addDependency("developmentOnly", "org.springframework.boot:spring-boot-devtools:${DependencyVersion.springBootVersion}")
 
                 // disable plain-jar task
                 tasks.getByName("jar").enabled = false // disable jar task, this would generate a plain jar
