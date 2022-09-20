@@ -20,7 +20,7 @@ import org.gradle.testretry.TestRetryTaskExtension
  */
 class JUnit5Feature constructor(override var ctx: IProjectContext) : PluginModule {
     override fun check(): Boolean {
-        return !ctx.project.pluginManager.hasPlugin("java-platform")
+        return !ctx.project.pluginManager.hasPlugin("java-platform") && (ctx.project.pluginManager.hasPlugin("java") || ctx.project.pluginManager.hasPlugin("java-library"))
     }
 
     override fun run() {
