@@ -115,13 +115,6 @@ abstract class QuarkusConfigurationTask : DefaultTask() {
             properties["quarkus.hibernate-orm.log.queries-slower-than-ms"] = "1000"
         }
 
-        // db migrations
-        if (config.frameworkDbMigrate.get()) {
-            properties["quarkus.flyway.clean-disabled"] = "true"
-            properties["quarkus.flyway.migrate-at-start"] = "true"
-            properties["quarkus.flyway.baseline-on-migrate"] = "true"
-        }
-
         return properties
     }
 }
