@@ -2,6 +2,8 @@
 
 A gradle plugin to share best-practice project configurations.
 
+Link: [plugins.gradle.org/plugin/me.philippheuer.configuration](https://plugins.gradle.org/plugin/me.philippheuer.configuration)
+
 ## Installation
 
 Add the plugin to your `build.gradle`:
