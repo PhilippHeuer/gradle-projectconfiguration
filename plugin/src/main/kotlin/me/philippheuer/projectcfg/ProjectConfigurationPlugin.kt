@@ -15,7 +15,6 @@ import me.philippheuer.projectcfg.modules.features.PublishFeature
 import me.philippheuer.projectcfg.modules.features.ShadowFeature
 import me.philippheuer.projectcfg.modules.features.SigningFeature
 import me.philippheuer.projectcfg.modules.features.TestLoggingFeature
-import me.philippheuer.projectcfg.modules.features.VersionUpgradeFeature
 import me.philippheuer.projectcfg.modules.framework.QuarkusFramework
 import me.philippheuer.projectcfg.modules.framework.SpringBootFramework
 import me.philippheuer.projectcfg.modules.policy.DefaultRepositoryPolicy
@@ -67,7 +66,6 @@ abstract class ProjectConfigurationPlugin : Plugin<Project> {
             ShadowFeature(ctx),
             ManifestFeature(ctx),
             JUnit5Feature(ctx),
-            VersionUpgradeFeature(ctx),
             LoggingLibraryFeature(ctx),
             GitPropertiesFeature(ctx),
             // check
