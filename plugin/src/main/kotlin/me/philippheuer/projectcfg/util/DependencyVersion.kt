@@ -14,7 +14,7 @@ open class DependencyVersion {
         @JvmStatic var springBootVersion: String = "2.7.4"
         @JvmStatic var springNativeVersion: String = "0.11.2"
         // renovate: datasource=maven depName=io.quarkus:quarkus-core
-        @JvmStatic var quarkusVersion: String = "2.13.1.Final"
+        @JvmStatic var quarkusVersion: String = "2.13.2.Final"
         // renovate: datasource=maven depName=io.github.microutils:kotlin-logging
         @JvmStatic var kotlinLoggingVersion: String = "3.0.2"
         // renovate: datasource=maven depName=org.awaitility:awaitility
