@@ -28,7 +28,7 @@ open class DependencyVersion {
         // renovate: datasource=maven depName=org.apache.logging.log4j:log4j
         @JvmStatic var log4j2Version: String = "2.19.0"
         // renovate: datasource=maven depName=org.jboss:jandex
-        @JvmStatic var jandexVersion: String = "2.4.3.Final"
+        @JvmStatic var jandexVersion: String = "3.0.3"
         // renovate: datasource=maven depName=io.micrometer:micrometer-bom
         @JvmStatic var micrometerVersion: String = "1.10.0"
     }
