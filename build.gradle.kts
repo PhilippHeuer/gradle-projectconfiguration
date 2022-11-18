@@ -1,6 +1,6 @@
 plugins {
-    kotlin("jvm") version BuildPluginsVersion.KOTLIN apply false
-    id("com.gradle.plugin-publish") version BuildPluginsVersion.PLUGIN_PUBLISH apply false
+    kotlin("jvm") version "1.7.21" apply false
+    id("com.gradle.plugin-publish") version "0.21.0" apply false
 }
 
 allprojects {
