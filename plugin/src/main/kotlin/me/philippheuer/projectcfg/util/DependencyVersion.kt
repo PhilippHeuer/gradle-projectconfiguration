@@ -30,6 +30,6 @@ open class DependencyVersion {
         // renovate: datasource=maven depName=org.jboss:jandex
         @JvmStatic var jandexVersion: String = "3.0.3"
         // renovate: datasource=maven depName=io.micrometer:micrometer-bom
-        @JvmStatic var micrometerVersion: String = "1.10.1"
+        @JvmStatic var micrometerVersion: String = "1.10.2"
     }
 }
