@@ -9,7 +9,7 @@ open class DependencyVersion {
         // renovate: datasource=maven depName=org.mockito:mockito-core
         @JvmStatic var mockitoVersion: String = "4.9.0"
         // renovate: datasource=maven depName=org.mockito.kotlin:mockito-kotlin
-        @JvmStatic var mockitoKotlinVersion: String = "4.0.0"
+        @JvmStatic var mockitoKotlinVersion: String = "4.1.0"
         // renovate: datasource=maven depName=org.springframework.boot:spring-boot-starter
         @JvmStatic var springBootVersion: String = "2.7.6"
         @JvmStatic var springNativeVersion: String = "0.11.2"
