@@ -11,9 +11,9 @@ dependencies {
 
     // kotlin
     implementation(kotlin("stdlib-jdk8"))
-    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.21")
-    implementation("org.jetbrains.kotlin:kotlin-allopen:1.7.21")
-    implementation("org.jetbrains.kotlin:kotlin-noarg:1.7.21")
+    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.22")
+    implementation("org.jetbrains.kotlin:kotlin-allopen:1.7.22")
+    implementation("org.jetbrains.kotlin:kotlin-noarg:1.7.22")
     implementation("org.jetbrains.dokka:dokka-gradle-plugin:1.7.20")
 
     // third party - spring
@@ -37,7 +37,7 @@ dependencies {
     // test
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.1")
     testImplementation("org.junit.jupiter:junit-jupiter-engine:5.9.1")
-    testImplementation("org.jetbrains.kotlin:kotlin-test:1.7.21")
+    testImplementation("org.jetbrains.kotlin:kotlin-test:1.7.22")
 }
 
 configurations {
