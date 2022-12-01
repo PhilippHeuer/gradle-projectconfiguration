@@ -4,7 +4,6 @@ import me.philippheuer.projectcfg.ProjectConfigurationExtension
 import me.philippheuer.projectcfg.domain.IProjectContext
 import me.philippheuer.projectcfg.domain.PluginModule
 import me.philippheuer.projectcfg.domain.ProjectLanguage
-import me.philippheuer.projectcfg.domain.ProjectType
 import me.philippheuer.projectcfg.util.DependencyVersion
 import me.philippheuer.projectcfg.util.PluginLogger
 import me.philippheuer.projectcfg.util.addDependency
@@ -13,7 +12,6 @@ import org.gradle.api.Project
 import org.gradle.api.logging.LogLevel
 import org.gradle.api.tasks.testing.Test
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
-import org.gradle.testretry.TestRetryTaskExtension
 
 /**
  * JUnit5 Task Configuration
@@ -67,11 +65,6 @@ class JUnit5Feature constructor(override var ctx: IProjectContext) : PluginModul
                     filter.isFailOnNoMatchingTests = false
                     PluginLogger.log(LogLevel.DEBUG, "setting [test.filter.isFailOnNoMatchingTests] to [${filter.isFailOnNoMatchingTests}]")
                 }
-
-                // retry for flaky tests
-                test.extensions.getByType(TestRetryTaskExtension::class.java).maxRetries.set(3)
-                test.extensions.getByType(TestRetryTaskExtension::class.java).maxFailures.set(20)
-                test.extensions.getByType(TestRetryTaskExtension::class.java).failOnPassedAfterRetry.set(true)
 
                 // full retest, even if no changes have been made
                 test.dependsOn("cleanTest")
