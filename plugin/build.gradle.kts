@@ -32,6 +32,7 @@ dependencies {
     implementation("com.github.ben-manes:gradle-versions-plugin:0.44.0")
     implementation("io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.22.0")
     implementation("com.gorylenko.gradle-git-properties:gradle-git-properties:2.4.1")
+    implementation("org.cyclonedx:cyclonedx-gradle-plugin:1.7.2")
 
     // test
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.1")
@@ -44,8 +45,8 @@ configurations {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 }
 
 tasks.run {
@@ -55,7 +56,7 @@ tasks.run {
 
     withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
         kotlinOptions {
-            jvmTarget = "11"
+            jvmTarget = "17"
         }
     }
 }
