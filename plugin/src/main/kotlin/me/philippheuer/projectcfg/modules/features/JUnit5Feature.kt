@@ -43,8 +43,6 @@ class JUnit5Feature constructor(override var ctx: IProjectContext) : PluginModul
         }
 
         private fun configureTestTask(ctx: IProjectContext) {
-            ctx.project.applyPlugin("org.gradle.test-retry")
-
             ctx.project.tasks.withType(Test::class.java).configureEach { test ->
                 PluginLogger.setContext(ctx.project, ctx.config, "${JUnit5Feature::class.java}")
 
