@@ -20,7 +20,7 @@ open class DependencyVersion {
         // renovate: datasource=maven depName=org.awaitility:awaitility
         @JvmStatic var availabilityVersion: String = "4.2.0"
         // renovate: datasource=maven depName=org.slf4j:slf4j-api
-        @JvmStatic var slf4jVersion: String = "2.0.5"
+        @JvmStatic var slf4jVersion: String = "2.0.6"
         // renovate: datasource=maven depName=com.lmax:disruptor
         @JvmStatic var disruptorVersion: String = "3.4.4"
         // renovate: datasource=maven depName=io.sentry:sentry
