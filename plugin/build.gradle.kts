@@ -25,7 +25,7 @@ dependencies {
     implementation("io.quarkus:gradle-application-plugin:2.15.0.Final")
 
     // third party - plugins
-    implementation("io.freefair.gradle:lombok-plugin:6.6")
+    implementation("io.freefair.gradle:lombok-plugin:6.6.1")
     implementation("com.adarshr:gradle-test-logger-plugin:3.2.0")
     implementation("gradle.plugin.com.github.johnrengelman:shadow:7.1.2")
     implementation("com.coditory.gradle:manifest-plugin:0.2.3")
