@@ -28,7 +28,7 @@ dependencies {
     implementation("io.freefair.gradle:lombok-plugin:6.6.1")
     implementation("com.adarshr:gradle-test-logger-plugin:3.2.0")
     implementation("gradle.plugin.com.github.johnrengelman:shadow:7.1.2")
-    implementation("com.coditory.gradle:manifest-plugin:0.2.3")
+    implementation("com.coditory.gradle:manifest-plugin:0.2.4")
     implementation("com.github.ben-manes:gradle-versions-plugin:0.44.0")
     implementation("io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.22.0")
     implementation("com.gorylenko.gradle-git-properties:gradle-git-properties:2.4.1")
