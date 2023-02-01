@@ -16,7 +16,7 @@ open class DependencyVersion {
         // renovate: datasource=maven depName=io.quarkus:quarkus-core
         @JvmStatic var quarkusVersion: String = "2.16.1.Final"
         // renovate: datasource=maven depName=io.github.microutils:kotlin-logging
-        @JvmStatic var kotlinLoggingVersion: String = "3.0.4"
+        @JvmStatic var kotlinLoggingVersion: String = "3.0.5"
         // renovate: datasource=maven depName=org.awaitility:awaitility
         @JvmStatic var availabilityVersion: String = "4.2.0"
         // renovate: datasource=maven depName=org.slf4j:slf4j-api
