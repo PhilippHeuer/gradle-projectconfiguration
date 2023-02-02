@@ -7,12 +7,17 @@ import me.philippheuer.projectcfg.domain.IProjectContext
 import me.philippheuer.projectcfg.domain.PluginModule
 import me.philippheuer.projectcfg.domain.ProjectLanguage
 import me.philippheuer.projectcfg.util.applyPlugin
+import me.philippheuer.projectcfg.util.isRootProjectWithoutSubprojectsOrSubproject
 import org.gradle.api.Project
 import org.gradle.jvm.tasks.Jar
 
 class ShadowFeature constructor(override var ctx: IProjectContext) : PluginModule {
     override fun check(): Boolean {
-        return ctx.isProjectLanguage(ProjectLanguage.JAVA) && ctx.config.shadow.get()
+        if (ctx.project.isRootProjectWithoutSubprojectsOrSubproject() && ctx.isProjectLanguage(ProjectLanguage.JAVA) && !ctx.project.pluginManager.hasPlugin("java-platform") && ctx.config.shadow.get()) {
+            return true
+        }
+
+        return false
     }
 
     override fun run() {

@@ -15,7 +15,8 @@ import java.io.File
 
 class ManifestFeature constructor(override var ctx: IProjectContext) : PluginModule {
     override fun check(): Boolean {
-        return ctx.isProjectLanguage(ProjectLanguage.JAVA) && !ctx.project.pluginManager.hasPlugin("java-platform")
+        // manifest plugin is causing build cache issues, only enable when running publish
+        return ctx.isProjectLanguage(ProjectLanguage.JAVA) && !ctx.project.pluginManager.hasPlugin("java-platform") && ctx.project.gradle.startParameter.taskNames.any { s -> s.startsWith("publish") }
     }
 
     override fun run() {
@@ -28,9 +29,9 @@ class ManifestFeature constructor(override var ctx: IProjectContext) : PluginMod
 
             // disable buildAttributes, unless the build is running in CI
             if (!PluginHelper.isCI()) {
-                project.extensions.configure(ManifestPluginExtension::class.java) {
-                    it.buildAttributes = false
-                    PluginLogger.log(LogLevel.INFO, "set [manifest.buildAttributes] to [${it.buildAttributes}]")
+                project.project.extensions.getByType(ManifestPluginExtension::class.java).apply {
+                    buildAttributes = false
+                    PluginLogger.log(LogLevel.INFO, "set [manifest.buildAttributes] to [$buildAttributes]")
                 }
             }
 
