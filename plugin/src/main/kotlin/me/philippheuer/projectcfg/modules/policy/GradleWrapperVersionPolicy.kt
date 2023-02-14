@@ -26,7 +26,7 @@ class GradleWrapperVersionPolicy constructor(override var ctx: IProjectContext) 
     }
 
     companion object {
-        private const val suggestedVersion = "7.5.1"
+        private const val suggestedVersion = "8.0"
 
         fun checkGradleVersion(project: Project) {
             // configure wrapper task

@@ -18,11 +18,9 @@ dependencies {
 
     // third party - spring
     implementation("org.springframework.boot:spring-boot-gradle-plugin:3.0.2")
-    //implementation("org.springframework.experimental:spring-native:0.11.2")
-    //implementation("org.springframework.experimental:spring-aot-gradle-plugin:0.11.2")
 
     // third party - quarkus
-    implementation("io.quarkus:gradle-application-plugin:2.16.2.Final")
+    // implementation("io.quarkus:gradle-application-plugin:2.16.2.Final")
 
     // third party - plugins
     implementation("io.freefair.gradle:lombok-plugin:6.6.2")
