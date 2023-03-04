@@ -17,7 +17,7 @@ dependencies {
     implementation("org.jetbrains.dokka:dokka-gradle-plugin:1.7.20")
 
     // third party - spring
-    implementation("org.springframework.boot:spring-boot-gradle-plugin:3.0.3")
+    implementation("org.springframework.boot:spring-boot-gradle-plugin:3.0.4")
 
     // third party - quarkus
     // implementation("io.quarkus:gradle-application-plugin:2.16.2.Final")
