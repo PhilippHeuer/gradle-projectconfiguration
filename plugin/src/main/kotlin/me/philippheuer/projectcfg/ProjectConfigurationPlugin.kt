@@ -10,7 +10,6 @@ import me.philippheuer.projectcfg.modules.features.JUnit5Feature
 import me.philippheuer.projectcfg.modules.features.JacocoFeature
 import me.philippheuer.projectcfg.modules.features.LoggingLibraryFeature
 import me.philippheuer.projectcfg.modules.features.LombokFeature
-import me.philippheuer.projectcfg.modules.features.ManifestFeature
 import me.philippheuer.projectcfg.modules.features.PublishFeature
 import me.philippheuer.projectcfg.modules.features.ShadowFeature
 import me.philippheuer.projectcfg.modules.features.SigningFeature
@@ -59,7 +58,6 @@ abstract class ProjectConfigurationPlugin : Plugin<Project> {
             LombokFeature(ctx),
             TestLoggingFeature(ctx),
             ShadowFeature(ctx),
-            ManifestFeature(ctx),
             JUnit5Feature(ctx),
             LoggingLibraryFeature(ctx),
             GitPropertiesFeature(ctx),
