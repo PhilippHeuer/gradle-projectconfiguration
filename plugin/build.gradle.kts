@@ -16,12 +16,6 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-noarg:1.8.10")
     implementation("org.jetbrains.dokka:dokka-gradle-plugin:1.8.10")
 
-    // third party - spring
-    implementation("org.springframework.boot:spring-boot-gradle-plugin:3.0.4")
-
-    // third party - quarkus
-    // implementation("io.quarkus:gradle-application-plugin:2.16.2.Final")
-
     // third party - plugins
     implementation("io.freefair.gradle:lombok-plugin:6.6.3")
     implementation("com.adarshr:gradle-test-logger-plugin:3.2.0")

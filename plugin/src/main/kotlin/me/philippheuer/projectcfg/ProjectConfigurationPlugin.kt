@@ -15,8 +15,6 @@ import me.philippheuer.projectcfg.modules.features.PublishFeature
 import me.philippheuer.projectcfg.modules.features.ShadowFeature
 import me.philippheuer.projectcfg.modules.features.SigningFeature
 import me.philippheuer.projectcfg.modules.features.TestLoggingFeature
-import me.philippheuer.projectcfg.modules.framework.QuarkusFramework
-import me.philippheuer.projectcfg.modules.framework.SpringBootFramework
 import me.philippheuer.projectcfg.modules.policy.DefaultRepositoryPolicy
 import me.philippheuer.projectcfg.modules.policy.GradleWrapperVersionPolicy
 import me.philippheuer.projectcfg.modules.report.DependencyReport
@@ -51,9 +49,6 @@ abstract class ProjectConfigurationPlugin : Plugin<Project> {
             // type
             JavaApplicationType(ctx),
             JavaLibraryType(ctx),
-            // frameworks
-            SpringBootFramework(ctx),
-            QuarkusFramework(ctx),
             // documentation
             DokkaDocumentation(ctx),
             JavadocDocumentation(ctx),
