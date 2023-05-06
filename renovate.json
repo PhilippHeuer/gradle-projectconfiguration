@@ -1,6 +1,9 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "github>philippheuer/renovate-config:preset-java"
-  ]
+    "github>cidverse/renovate-config:default"
+  ],
+  "baseBranches": ["main"],
+  "assignees": [],
+  "reviewers": ["PhilippHeuer"]
 }
