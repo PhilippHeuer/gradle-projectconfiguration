@@ -50,6 +50,19 @@ class PublishFeature constructor(override var ctx: IProjectContext) : PluginModu
                     }
                 }
 
+                // environment based configuration
+                if (System.getenv("MAVEN_REPO_URL") != null) {
+                    publish.repositories.maven { m ->
+                        m.name = "publish"
+                        m.url = URI(System.getenv("MAVEN_REPO_URL"))
+                        m.credentials.run {
+                            username = System.getenv("MAVEN_REPO_USERNAME")
+                            password = System.getenv("MAVEN_REPO_PASSWORD")
+                        }
+                    }
+                }
+
+                // publication
                 publish.publications.create("main", MavenPublication::class.java) { pub ->
                     if (project.pluginManager.hasPlugin("java-platform")) {
                         pub.from(project.components.getByName("javaPlatform")) // BOM
