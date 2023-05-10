@@ -45,13 +45,12 @@ class PublishFeature constructor(override var ctx: IProjectContext) : PluginModu
                                 }
                             }
                         )
-                    } else {
-                        PluginLogger.log(LogLevel.INFO, "not configuring repository for publication, repository.publish.$target.url is not set")
                     }
                 }
 
                 // environment based configuration
                 if (System.getenv("MAVEN_REPO_URL") != null) {
+                    PluginLogger.log(LogLevel.INFO, "configuring repository for publication from environment")
                     publish.repositories.maven { m ->
                         m.name = "publish"
                         m.url = URI(System.getenv("MAVEN_REPO_URL"))
