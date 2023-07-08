@@ -37,9 +37,6 @@ class JUnit5Feature constructor(override var ctx: IProjectContext) : PluginModul
             if (ProjectLanguage.KOTLIN.valueEquals(config.language.get())) {
                 project.addDependency("testImplementation", "org.jetbrains.kotlin:kotlin-test:${DependencyVersion.kotlinVersion}")
             }
-
-            // test logging
-            project.addDependency("testImplementation", "org.slf4j:slf4j-simple:${DependencyVersion.slf4jVersion}")
         }
 
         private fun configureTestTask(ctx: IProjectContext) {

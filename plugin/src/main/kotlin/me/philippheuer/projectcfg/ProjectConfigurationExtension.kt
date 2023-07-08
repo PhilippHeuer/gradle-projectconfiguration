@@ -50,7 +50,7 @@ open class ProjectConfigurationExtension @Inject constructor(val project: Projec
     override val frameworkDb: Property<Boolean> = objects.property(Boolean::class.java).convention(false)
     override val frameworkDbMigrate: Property<Boolean> = objects.property(Boolean::class.java).convention(false)
 
-    override val lombokVersion: Property<String> = objects.property(String::class.java).convention("1.18.24")
+    override val lombokVersion: Property<String> = objects.property(String::class.java).convention("1.18.28")
 
     override val javadocEncoding: Property<String> = objects.property(String::class.java).convention("UTF-8")
     override val javadocLocale: Property<String> = objects.property(String::class.java).convention("en")
@@ -67,7 +67,7 @@ open class ProjectConfigurationExtension @Inject constructor(val project: Projec
 
     override val gradleVersionPolicyEnabled: Property<Boolean> = objects.property(Boolean::class.java).convention(true)
 
-    override val checkstyleToolVersion: Property<String> = objects.property(String::class.java).convention("9.2.1")
+    override val checkstyleToolVersion: Property<String> = objects.property(String::class.java).convention("10.12.1")
     override val checkstyleRuleSet: Property<String> = objects.property(String::class.java).convention("")
 
     override fun toString(): String {
