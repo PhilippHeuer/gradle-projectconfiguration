@@ -33,7 +33,7 @@ class JacocoFeature constructor(override var ctx: IProjectContext) : PluginModul
 
             // jacoco extension config
             ctx.project.extensions.configure(JacocoPluginExtension::class.java) {
-                it.toolVersion = "0.8.8"
+                it.toolVersion = ctx.config.jacocoVersion.get()
             }
 
             // jacocoTestReport task

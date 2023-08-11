@@ -3,6 +3,7 @@ package me.philippheuer.projectcfg
 import me.philippheuer.projectcfg.config.CheckstyleConfig
 import me.philippheuer.projectcfg.config.FrameworkConfig
 import me.philippheuer.projectcfg.config.GradleWrapperVersionConfig
+import me.philippheuer.projectcfg.config.JacocoConfig
 import me.philippheuer.projectcfg.config.JavaTypeConfig
 import me.philippheuer.projectcfg.config.JavadocConfig
 import me.philippheuer.projectcfg.config.LombokConfig
@@ -26,7 +27,7 @@ import java.util.*
 import javax.inject.Inject
 
 @Suppress("UnnecessaryAbstractClass")
-open class ProjectConfigurationExtension @Inject constructor(val project: Project) : PluginConfig, FrameworkConfig, JavaTypeConfig, LombokConfig, JavadocConfig, ShadowConfig, GradleWrapperVersionConfig, CheckstyleConfig {
+open class ProjectConfigurationExtension @Inject constructor(val project: Project) : PluginConfig, FrameworkConfig, JavaTypeConfig, LombokConfig, JavadocConfig, ShadowConfig, GradleWrapperVersionConfig, CheckstyleConfig, JacocoConfig {
     private val objects = project.objects
 
     override val logLevel: Property<LogLevel> = objects.property(LogLevel::class.java).convention(LogLevel.INFO)
@@ -66,6 +67,8 @@ open class ProjectConfigurationExtension @Inject constructor(val project: Projec
     override val shadowRelocate: Property<String> = objects.property(String::class.java)
 
     override val gradleVersionPolicyEnabled: Property<Boolean> = objects.property(Boolean::class.java).convention(true)
+
+    override val jacocoVersion: Property<String> = objects.property(String::class.java).convention("0.8.10")
 
     override val checkstyleToolVersion: Property<String> = objects.property(String::class.java).convention("10.12.1")
     override val checkstyleRuleSet: Property<String> = objects.property(String::class.java).convention("")
