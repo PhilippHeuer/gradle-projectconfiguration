@@ -3,6 +3,7 @@ package me.philippheuer.projectcfg.modules.check
 import me.philippheuer.projectcfg.util.PluginTestUtils
 import org.gradle.api.plugins.quality.CheckstyleExtension
 import org.junit.jupiter.api.Test
+import java.io.File
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
@@ -26,7 +27,7 @@ class CheckstyleFeatureTest {
         CheckstyleFeature.applyPlugin(project, config)
 
         assertNotNull(project.pluginManager.findPlugin("checkstyle"), "checkstyle plugin was not applied")
-        assertTrue(project.extensions.getByType(CheckstyleExtension::class.java).configFile.absolutePath.endsWith("build\\tmp\\checkstyle.xml"), "config path should end with ")
+        assertTrue(project.extensions.getByType(CheckstyleExtension::class.java).configFile.absolutePath.endsWith("build${File.separator}tmp${File.separator}checkstyle.xml"), "config path should end with build/tmp/checkstyle.xml")
     }
 
 }
