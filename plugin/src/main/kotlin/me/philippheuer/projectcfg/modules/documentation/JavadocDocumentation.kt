@@ -58,6 +58,9 @@ class JavadocDocumentation constructor(override var ctx: IProjectContext) : Plug
                     it.options.locale(config.javadocLocale.get())
                     PluginLogger.log(LogLevel.INFO, "set [tasks.javadoc.options.locale] to [${config.javadocLocale.get()}]")
 
+                    // disable timestamps for reproducibility
+                    (it.options as StandardJavadocDocletOptions).noTimestamp(true)
+
                     // lint
                     config.javadocLint.get().forEach { lint ->
                         (it.options as StandardJavadocDocletOptions).addBooleanOption("Xdoclint:$lint", true)
