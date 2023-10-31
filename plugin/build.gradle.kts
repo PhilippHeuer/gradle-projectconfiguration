@@ -21,7 +21,7 @@ dependencies {
     implementation("com.adarshr:gradle-test-logger-plugin:4.0.0")
     implementation("gradle.plugin.com.github.johnrengelman:shadow:8.0.0")
     implementation("com.github.ben-manes:gradle-versions-plugin:0.48.0")
-    implementation("io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.23.1")
+    implementation("io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.23.2")
     implementation("com.gorylenko.gradle-git-properties:gradle-git-properties:2.4.1")
     implementation("org.cyclonedx:cyclonedx-gradle-plugin:1.7.4")
 
