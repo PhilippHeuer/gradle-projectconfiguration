@@ -16,7 +16,6 @@ import me.philippheuer.projectcfg.modules.features.ShadowFeature
 import me.philippheuer.projectcfg.modules.features.SigningFeature
 import me.philippheuer.projectcfg.modules.features.TestLoggingFeature
 import me.philippheuer.projectcfg.modules.policy.DefaultRepositoryPolicy
-import me.philippheuer.projectcfg.modules.policy.GradleWrapperVersionPolicy
 import me.philippheuer.projectcfg.modules.report.DependencyReport
 import me.philippheuer.projectcfg.modules.type.JavaApplicationType
 import me.philippheuer.projectcfg.modules.type.JavaLibraryType
@@ -44,7 +43,6 @@ abstract class ProjectConfigurationPlugin : Plugin<Project> {
         // process each module
         val modules = listOf(
             // policy
-            GradleWrapperVersionPolicy(ctx),
             DefaultRepositoryPolicy(ctx),
             // type
             JavaApplicationType(ctx),
