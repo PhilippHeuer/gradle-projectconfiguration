@@ -46,6 +46,7 @@ class SigningFeature constructor(override var ctx: IProjectContext) : PluginModu
                     } else {
                         PluginLogger.log(LogLevel.INFO, "using GPG command for signing")
                         it.useGpgCmd()
+                        it.isRequired = false // only sign if key is available
                     }
 
                     it.sign(publication)
