@@ -51,6 +51,7 @@ open class ProjectConfigurationExtension @Inject constructor(val project: Projec
     override val frameworkDb: Property<Boolean> = objects.property(Boolean::class.java).convention(false)
     override val frameworkDbMigrate: Property<Boolean> = objects.property(Boolean::class.java).convention(false)
 
+    // renovate: datasource=maven depName=org.projectlombok:lombok
     override val lombokVersion: Property<String> = objects.property(String::class.java).convention("1.18.30")
 
     override val javadocEncoding: Property<String> = objects.property(String::class.java).convention("UTF-8")
@@ -68,8 +69,10 @@ open class ProjectConfigurationExtension @Inject constructor(val project: Projec
 
     override val gradleVersionPolicyEnabled: Property<Boolean> = objects.property(Boolean::class.java).convention(true)
 
+    // renovate: datasource=maven depName=org.jacoco:org.jacoco.core
     override val jacocoVersion: Property<String> = objects.property(String::class.java).convention("0.8.10")
 
+    // renovate: datasource=maven depName=com.puppycrawl.tools:checkstyle
     override val checkstyleToolVersion: Property<String> = objects.property(String::class.java).convention("10.12.1")
     override val checkstyleRuleSet: Property<String> = objects.property(String::class.java).convention("")
 
