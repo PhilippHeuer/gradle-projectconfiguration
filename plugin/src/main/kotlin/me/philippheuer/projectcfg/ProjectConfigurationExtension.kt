@@ -70,7 +70,7 @@ open class ProjectConfigurationExtension @Inject constructor(val project: Projec
     override val gradleVersionPolicyEnabled: Property<Boolean> = objects.property(Boolean::class.java).convention(true)
 
     // renovate: datasource=maven depName=org.jacoco:org.jacoco.core
-    override val jacocoVersion: Property<String> = objects.property(String::class.java).convention("0.8.10")
+    override val jacocoVersion: Property<String> = objects.property(String::class.java).convention("0.8.12")
 
     // renovate: datasource=maven depName=com.puppycrawl.tools:checkstyle
     override val checkstyleToolVersion: Property<String> = objects.property(String::class.java).convention("10.12.1")
