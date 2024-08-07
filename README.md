@@ -81,3 +81,7 @@ This plugin may include the following plugins based on your project configuratio
 - [SpringBoot](https://docs.spring.io/spring-boot/docs/current/gradle-plugin/reference/htmlsingle/)
 - [Checkstyle](https://docs.gradle.org/current/userguide/checkstyle_plugin.html)
 - [Detekt](https://github.com/detekt/detekt)
+
+## License
+
+Released under the [MIT License](./LICENSE).
