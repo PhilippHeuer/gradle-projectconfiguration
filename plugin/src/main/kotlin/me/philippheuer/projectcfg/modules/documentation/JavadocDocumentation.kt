@@ -52,25 +52,31 @@ class JavadocDocumentation constructor(override var ctx: IProjectContext) : Plug
                     it.options.windowTitle = "${project.rootProject.name} (v${project.version}) - ${project.name}"
                     PluginLogger.log(LogLevel.INFO, "set [tasks.javadoc.options.windowTitle] to [${it.options.windowTitle}]")
                     it.options.encoding = "UTF-8"
-                    (it.options as StandardJavadocDocletOptions).docEncoding = "UTF-8"
-                    (it.options as StandardJavadocDocletOptions).charSet = "UTF-8"
+                    val javadocOptions = it.options as StandardJavadocDocletOptions
+                    javadocOptions.docEncoding = "UTF-8"
+                    javadocOptions.charSet = "UTF-8"
                     PluginLogger.log(LogLevel.INFO, "set [tasks.javadoc.options.encoding] to [${it.options.encoding}]")
                     it.options.locale(config.javadocLocale.get())
                     PluginLogger.log(LogLevel.INFO, "set [tasks.javadoc.options.locale] to [${config.javadocLocale.get()}]")
 
                     // disable timestamps for reproducibility
-                    (it.options as StandardJavadocDocletOptions).noTimestamp(true)
+                    javadocOptions.noTimestamp(true)
+
+                    // additional javadoc tags
+                    javadocOptions.addStringOption("tag", "apiNote:a:API Note:")
+                    javadocOptions.addStringOption("tag", "implSpec:a:Implementation Requirements:")
+                    javadocOptions.addStringOption("tag", "implNote:a:Implementation Note:")
 
                     // lint
                     config.javadocLint.get().forEach { lint ->
-                        (it.options as StandardJavadocDocletOptions).addBooleanOption("Xdoclint:$lint", true)
+                        javadocOptions.addBooleanOption("Xdoclint:$lint", true)
                     }
                     PluginLogger.log(LogLevel.INFO, "set [tasks.javadoc.options.doclint] to [${config.javadocLint.get().joinToString(",")}]")
 
                     // links
                     if (config.javadocLinks.get().size > 0) {
                         PluginLogger.log(LogLevel.INFO, "set [tasks.javadoc.options.links] to [${config.javadocLinks.get()}]")
-                        (it.options as StandardJavadocDocletOptions).links(*config.javadocLinks.get().toTypedArray())
+                        javadocOptions.links(*config.javadocLinks.get().toTypedArray())
                     }
 
                     // javadoc auto-linking via javadoc.io
@@ -79,7 +85,7 @@ class JavadocDocumentation constructor(override var ctx: IProjectContext) : Plug
                             if (dep.version != null) {
                                 JavadocIOUtils.getLinkForDependency(project, dep.group, dep.name, dep.version)?.let { link ->
                                     PluginLogger.log(LogLevel.DEBUG,"append [tasks.javadoc.options.links] element [${link}]")
-                                    (it.options as StandardJavadocDocletOptions).links?.add(link)
+                                    javadocOptions.links?.add(link)
                                 }
                             }
                         }
@@ -90,7 +96,7 @@ class JavadocDocumentation constructor(override var ctx: IProjectContext) : Plug
                         if (isNotEmpty()) {
                             values.distinct().forEach { groupName ->
                                 PluginLogger.log(LogLevel.DEBUG, "set [tasks.javadoc.group.{$groupName}] to [${filter { e -> e.value == groupName }.map { e -> e.key}}]")
-                                (it.options as StandardJavadocDocletOptions).group(groupName, filter { e -> e.value == groupName }.map { e -> e.key})
+                                javadocOptions.group(groupName, filter { e -> e.value == groupName }.map { e -> e.key})
                             }
                         }
                     }
