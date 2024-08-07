@@ -52,31 +52,24 @@ tasks.run {
     }
 }
 
+group = "me.philippheuer.projectcfg"
+
 gradlePlugin {
+    website = "https://github.com/PhilippHeuer/gradle-projectconfiguration"
+    vcsUrl = "https://github.com/PhilippHeuer/gradle-projectconfiguration.git"
+
     plugins {
-        create(PluginCoordinates.ID) {
-            id = PluginCoordinates.ID
-            implementationClass = PluginCoordinates.IMPLEMENTATION_CLASS
+        create("configurationPlugin") {
+            id = "me.philippheuer.configuration"
+            displayName = "Project Configuration Plugin"
+            description = "A Gradle plugin to easily share best-practice project configurations."
             version = project.version
+            tags = listOf(
+                "setup",
+                "buildscript",
+                "best-practice"
+            )
+            implementationClass = "me.philippheuer.projectcfg.ProjectConfigurationPlugin"
         }
-    }
-}
-
-pluginBundle {
-    website = PluginBundle.WEBSITE
-    vcsUrl = PluginBundle.VCS
-    description = PluginBundle.DESCRIPTION
-    tags = PluginBundle.TAGS
-
-    plugins {
-        getByName(PluginCoordinates.ID) {
-            displayName = PluginBundle.DISPLAY_NAME
-        }
-    }
-
-    mavenCoordinates {
-        groupId = PluginCoordinates.GROUP
-        artifactId = PluginCoordinates.ID
-        version = project.version as String
     }
 }
