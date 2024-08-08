@@ -19,7 +19,7 @@ dependencies {
     implementation("org.jetbrains.dokka:dokka-gradle-plugin:1.9.20")
 
     // third party - plugins
-    implementation("io.freefair.gradle:lombok-plugin:8.6")
+    implementation("io.freefair.gradle:lombok-plugin:8.7.1")
     implementation("com.adarshr:gradle-test-logger-plugin:4.0.0")
     implementation("gradle.plugin.com.github.johnrengelman:shadow:8.0.0")
     implementation("com.github.ben-manes:gradle-versions-plugin:0.51.0")
