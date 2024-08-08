@@ -63,9 +63,11 @@ class JavadocDocumentation constructor(override var ctx: IProjectContext) : Plug
                     javadocOptions.noTimestamp(true)
 
                     // additional javadoc tags
-                    javadocOptions.addStringOption("tag", "apiNote:a:API Note:")
-                    javadocOptions.addStringOption("tag", "implSpec:a:Implementation Requirements:")
-                    javadocOptions.addStringOption("tag", "implNote:a:Implementation Note:")
+                    javadocOptions.tags = listOf(
+                        "apiNote:a:API Note:",
+                        "implSpec:a:Implementation Requirements:",
+                        "implNote:a:Implementation Note:"
+                    )
 
                     // lint
                     config.javadocLint.get().forEach { lint ->
