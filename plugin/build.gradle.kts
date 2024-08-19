@@ -25,7 +25,7 @@ dependencies {
     implementation("com.github.ben-manes:gradle-versions-plugin:0.51.0")
     implementation("io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.23.6")
     implementation("com.gorylenko.gradle-git-properties:gradle-git-properties:2.4.2")
-    implementation("org.cyclonedx:cyclonedx-gradle-plugin:1.9.0")
+    implementation("org.cyclonedx:cyclonedx-gradle-plugin:1.10.0")
 
     // test
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.11.0")
