@@ -1,11 +1,11 @@
 package me.philippheuer.projectcfg.util
 
 import org.gradle.api.Project
+import org.gradle.api.UnknownDomainObjectException
+import org.gradle.api.UnknownTaskException
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.tasks.SourceSet
-import java.io.File
 import java.nio.file.Path
-import java.util.Properties
 import kotlin.io.path.writeText
 
 class TaskUtils {
@@ -21,13 +21,15 @@ class TaskUtils {
             outputFile.writeText(content)
         }
 
-        fun processProperties(file: File, defaultProperties: Map<String, String>, overwrite: Boolean) {
-            val prop = Properties()
-            defaultProperties.forEach { (key, value) -> prop.setProperty(key, value) }
-            if (file.isFile && !overwrite) {
-                prop.load(file.bufferedReader())
+        fun hasTask(project: Project, name: String): Boolean {
+            return try {
+                project.tasks.named(name)
+                true
+            } catch (e: UnknownTaskException) {
+                false
+            } catch (e: UnknownDomainObjectException) {
+                false
             }
-            prop.store(file.bufferedWriter(), null)
         }
     }
 }

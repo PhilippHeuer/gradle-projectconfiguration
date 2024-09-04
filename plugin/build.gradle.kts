@@ -18,6 +18,9 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-noarg:2.0.20")
     implementation("org.jetbrains.dokka:dokka-gradle-plugin:1.9.20")
 
+    // jackson
+    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.17.2")
+
     // third party - plugins
     implementation("io.freefair.gradle:lombok-plugin:8.10")
     implementation("com.adarshr:gradle-test-logger-plugin:4.0.0")
