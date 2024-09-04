@@ -5,7 +5,7 @@ import me.philippheuer.projectcfg.domain.PluginModule
 import me.philippheuer.projectcfg.util.PluginLogger
 import org.gradle.api.logging.LogLevel
 
-class DefaultRepositoryPolicy constructor(override var ctx: IProjectContext) : PluginModule {
+class DefaultRepositoryPolicy(override var ctx: IProjectContext) : PluginModule {
 
     override fun init() {
         super.init()

@@ -46,7 +46,7 @@ class DokkaDocumentation constructor(override var ctx: IProjectContext) : Plugin
                 }
 
                 tasks.named("dokkaJavadoc", DokkaTask::class.java).configure {
-                    PluginLogger.setContext(ctx.project, ctx.config, "${DokkaDocumentation::class.java}")
+                    PluginLogger.setContext(ctx.project,"${DokkaDocumentation::class.java}")
 
                     it.moduleName.set("${project.rootProject.name} (${ctx.config.artifactVersion.get()}) - ${project.name}")
                     PluginLogger.log(LogLevel.INFO, "set [tasks.dokkaJavadoc.options.moduleName] to [${it.moduleName.get()}]")

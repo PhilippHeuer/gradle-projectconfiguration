@@ -41,7 +41,7 @@ class JUnit5Feature constructor(override var ctx: IProjectContext) : PluginModul
 
         private fun configureTestTask(ctx: IProjectContext) {
             ctx.project.tasks.withType(Test::class.java).configureEach { test ->
-                PluginLogger.setContext(ctx.project, ctx.config, "${JUnit5Feature::class.java}")
+                PluginLogger.setContext(ctx.project, "${JUnit5Feature::class.java}")
 
                 // use junit5
                 PluginLogger.log(LogLevel.DEBUG, "setting [test.useJUnitPlatform()]")

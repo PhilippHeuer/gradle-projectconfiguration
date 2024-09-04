@@ -11,7 +11,7 @@ import me.philippheuer.projectcfg.util.applyPlugin
  *
  * @link https://github.com/n0mer/gradle-git-properties
  */
-class GitPropertiesFeature constructor(override var ctx: IProjectContext) : PluginModule {
+class GitPropertiesFeature(override var ctx: IProjectContext) : PluginModule {
     override fun check(): Boolean {
         return ctx.isProjectType(ProjectType.APP)
     }

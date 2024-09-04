@@ -35,9 +35,9 @@ fun Project.addDependency(dependencyNotation: String) {
     dependencies.add(configurationName, dependencyNotation)
 }
 
-fun Project.addPlatformDependency(dependencyNotation: String) {
-    PluginLogger.log(LogLevel.INFO, "applying bom $dependencyNotation")
-    dependencies.constraints.enforcedPlatform(dependencyNotation)
+fun Project.addPlatformDependency(configurationName: String, dependencyNotation: String) {
+    PluginLogger.log(LogLevel.INFO, "applying platform dependency [$configurationName] $dependencyNotation")
+    dependencies.add(configurationName, dependencies.enforcedPlatform(dependencyNotation))
 }
 
 fun Project.addConstraint(dependencyNotation: String, version: String) {

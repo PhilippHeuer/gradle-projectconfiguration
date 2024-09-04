@@ -23,7 +23,7 @@ import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.publish.maven.MavenPom
-import java.util.*
+import java.util.Collections
 import javax.inject.Inject
 
 @Suppress("UnnecessaryAbstractClass")
@@ -80,13 +80,13 @@ open class ProjectConfigurationExtension @Inject constructor(val project: Projec
         return "LANGUAGE: ${language.orNull} - FRAMEWORK: ${framework.orNull}"
     }
 
-    fun defaults() {
+    override fun postProcess() {
         // auto-detect project type
         if (type.get() == ProjectType.DEFAULT) {
-            if (project.pluginManager.hasPlugin("java-library")) {
-                type.set(ProjectType.LIBRARY)
-            } else if (project.pluginManager.hasPlugin("java")) {
+            if (project.pluginManager.hasPlugin("java") || project.pluginManager.hasPlugin("application")) {
                 type.set(ProjectType.APP)
+            } else if (project.pluginManager.hasPlugin("java-library")) {
+                type.set(ProjectType.LIBRARY)
             }
         }
 

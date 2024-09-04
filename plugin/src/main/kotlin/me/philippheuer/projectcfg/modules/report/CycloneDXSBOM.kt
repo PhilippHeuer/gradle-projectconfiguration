@@ -5,7 +5,7 @@ import me.philippheuer.projectcfg.domain.PluginModule
 import me.philippheuer.projectcfg.domain.ProjectType
 import org.cyclonedx.gradle.CycloneDxTask
 
-class CycloneDXSBOM constructor(override var ctx: IProjectContext) : PluginModule {
+class CycloneDXSBOM(override var ctx: IProjectContext) : PluginModule {
     override fun check(): Boolean {
         return true
     }
@@ -26,9 +26,5 @@ class CycloneDXSBOM constructor(override var ctx: IProjectContext) : PluginModul
             it.outputFormat.set("all")
             it.includeBomSerialNumber.set(false)
         }
-    }
-
-    companion object {
-
     }
 }

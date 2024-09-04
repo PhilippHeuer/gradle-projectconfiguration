@@ -7,7 +7,7 @@ import me.philippheuer.projectcfg.domain.ProjectType
 import me.philippheuer.projectcfg.util.DependencyVersion
 import me.philippheuer.projectcfg.util.addDependency
 
-class LoggingLibraryFeature constructor(override var ctx: IProjectContext) : PluginModule {
+class LoggingLibraryFeature(override var ctx: IProjectContext) : PluginModule {
     override fun check(): Boolean {
         return !ctx.project.pluginManager.hasPlugin("java-platform")
     }

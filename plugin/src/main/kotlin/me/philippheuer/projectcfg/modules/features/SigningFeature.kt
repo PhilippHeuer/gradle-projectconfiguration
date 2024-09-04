@@ -11,7 +11,7 @@ import org.gradle.plugins.signing.Sign
 import org.gradle.plugins.signing.SigningExtension
 import java.util.Base64
 
-class SigningFeature constructor(override var ctx: IProjectContext) : PluginModule {
+class SigningFeature(override var ctx: IProjectContext) : PluginModule {
     override fun check(): Boolean {
         return ctx.isProjectType(ProjectType.LIBRARY)
     }

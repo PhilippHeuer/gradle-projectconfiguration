@@ -13,7 +13,7 @@ import org.gradle.api.Project
 import org.gradle.api.logging.LogLevel
 import org.gradle.api.tasks.javadoc.Javadoc
 
-class LombokFeature constructor(override var ctx: IProjectContext) : PluginModule {
+class LombokFeature(override var ctx: IProjectContext) : PluginModule {
     override fun check(): Boolean {
         if (ctx.project.isRootProjectWithoutSubprojectsOrSubproject() && ctx.isProjectLanguage(ProjectLanguage.JAVA) && !ctx.project.pluginManager.hasPlugin("java-platform")) {
             return true

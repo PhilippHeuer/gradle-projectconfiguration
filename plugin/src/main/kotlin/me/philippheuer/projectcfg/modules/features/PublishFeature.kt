@@ -12,7 +12,7 @@ import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.publish.maven.MavenPublication
 import java.net.URI
 
-class PublishFeature constructor(override var ctx: IProjectContext) : PluginModule {
+class PublishFeature(override var ctx: IProjectContext) : PluginModule {
     override fun check(): Boolean {
         return ctx.isProjectType(ProjectType.LIBRARY) && (ctx.project.properties.containsKey("repository.publish.target") && (ctx.project.properties["repository.publish.target"] as String).isNotEmpty())
     }
@@ -62,29 +62,31 @@ class PublishFeature constructor(override var ctx: IProjectContext) : PluginModu
                 }
 
                 // publication
-                publish.publications.create("main", MavenPublication::class.java) { pub ->
-                    if (project.pluginManager.hasPlugin("java-platform")) {
-                        pub.from(project.components.getByName("javaPlatform")) // BOM
-                    } else {
-                        pub.from(project.components.getByName("java"))
-                    }
-
-                    pub.groupId = config.artifactGroupId.get()
-                    pub.artifactId = config.artifactId.get()
-                    pub.version = config.artifactVersion.get()
-                    pub.pom { pom ->
-                        pom.name.set(config.artifactDisplayName.getOrElse(project.displayName))
-                        pom.description.set(config.artifactDescription.getOrElse(""))
-
+                if (publish.publications.size == 0) {
+                    publish.publications.create("main", MavenPublication::class.java) { pub ->
                         if (project.pluginManager.hasPlugin("java-platform")) {
-                            pom.packaging = "pom"
+                            pub.from(project.components.getByName("javaPlatform")) // BOM
+                        } else {
+                            pub.from(project.components.getByName("java"))
                         }
 
-                        // customize pom
-                        config.pom.invoke(pom)
-                    }
+                        pub.groupId = config.artifactGroupId.get()
+                        pub.artifactId = config.artifactId.get()
+                        pub.version = config.artifactVersion.get()
+                        pub.pom { pom ->
+                            pom.name.set(config.artifactDisplayName.getOrElse(project.displayName))
+                            pom.description.set(config.artifactDescription.getOrElse(""))
 
-                    PluginLogger.log(LogLevel.INFO, "configured artifact: ${pub.groupId}:${pub.artifactId}:${pub.version}")
+                            if (project.pluginManager.hasPlugin("java-platform")) {
+                                pom.packaging = "pom"
+                            }
+
+                            // customize pom
+                            config.pom.invoke(pom)
+                        }
+
+                        PluginLogger.log(LogLevel.INFO, "configured artifact: ${pub.groupId}:${pub.artifactId}:${pub.version}")
+                    }
                 }
             }
         }

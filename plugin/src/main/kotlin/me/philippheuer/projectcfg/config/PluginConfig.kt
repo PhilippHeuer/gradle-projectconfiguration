@@ -48,4 +48,9 @@ interface PluginConfig {
 
     // build native binary
     val native: Property<Boolean>
+
+    /**
+     * postProcess can be used to apply config changes / set defaults, after the user configuration has been parsed
+     */
+    fun postProcess()
 }

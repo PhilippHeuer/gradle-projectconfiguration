@@ -1,6 +1,5 @@
 package me.philippheuer.projectcfg.util
 
-import me.philippheuer.projectcfg.ProjectConfigurationExtension
 import me.philippheuer.projectcfg.domain.PluginModule
 import org.gradle.api.Project
 import org.gradle.api.logging.LogLevel
@@ -11,7 +10,7 @@ class PluginLogger {
         private val log = LoggerFactory.getLogger(PluginModule::class.java)
 
         lateinit var project: Project
-        lateinit var config: ProjectConfigurationExtension
+        private var logLevel: LogLevel? = null
         var module: String? = null
 
         /**
@@ -21,8 +20,8 @@ class PluginLogger {
          * loglevel not set, forward to slf4j
          */
         fun log(logLevel: LogLevel, message: String) {
-            if (config.logLevel.isPresent) {
-                if (config.logLevel.get() <= logLevel) {
+            if (this.logLevel != null) {
+                if (this.logLevel!! <= logLevel) {
                     if (module != null) {
                         println("$logLevel: [${project.name}] $module -> $message")
                     } else {
@@ -46,11 +45,17 @@ class PluginLogger {
         }
 
         /**
+         * sets the log level
+         */
+        fun setLogLevel(logLevel: LogLevel) {
+            this.logLevel = logLevel
+        }
+
+        /**
          * updates the logger context
          */
-        fun setContext(project: Project, config: ProjectConfigurationExtension, module: String?) {
+        fun setContext(project: Project, module: String?) {
             this.project = project
-            this.config = config
             this.module = module
         }
     }

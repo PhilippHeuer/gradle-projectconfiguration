@@ -7,7 +7,7 @@ import me.philippheuer.projectcfg.util.isRootProjectWithoutSubprojectsOrSubproje
 import org.gradle.api.Project
 import org.gradle.api.tasks.bundling.AbstractArchiveTask
 
-class ReproducibleArchivesFeature constructor(override var ctx: IProjectContext) : PluginModule {
+class ReproducibleArchivesFeature(override var ctx: IProjectContext) : PluginModule {
     override fun check(): Boolean {
         return (ctx.project.isRootProjectWithoutSubprojectsOrSubproject()
                 && (ctx.isProjectLanguage(ProjectLanguage.JAVA) || ctx.isProjectLanguage(ProjectLanguage.KOTLIN))

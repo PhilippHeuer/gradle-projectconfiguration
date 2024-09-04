@@ -1,5 +1,6 @@
 package me.philippheuer.projectcfg
 
+import me.philippheuer.projectcfg.domain.PluginModule
 import me.philippheuer.projectcfg.domain.ProjectContext
 import me.philippheuer.projectcfg.modules.check.CheckstyleFeature
 import me.philippheuer.projectcfg.modules.check.DetektFeature
@@ -19,6 +20,7 @@ import me.philippheuer.projectcfg.modules.policy.DefaultRepositoryPolicy
 import me.philippheuer.projectcfg.modules.report.DependencyReport
 import me.philippheuer.projectcfg.modules.type.JavaApplicationType
 import me.philippheuer.projectcfg.modules.type.JavaLibraryType
+import me.philippheuer.projectcfg.util.ModuleUtils
 import me.philippheuer.projectcfg.util.PluginLogger
 import me.philippheuer.projectcfg.util.isRootProjectWithoutSubprojectsOrSubproject
 import org.gradle.api.Plugin
@@ -30,6 +32,35 @@ const val EXTENSION_NAME = "projectConfiguration"
 abstract class ProjectConfigurationPlugin : Plugin<Project> {
     companion object {
         private val log = LoggerFactory.getLogger(ProjectConfigurationPlugin::class.java)
+
+        fun allModules(ctx: ProjectContext): MutableList<PluginModule> {
+            return mutableListOf(
+                // policy
+                DefaultRepositoryPolicy(ctx),
+                // type
+                JavaApplicationType(ctx),
+                JavaLibraryType(ctx),
+                // documentation
+                DokkaDocumentation(ctx),
+                JavadocDocumentation(ctx),
+                // features
+                JacocoFeature(ctx),
+                PublishFeature(ctx),
+                SigningFeature(ctx),
+                LombokFeature(ctx),
+                TestLoggingFeature(ctx),
+                ShadowFeature(ctx),
+                JUnit5Feature(ctx),
+                LoggingLibraryFeature(ctx),
+                GitPropertiesFeature(ctx),
+                ReproducibleArchivesFeature(ctx),
+                // check
+                CheckstyleFeature(ctx),
+                DetektFeature(ctx),
+                // reporting
+                DependencyReport(ctx),
+            )
+        }
     }
 
     override fun apply(project: Project) {
@@ -38,57 +69,15 @@ abstract class ProjectConfigurationPlugin : Plugin<Project> {
 
         // logger
         PluginLogger.project = project
-        PluginLogger.config = config
+        PluginLogger.setLogLevel(config.logLevel.getOrElse(null))
 
-        // process each module
-        val modules = listOf(
-            // policy
-            DefaultRepositoryPolicy(ctx),
-            // type
-            JavaApplicationType(ctx),
-            JavaLibraryType(ctx),
-            // documentation
-            DokkaDocumentation(ctx),
-            JavadocDocumentation(ctx),
-            // features
-            JacocoFeature(ctx),
-            PublishFeature(ctx),
-            SigningFeature(ctx),
-            LombokFeature(ctx),
-            TestLoggingFeature(ctx),
-            ShadowFeature(ctx),
-            JUnit5Feature(ctx),
-            LoggingLibraryFeature(ctx),
-            GitPropertiesFeature(ctx),
-            ReproducibleArchivesFeature(ctx),
-            // check
-            CheckstyleFeature(ctx),
-            DetektFeature(ctx),
-            // reporting
-            DependencyReport(ctx),
-        )
+        // module list
+        val modules = allModules(ctx)
 
         // init module
-        modules.forEach {
-            PluginLogger.setContext(project, config, "${it::class.java}")
-            it.init()
-        }
+        ModuleUtils.initModules(modules, project)
 
         // process features
-        project.afterEvaluate { // TODO: config property values are only accessible in afterEvaluate, but there should be a better way maybe?
-            // config preprocessing
-            config.defaults()
-
-            // process module
-            modules.forEach {
-                PluginLogger.setContext(project, config, "${it::class.java}")
-                val enabled = it.check()
-                if (enabled) {
-                    if (project.isRootProjectWithoutSubprojectsOrSubproject()) {
-                        it.run()
-                    }
-                }
-            }
-        }
+        ModuleUtils.processModules(modules, project, config)
     }
 }

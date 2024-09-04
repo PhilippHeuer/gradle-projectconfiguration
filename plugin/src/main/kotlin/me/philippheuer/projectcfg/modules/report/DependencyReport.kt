@@ -6,12 +6,17 @@ import me.philippheuer.projectcfg.modules.report.tasks.DependenciesReportResourc
 
 private const val DEPENDENCY_REPORT_TASK_NAME = "projectcfg-dependency-report-resources"
 
-class DependencyReport constructor(override var ctx: IProjectContext) : PluginModule {
+class DependencyReport(override var ctx: IProjectContext) : PluginModule {
     override fun check(): Boolean {
         return true
     }
 
     override fun run() {
+        // check if task already exists
+        if (ctx.project.tasks.findByName(DEPENDENCY_REPORT_TASK_NAME) != null) {
+            return
+        }
+
         // add task and add it to the task graph
         val task = ctx.project.tasks.register(DEPENDENCY_REPORT_TASK_NAME, DependenciesReportResourcesTask::class.java) {
             it.fileName.set("dependencies.txt")
@@ -20,9 +25,5 @@ class DependencyReport constructor(override var ctx: IProjectContext) : PluginMo
             it.dependsOn(task)
             it.mustRunAfter("processResources")
         }
-    }
-
-    companion object {
-
     }
 }

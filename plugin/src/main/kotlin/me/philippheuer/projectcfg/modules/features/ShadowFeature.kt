@@ -11,7 +11,7 @@ import me.philippheuer.projectcfg.util.isRootProjectWithoutSubprojectsOrSubproje
 import org.gradle.api.Project
 import org.gradle.jvm.tasks.Jar
 
-class ShadowFeature constructor(override var ctx: IProjectContext) : PluginModule {
+class ShadowFeature(override var ctx: IProjectContext) : PluginModule {
     override fun check(): Boolean {
         if (ctx.project.isRootProjectWithoutSubprojectsOrSubproject() && ctx.isProjectLanguage(ProjectLanguage.JAVA) && !ctx.project.pluginManager.hasPlugin("java-platform") && ctx.config.shadow.get()) {
             return true

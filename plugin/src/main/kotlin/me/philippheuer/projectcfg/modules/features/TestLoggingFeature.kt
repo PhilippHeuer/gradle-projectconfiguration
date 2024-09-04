@@ -7,7 +7,7 @@ import me.philippheuer.projectcfg.domain.PluginModule
 import me.philippheuer.projectcfg.util.PluginHelper
 import me.philippheuer.projectcfg.util.applyPlugin
 
-class TestLoggingFeature constructor(override var ctx: IProjectContext) : PluginModule {
+class TestLoggingFeature(override var ctx: IProjectContext) : PluginModule {
     override fun check(): Boolean {
         return true
     }
