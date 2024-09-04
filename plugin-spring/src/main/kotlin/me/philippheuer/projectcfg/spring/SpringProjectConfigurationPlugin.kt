@@ -7,6 +7,7 @@ import me.philippheuer.projectcfg.util.ModuleUtils
 import me.philippheuer.projectcfg.util.PluginLogger
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.logging.LogLevel
 import org.slf4j.LoggerFactory
 
 const val EXTENSION_NAME = "springProjectConfiguration"
@@ -22,7 +23,7 @@ abstract class SpringProjectConfigurationPlugin : Plugin<Project> {
 
         // logger
         PluginLogger.project = project
-        PluginLogger.setLogLevel(config.logLevel.getOrElse(null))
+        PluginLogger.setLogLevel(config.logLevel.getOrElse(LogLevel.INFO))
 
         // module list
         val modules = ProjectConfigurationPlugin.allModules(ctx)

@@ -22,9 +22,9 @@ import me.philippheuer.projectcfg.modules.type.JavaApplicationType
 import me.philippheuer.projectcfg.modules.type.JavaLibraryType
 import me.philippheuer.projectcfg.util.ModuleUtils
 import me.philippheuer.projectcfg.util.PluginLogger
-import me.philippheuer.projectcfg.util.isRootProjectWithoutSubprojectsOrSubproject
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.logging.LogLevel
 import org.slf4j.LoggerFactory
 
 const val EXTENSION_NAME = "projectConfiguration"
@@ -69,7 +69,7 @@ abstract class ProjectConfigurationPlugin : Plugin<Project> {
 
         // logger
         PluginLogger.project = project
-        PluginLogger.setLogLevel(config.logLevel.getOrElse(null))
+        PluginLogger.setLogLevel(config.logLevel.getOrElse(LogLevel.INFO))
 
         // module list
         val modules = allModules(ctx)

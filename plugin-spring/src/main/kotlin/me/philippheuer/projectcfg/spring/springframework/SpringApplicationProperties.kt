@@ -14,27 +14,18 @@ abstract class SpringApplicationProperties : DefaultTask() {
 
     @TaskAction
     fun modifyApplicationPropertiesAction() {
-        // application.properties
-        val propertiesFile = TaskUtils.getOutputResourcesFile(project, "application.properties")
-        if (propertiesFile.toFile().isFile) {
-            PropertyUtils.processProperties(propertiesFile.toFile(), getConfiguration(), false)
-        }
-
-        // system-default.properties (overwrites user defined properties)
-        val systemDefaultPropFile = TaskUtils.getOutputResourcesFile(project, "system-default.properties")
-        if (!systemDefaultPropFile.toFile().isFile) {
-            PropertyUtils.processProperties(systemDefaultPropFile.toFile(), getSystemConfiguration(), true)
-        }
-
         // application.yaml
         val propertiesYamlFile = TaskUtils.getOutputResourcesFile(project, "application.yaml")
         if (propertiesYamlFile.toFile().isFile) {
             PropertyUtils.processYamlProperties(propertiesYamlFile.toFile(), getConfiguration(), false)
+            PropertyUtils.processYamlProperties(propertiesYamlFile.toFile(), getSystemConfiguration(), true)
         }
 
-        // application-default.yaml (overwrites user defined properties)
-        if (propertiesYamlFile.toFile().isFile) {
-            PropertyUtils.processYamlProperties(propertiesYamlFile.toFile(), getSystemConfiguration(), true)
+        // application.properties
+        val propertiesFile = TaskUtils.getOutputResourcesFile(project, "application.properties")
+        if (propertiesFile.toFile().isFile) {
+            PropertyUtils.processProperties(propertiesFile.toFile(), getConfiguration(), false)
+            PropertyUtils.processProperties(propertiesFile.toFile(), getSystemConfiguration(), true)
         }
     }
 
