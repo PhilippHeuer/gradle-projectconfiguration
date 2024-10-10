@@ -3,7 +3,7 @@ package me.philippheuer.projectcfg.util
 open class DependencyVersion {
     companion object {
         // renovate: datasource=maven depName=org.jetbrains.kotlin:kotlin-stdlib
-        @JvmStatic var kotlinVersion: String = "2.0.20"
+        @JvmStatic var kotlinVersion: String = "2.0.21"
         // renovate: datasource=maven depName=org.junit.jupiter:junit-jupiter-api
         @JvmStatic var junit5Version: String = "5.11.2"
         // renovate: datasource=maven depName=io.github.microutils:kotlin-logging
