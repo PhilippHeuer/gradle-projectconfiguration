@@ -19,7 +19,7 @@ dependencies {
     implementation("org.jetbrains.dokka:dokka-gradle-plugin:1.9.20")
 
     // jackson
-    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.18.0")
+    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.18.1")
 
     // third party - plugins
     implementation("io.freefair.gradle:lombok-plugin:8.10.2")
