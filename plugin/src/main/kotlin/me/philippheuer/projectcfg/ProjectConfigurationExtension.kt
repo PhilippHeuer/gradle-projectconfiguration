@@ -52,7 +52,7 @@ open class ProjectConfigurationExtension @Inject constructor(val project: Projec
     override val frameworkDbMigrate: Property<Boolean> = objects.property(Boolean::class.java).convention(false)
 
     // renovate: datasource=maven depName=org.projectlombok:lombok
-    override val lombokVersion: Property<String> = objects.property(String::class.java).convention("1.18.34")
+    override val lombokVersion: Property<String> = objects.property(String::class.java).convention("1.18.36")
 
     override val javadocEncoding: Property<String> = objects.property(String::class.java).convention("UTF-8")
     override val javadocLocale: Property<String> = objects.property(String::class.java).convention("en")
