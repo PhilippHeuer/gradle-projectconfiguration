@@ -8,6 +8,7 @@ import me.philippheuer.projectcfg.domain.IProjectContext
 import me.philippheuer.projectcfg.domain.PluginModule
 import me.philippheuer.projectcfg.domain.ProjectLanguage
 import me.philippheuer.projectcfg.util.applyPlugin
+import me.philippheuer.projectcfg.util.toJVMVersion
 import org.gradle.api.Project
 
 class DetektFeature constructor(override var ctx: IProjectContext) : PluginModule {
@@ -34,10 +35,10 @@ class DetektFeature constructor(override var ctx: IProjectContext) : PluginModul
 
             // jvm target
             project.tasks.withType(Detekt::class.java).configureEach {
-                it.jvmTarget = config.javaVersionAsJvmVersion()
+                it.jvmTarget = config.javaVersion.map { jv -> jv.toJVMVersion() }.get()
             }
             project.tasks.withType(DetektCreateBaselineTask::class.java).configureEach {
-                it.jvmTarget = config.javaVersionAsJvmVersion()
+                it.jvmTarget = config.javaVersion.map { jv -> jv.toJVMVersion() }.get()
             }
         }
 

@@ -9,6 +9,7 @@ import me.philippheuer.projectcfg.util.JavadocIOUtils
 import me.philippheuer.projectcfg.util.PluginLogger
 import me.philippheuer.projectcfg.util.applyPlugin
 import me.philippheuer.projectcfg.util.isRootProjectWithoutSubprojectsOrSubproject
+import me.philippheuer.projectcfg.util.toMajorVersion
 import org.gradle.api.logging.LogLevel
 import org.gradle.api.tasks.javadoc.Javadoc
 import org.gradle.jvm.tasks.Jar
@@ -52,7 +53,7 @@ class DokkaDocumentation constructor(override var ctx: IProjectContext) : Plugin
                     PluginLogger.log(LogLevel.INFO, "set [tasks.dokkaJavadoc.options.moduleName] to [${it.moduleName.get()}]")
 
                     it.dokkaSourceSets.configureEach { dss ->
-                        dss.jdkVersion.set(ctx.config.javaVersionAsNumber())
+                        dss.jdkVersion.set(ctx.config.javaVersion.map { jv -> jv.toMajorVersion() }.get())
 
                         // links
                         if (ctx.config.javadocLinks.get().size > 0) {

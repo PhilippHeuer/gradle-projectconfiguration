@@ -33,6 +33,7 @@ open class ProjectConfigurationExtension @Inject constructor(val project: Projec
     override val logLevel: Property<LogLevel> = objects.property(LogLevel::class.java).convention(LogLevel.INFO)
     override val language: Property<IProjectLanguage> = objects.property(IProjectLanguage::class.java).convention(ProjectLanguage.JAVA)
     override val javaVersion: Property<JavaVersion> = objects.property(JavaVersion::class.java).convention(JavaVersion.VERSION_11)
+    override val javaToolchainVersion: Property<JavaVersion> = objects.property(JavaVersion::class.java)
     override val type: Property<IProjectType> = objects.property(IProjectType::class.java).convention(ProjectType.DEFAULT)
     override val framework: Property<IProjectFramework> = objects.property(IProjectFramework::class.java).convention(ProjectFramework.NONE)
     override val fileEncoding: Property<String> = objects.property(String::class.java).convention("UTF-8")
@@ -112,17 +113,5 @@ open class ProjectConfigurationExtension @Inject constructor(val project: Projec
                 artifactVersion.set(project.version as String?)
             }
         }
-    }
-
-    fun javaVersionAsJvmVersion(): String {
-        if (javaVersion.get() == JavaVersion.VERSION_1_8) {
-            return "1.8"
-        }
-
-        return javaVersion.get().toString()
-    }
-
-    fun javaVersionAsNumber(): Int {
-        return javaVersion.get().majorVersion.toInt()
     }
 }

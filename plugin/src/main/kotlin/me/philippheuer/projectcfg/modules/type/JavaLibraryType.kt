@@ -9,6 +9,8 @@ import me.philippheuer.projectcfg.util.DependencyVersion
 import me.philippheuer.projectcfg.util.PluginLogger
 import me.philippheuer.projectcfg.util.addDependency
 import me.philippheuer.projectcfg.util.applyPlugin
+import me.philippheuer.projectcfg.util.toJVMVersion
+import me.philippheuer.projectcfg.util.toJavaLanguageVersion
 import org.gradle.api.Project
 import org.gradle.api.logging.LogLevel
 import org.gradle.api.plugins.BasePluginExtension
@@ -58,6 +60,12 @@ class JavaLibraryType constructor(override var ctx: IProjectContext) : PluginMod
                             it.withJavadocJar()
                             PluginLogger.log(LogLevel.INFO, "add tasks SourcesJar, JavadocJar")
 
+                            // toolchain
+                            if (config.javaToolchainVersion.isPresent) {
+                                it.toolchain.languageVersion.set(config.javaToolchainVersion.map { jv -> jv.toJavaLanguageVersion() }.get())
+                                PluginLogger.log(LogLevel.INFO, "set toolchain.languageVersion = ${it.toolchain.languageVersion.get()}")
+                            }
+
                             // sourceSets
                             listOf("main", "test").forEach { name ->
                                 it.sourceSets.getByName(name) { ss ->
@@ -82,7 +90,7 @@ class JavaLibraryType constructor(override var ctx: IProjectContext) : PluginMod
                 addDependency("api", "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${DependencyVersion.kotlinVersion}")
 
                 tasks.withType(KotlinCompile::class.java).configureEach {
-                    it.kotlinOptions.jvmTarget = config.javaVersionAsJvmVersion()
+                    it.kotlinOptions.jvmTarget = config.javaVersion.map { jv -> jv.toJVMVersion() }.get()
                     it.kotlinOptions.javaParameters = true
                     it.incremental = true
                 }

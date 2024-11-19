@@ -8,4 +8,6 @@ interface JavaTypeConfig {
     // java version
     val javaVersion: Property<JavaVersion>
 
+    // java toolchain version
+    val javaToolchainVersion: Property<JavaVersion>
 }

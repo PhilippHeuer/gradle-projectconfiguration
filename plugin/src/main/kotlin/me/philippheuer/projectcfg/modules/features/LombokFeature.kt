@@ -5,7 +5,6 @@ import me.philippheuer.projectcfg.ProjectConfigurationExtension
 import me.philippheuer.projectcfg.domain.IProjectContext
 import me.philippheuer.projectcfg.domain.PluginModule
 import me.philippheuer.projectcfg.domain.ProjectLanguage
-import me.philippheuer.projectcfg.domain.ProjectType
 import me.philippheuer.projectcfg.util.PluginLogger
 import me.philippheuer.projectcfg.util.applyPlugin
 import me.philippheuer.projectcfg.util.isRootProjectWithoutSubprojectsOrSubproject

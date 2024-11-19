@@ -48,7 +48,6 @@ class SigningFeature(override var ctx: IProjectContext) : PluginModule {
                         it.useGpgCmd()
                         it.isRequired = false // only sign if key is available
                     }
-
                     it.sign(publication)
                 }
             }

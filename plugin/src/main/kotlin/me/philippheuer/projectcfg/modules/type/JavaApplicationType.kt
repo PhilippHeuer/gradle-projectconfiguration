@@ -6,9 +6,13 @@ import me.philippheuer.projectcfg.domain.PluginModule
 import me.philippheuer.projectcfg.domain.ProjectLanguage
 import me.philippheuer.projectcfg.domain.ProjectType
 import me.philippheuer.projectcfg.util.DependencyVersion
+import me.philippheuer.projectcfg.util.PluginLogger
 import me.philippheuer.projectcfg.util.addDependency
 import me.philippheuer.projectcfg.util.applyPlugin
+import me.philippheuer.projectcfg.util.toJVMVersion
+import me.philippheuer.projectcfg.util.toJavaLanguageVersion
 import org.gradle.api.Project
+import org.gradle.api.logging.LogLevel
 import org.gradle.api.plugins.BasePluginExtension
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.tasks.compile.JavaCompile
@@ -43,6 +47,13 @@ class JavaApplicationType constructor(override var ctx: IProjectContext) : Plugi
                         // java version
                         it.sourceCompatibility = config.javaVersion.get()
                         it.targetCompatibility = config.javaVersion.get()
+                        PluginLogger.log(LogLevel.INFO, "set sourceCompatibility = ${it.sourceCompatibility}, targetCompatibility = ${it.targetCompatibility}")
+
+                        // toolchain
+                        if (config.javaToolchainVersion.isPresent) {
+                            it.toolchain.languageVersion.set(config.javaToolchainVersion.map { jv -> jv.toJavaLanguageVersion() }.get())
+                            PluginLogger.log(LogLevel.INFO, "set toolchain.languageVersion = ${it.toolchain.languageVersion.get()}")
+                        }
 
                         // sourceSets
                         it.sourceSets.getByName("main") { ss ->
@@ -67,7 +78,7 @@ class JavaApplicationType constructor(override var ctx: IProjectContext) : Plugi
                 addDependency("implementation", "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${DependencyVersion.kotlinVersion}")
 
                 tasks.withType(KotlinCompile::class.java).configureEach {
-                    it.kotlinOptions.jvmTarget = config.javaVersionAsJvmVersion()
+                    it.kotlinOptions.jvmTarget = config.javaVersion.map { jv -> jv.toJVMVersion() }.get()
                     it.incremental = true
                 }
             }

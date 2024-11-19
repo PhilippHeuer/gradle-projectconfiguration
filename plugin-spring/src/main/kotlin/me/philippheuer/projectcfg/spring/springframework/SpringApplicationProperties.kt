@@ -15,10 +15,13 @@ abstract class SpringApplicationProperties : DefaultTask() {
     @TaskAction
     fun modifyApplicationPropertiesAction() {
         // application.yaml
-        val propertiesYamlFile = TaskUtils.getOutputResourcesFile(project, "application.yaml")
-        if (propertiesYamlFile.toFile().isFile) {
-            PropertyUtils.processYamlProperties(propertiesYamlFile.toFile(), getConfiguration(), false)
-            PropertyUtils.processYamlProperties(propertiesYamlFile.toFile(), getSystemConfiguration(), true)
+        val propertyFiles = listOf(
+            TaskUtils.getOutputResourcesFile(project, "application.yaml"),
+            TaskUtils.getOutputResourcesFile(project, "application.yml")
+        )
+        propertyFiles.map { it.toFile() }.filter { it.isFile }.forEach { file ->
+            PropertyUtils.processYamlProperties(file, getConfiguration(), false)
+            PropertyUtils.processYamlProperties(file, getSystemConfiguration(), true)
         }
 
         // application.properties
