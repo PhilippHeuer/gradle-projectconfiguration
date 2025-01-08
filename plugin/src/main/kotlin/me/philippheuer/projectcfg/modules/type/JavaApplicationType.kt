@@ -9,14 +9,14 @@ import me.philippheuer.projectcfg.util.DependencyVersion
 import me.philippheuer.projectcfg.util.PluginLogger
 import me.philippheuer.projectcfg.util.addDependency
 import me.philippheuer.projectcfg.util.applyPlugin
-import me.philippheuer.projectcfg.util.toJVMVersion
 import me.philippheuer.projectcfg.util.toJavaLanguageVersion
+import me.philippheuer.projectcfg.util.toJvmTarget
 import org.gradle.api.Project
 import org.gradle.api.logging.LogLevel
 import org.gradle.api.plugins.BasePluginExtension
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.tasks.compile.JavaCompile
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 
 class JavaApplicationType constructor(override var ctx: IProjectContext) : PluginModule {
     override fun check(): Boolean {
@@ -77,10 +77,15 @@ class JavaApplicationType constructor(override var ctx: IProjectContext) : Plugi
             project.run {
                 addDependency("implementation", "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${DependencyVersion.kotlinVersion}")
 
-                tasks.withType(KotlinCompile::class.java).configureEach {
-                    it.kotlinOptions.jvmTarget = config.javaVersion.map { jv -> jv.toJVMVersion() }.get()
-                    it.incremental = true
+                tasks.withType(KotlinJvmCompile::class.java).configureEach {
+                    it.compilerOptions { co ->
+                        co.jvmTarget.set(config.javaVersion.map { jv -> jv.toJvmTarget() }.get())
+                        co.javaParameters.set(true)
+                    }
                 }
+
+                // Workaround for https://youtrack.jetbrains.com/issue/KT-54207
+                tasks.getByName("kotlinSourcesJar").enabled = false
             }
         }
     }
