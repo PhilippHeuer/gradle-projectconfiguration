@@ -15,6 +15,7 @@ import me.philippheuer.projectcfg.domain.IProjectType
 import me.philippheuer.projectcfg.domain.ProjectFramework
 import me.philippheuer.projectcfg.domain.ProjectLanguage
 import me.philippheuer.projectcfg.domain.ProjectType
+import me.philippheuer.projectcfg.util.PluginLogger
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.api.artifacts.repositories.ArtifactRepository
@@ -82,13 +83,24 @@ open class ProjectConfigurationExtension @Inject constructor(val project: Projec
     }
 
     override fun postProcess() {
+        PluginLogger.setContext(project, null)
+
         // auto-detect project type
         if (type.get() == ProjectType.DEFAULT) {
-            if (project.pluginManager.hasPlugin("java") || project.pluginManager.hasPlugin("application")) {
-                type.set(ProjectType.APP)
-            } else if (project.pluginManager.hasPlugin("java-library")) {
+            if (project.pluginManager.hasPlugin("java-library") || project.pluginManager.hasPlugin("java-platform")) {
                 type.set(ProjectType.LIBRARY)
+            } else if (project.pluginManager.hasPlugin("java") || project.pluginManager.hasPlugin("application")) {
+                type.set(ProjectType.APP)
             }
+
+            if (type.get() != ProjectType.DEFAULT) {
+                PluginLogger.log(LogLevel.INFO, "Set project type to [${type.get()}]")
+            }
+        }
+
+        // inform, if no project type is set or detected
+        if (type.get() == ProjectType.DEFAULT) {
+            PluginLogger.log(LogLevel.INFO, "No project type specified or detected, this module will not be customized.")
         }
 
         // artifact
