@@ -31,8 +31,8 @@ dependencies {
     implementation("org.cyclonedx:cyclonedx-gradle-plugin:2.1.0")
 
     // test
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.11.4")
-    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.11.4")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.12.0")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.12.0")
     testImplementation("org.jetbrains.kotlin:kotlin-test:2.1.10")
 }
 
