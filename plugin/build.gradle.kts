@@ -27,7 +27,7 @@ dependencies {
     implementation("gradle.plugin.com.github.johnrengelman:shadow:8.0.0")
     implementation("com.github.ben-manes:gradle-versions-plugin:0.52.0")
     implementation("io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.23.8")
-    implementation("com.gorylenko.gradle-git-properties:gradle-git-properties:2.4.2")
+    implementation("com.gorylenko.gradle-git-properties:gradle-git-properties:2.5.0")
     implementation("org.cyclonedx:cyclonedx-gradle-plugin:2.2.0")
 
     // test
