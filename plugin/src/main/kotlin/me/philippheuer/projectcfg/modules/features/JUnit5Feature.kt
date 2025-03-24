@@ -29,7 +29,7 @@ class JUnit5Feature constructor(override var ctx: IProjectContext) : PluginModul
         private fun configureJunitDependencies(project: Project, config: ProjectConfigurationExtension) {
             // junit
             project.addDependency("testImplementation", "org.junit.jupiter:junit-jupiter:${DependencyVersion.junit5Version}")
-            project.addDependency("testRuntimeOnly", "org.junit.platform:junit-platform-launcher:${DependencyVersion.junit5Version}")
+            project.addDependency("testRuntimeOnly", "org.junit.platform:junit-platform-launcher")
 
             // kotlin
             if (ProjectLanguage.KOTLIN.valueEquals(config.language.get())) {
