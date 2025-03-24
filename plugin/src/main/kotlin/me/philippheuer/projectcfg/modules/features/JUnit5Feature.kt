@@ -7,6 +7,7 @@ import me.philippheuer.projectcfg.domain.ProjectLanguage
 import me.philippheuer.projectcfg.util.DependencyVersion
 import me.philippheuer.projectcfg.util.PluginLogger
 import me.philippheuer.projectcfg.util.addDependency
+import me.philippheuer.projectcfg.util.addPlatformDependency
 import org.gradle.api.Project
 import org.gradle.api.logging.LogLevel
 import org.gradle.api.tasks.testing.Test
@@ -28,8 +29,9 @@ class JUnit5Feature constructor(override var ctx: IProjectContext) : PluginModul
     companion object {
         private fun configureJunitDependencies(project: Project, config: ProjectConfigurationExtension) {
             // junit
-            project.addDependency("testImplementation", "org.junit.jupiter:junit-jupiter:${DependencyVersion.junit5Version}")
-            project.addDependency("testRuntimeOnly", "org.junit.platform:junit-platform-launcher:${DependencyVersion.junit5Version}")
+            project.addPlatformDependency("testImplementation", "org.junit:junit-bom:${DependencyVersion.junit5Version}")
+            project.addDependency("testImplementation", "org.junit.jupiter:junit-jupiter")
+            project.addDependency("testRuntimeOnly", "org.junit.platform:junit-platform-launcher")
 
             // kotlin
             if (ProjectLanguage.KOTLIN.valueEquals(config.language.get())) {
