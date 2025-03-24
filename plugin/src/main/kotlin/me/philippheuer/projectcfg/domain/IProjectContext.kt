@@ -30,4 +30,11 @@ interface IProjectContext {
     fun hasProjectDependency(dependencyNotation: String): Boolean {
         return DependencyUtils.hasDependency(project, listOf("implementation", "api"), dependencyNotation)
     }
+
+    /**
+     * Checks if the project is a source module, as we don't want to apply certain features to platform modules or gradle version catalog modules
+     */
+    fun isProjectSourceModule(): Boolean {
+        return !project.pluginManager.hasPlugin("java-platform") && !project.pluginManager.hasPlugin("version-catalog") && (project.pluginManager.hasPlugin("java") || project.pluginManager.hasPlugin("java-library"))
+    }
 }

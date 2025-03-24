@@ -13,7 +13,7 @@ import org.gradle.jvm.tasks.Jar
 
 class ShadowFeature(override var ctx: IProjectContext) : PluginModule {
     override fun check(): Boolean {
-        if (ctx.project.isRootProjectWithoutSubprojectsOrSubproject() && ctx.isProjectLanguage(ProjectLanguage.JAVA) && !ctx.project.pluginManager.hasPlugin("java-platform") && ctx.config.shadow.get()) {
+        if (ctx.project.isRootProjectWithoutSubprojectsOrSubproject() && ctx.isProjectLanguage(ProjectLanguage.JAVA) && !ctx.project.pluginManager.hasPlugin("java-platform") && !ctx.project.pluginManager.hasPlugin("version-catalog") && ctx.config.shadow.get()) {
             return true
         }
 

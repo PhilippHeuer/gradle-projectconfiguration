@@ -13,7 +13,7 @@ import org.gradle.testing.jacoco.tasks.JacocoReport
 class JacocoFeature(override var ctx: IProjectContext) : PluginModule {
 
     override fun check(): Boolean {
-        return !ctx.project.pluginManager.hasPlugin("java-platform")
+        return ctx.isProjectSourceModule()
     }
 
     override fun run() {

@@ -62,10 +62,12 @@ class PublishFeature(override var ctx: IProjectContext) : PluginModule {
                 }
 
                 // publication
-                if (publish.publications.size == 0) {
+                if (publish.publications.isEmpty()) {
                     publish.publications.create("main", MavenPublication::class.java) { pub ->
                         if (project.pluginManager.hasPlugin("java-platform")) {
                             pub.from(project.components.getByName("javaPlatform")) // BOM
+                        } else if (project.pluginManager.hasPlugin("version-catalog")) {
+                            pub.from(project.components.getByName("versionCatalog")) // Gradle Version Catalog
                         } else {
                             pub.from(project.components.getByName("java"))
                         }

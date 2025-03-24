@@ -17,7 +17,7 @@ import org.gradle.api.tasks.testing.logging.TestExceptionFormat
  */
 class JUnit5Feature constructor(override var ctx: IProjectContext) : PluginModule {
     override fun check(): Boolean {
-        return !ctx.project.pluginManager.hasPlugin("java-platform") && (ctx.project.pluginManager.hasPlugin("java") || ctx.project.pluginManager.hasPlugin("java-library"))
+        return ctx.isProjectSourceModule()
     }
 
     override fun run() {
@@ -28,9 +28,8 @@ class JUnit5Feature constructor(override var ctx: IProjectContext) : PluginModul
     companion object {
         private fun configureJunitDependencies(project: Project, config: ProjectConfigurationExtension) {
             // junit
-            project.addDependency("testImplementation", "org.junit.jupiter:junit-jupiter-api:${DependencyVersion.junit5Version}")
-            project.addDependency("testImplementation", "org.junit.jupiter:junit-jupiter-params:${DependencyVersion.junit5Version}")
-            project.addDependency("testRuntimeOnly", "org.junit.jupiter:junit-jupiter-engine:${DependencyVersion.junit5Version}")
+            project.addDependency("testImplementation", "org.junit.jupiter:junit-jupiter:${DependencyVersion.junit5Version}")
+            project.addDependency("testRuntimeOnly", "org.junit.platform:junit-platform-launcher:${DependencyVersion.junit5Version}")
 
             // kotlin
             if (ProjectLanguage.KOTLIN.valueEquals(config.language.get())) {
