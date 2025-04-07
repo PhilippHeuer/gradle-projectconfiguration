@@ -11,6 +11,7 @@ import me.philippheuer.projectcfg.modules.features.JUnit5Feature
 import me.philippheuer.projectcfg.modules.features.JacocoFeature
 import me.philippheuer.projectcfg.modules.features.LoggingLibraryFeature
 import me.philippheuer.projectcfg.modules.features.LombokFeature
+import me.philippheuer.projectcfg.modules.features.AutomaticModuleNameFeature
 import me.philippheuer.projectcfg.modules.features.PublishFeature
 import me.philippheuer.projectcfg.modules.features.ReproducibleArchivesFeature
 import me.philippheuer.projectcfg.modules.features.ShadowFeature
@@ -53,6 +54,7 @@ abstract class ProjectConfigurationPlugin : Plugin<Project> {
                 JUnit5Feature(ctx),
                 LoggingLibraryFeature(ctx),
                 GitPropertiesFeature(ctx),
+                AutomaticModuleNameFeature(ctx),
                 ReproducibleArchivesFeature(ctx),
                 // check
                 CheckstyleFeature(ctx),
