@@ -6,7 +6,6 @@ import me.philippheuer.projectcfg.domain.IProjectContext
 import me.philippheuer.projectcfg.domain.PluginModule
 import me.philippheuer.projectcfg.domain.ProjectLanguage
 import me.philippheuer.projectcfg.util.PluginLogger
-import me.philippheuer.projectcfg.util.TaskUtils
 import me.philippheuer.projectcfg.util.applyPlugin
 import org.gradle.api.GradleException
 import org.gradle.api.Project

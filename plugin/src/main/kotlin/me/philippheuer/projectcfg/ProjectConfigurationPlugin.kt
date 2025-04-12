@@ -6,12 +6,12 @@ import me.philippheuer.projectcfg.modules.check.CheckstyleFeature
 import me.philippheuer.projectcfg.modules.check.DetektFeature
 import me.philippheuer.projectcfg.modules.documentation.DokkaDocumentation
 import me.philippheuer.projectcfg.modules.documentation.JavadocDocumentation
+import me.philippheuer.projectcfg.modules.features.AutomaticModuleNameFeature
 import me.philippheuer.projectcfg.modules.features.GitPropertiesFeature
 import me.philippheuer.projectcfg.modules.features.JUnit5Feature
 import me.philippheuer.projectcfg.modules.features.JacocoFeature
 import me.philippheuer.projectcfg.modules.features.LoggingLibraryFeature
 import me.philippheuer.projectcfg.modules.features.LombokFeature
-import me.philippheuer.projectcfg.modules.features.AutomaticModuleNameFeature
 import me.philippheuer.projectcfg.modules.features.PublishFeature
 import me.philippheuer.projectcfg.modules.features.ReproducibleArchivesFeature
 import me.philippheuer.projectcfg.modules.features.ShadowFeature

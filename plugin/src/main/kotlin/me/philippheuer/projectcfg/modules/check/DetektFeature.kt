@@ -7,7 +7,6 @@ import me.philippheuer.projectcfg.ProjectConfigurationExtension
 import me.philippheuer.projectcfg.domain.IProjectContext
 import me.philippheuer.projectcfg.domain.PluginModule
 import me.philippheuer.projectcfg.domain.ProjectLanguage
-import me.philippheuer.projectcfg.util.TaskUtils
 import me.philippheuer.projectcfg.util.applyPlugin
 import me.philippheuer.projectcfg.util.toJVMVersion
 import org.gradle.api.Project
