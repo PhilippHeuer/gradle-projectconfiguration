@@ -34,7 +34,7 @@ class DependencyReport(override var ctx: IProjectContext) : PluginModule {
         ctx.project.tasks.named("processResources").configure {
             it.dependsOn(task)
         }
-        ctx.project.tasks.matching { it.name == "classes" }.configureEach {
+        ctx.project.tasks.matching { it.name == "classes" || it.name == "sourcesJar" }.configureEach {
             it.dependsOn(task)
             it.mustRunAfter("processResources")
         }
