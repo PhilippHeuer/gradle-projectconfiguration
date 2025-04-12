@@ -49,7 +49,12 @@ interface PluginConfig {
     // build native binary
     val native: Property<Boolean>
 
-    // controls of failure of common linting checks should fail the build
+    /**
+     * Determines whether common linting check failures should fail the entire build.
+     *
+     * @since 0.16.1
+     * @default true, or false in CI
+     */
     val strictChecks: Property<Boolean>
 
     /**
