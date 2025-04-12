@@ -7,6 +7,7 @@ import me.philippheuer.projectcfg.ProjectConfigurationExtension
 import me.philippheuer.projectcfg.domain.IProjectContext
 import me.philippheuer.projectcfg.domain.PluginModule
 import me.philippheuer.projectcfg.domain.ProjectLanguage
+import me.philippheuer.projectcfg.util.TaskUtils
 import me.philippheuer.projectcfg.util.applyPlugin
 import me.philippheuer.projectcfg.util.toJVMVersion
 import org.gradle.api.Project
@@ -40,12 +41,18 @@ class DetektFeature constructor(override var ctx: IProjectContext) : PluginModul
             project.tasks.withType(DetektCreateBaselineTask::class.java).configureEach {
                 it.jvmTarget = config.javaVersion.map { jv -> jv.toJVMVersion() }.get()
             }
+
+            // fail-on-error
+            project.tasks.withType(Detekt::class.java).configureEach {
+                it.ignoreFailures = !config.strictChecks.get()
+            }
         }
 
         fun applyReporting(project: Project) {
             project.tasks.withType(Detekt::class.java).configureEach {
                 it.reports.html.required.set(true)
                 it.reports.xml.required.set(true)
+                it.reports.sarif.required.set(true)
             }
         }
     }

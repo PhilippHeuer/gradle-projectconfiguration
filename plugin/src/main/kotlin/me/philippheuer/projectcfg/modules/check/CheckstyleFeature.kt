@@ -6,6 +6,7 @@ import me.philippheuer.projectcfg.domain.IProjectContext
 import me.philippheuer.projectcfg.domain.PluginModule
 import me.philippheuer.projectcfg.domain.ProjectLanguage
 import me.philippheuer.projectcfg.util.PluginLogger
+import me.philippheuer.projectcfg.util.TaskUtils
 import me.philippheuer.projectcfg.util.applyPlugin
 import org.gradle.api.GradleException
 import org.gradle.api.Project
@@ -69,6 +70,8 @@ class CheckstyleFeature constructor(override var ctx: IProjectContext) : PluginM
                     }
                     PluginLogger.log(LogLevel.INFO, "using checkstyle config [${it.configFile}]")
 
+                    // fail-on-error
+                    it.isIgnoreFailures = !config.strictChecks.get()
                     it.maxWarnings = 0
                     it.maxErrors = 0
                 }
@@ -81,6 +84,7 @@ class CheckstyleFeature constructor(override var ctx: IProjectContext) : PluginM
                 task.reports { report ->
                     report.xml.required.set(true)
                     report.html.required.set(true)
+                    report.sarif.required.set(true)
                 }
             }
         }

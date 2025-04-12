@@ -49,6 +49,9 @@ interface PluginConfig {
     // build native binary
     val native: Property<Boolean>
 
+    // controls of failure of common linting checks should fail the build
+    val strictChecks: Property<Boolean>
+
     /**
      * postProcess can be used to apply config changes / set defaults, after the user configuration has been parsed
      */

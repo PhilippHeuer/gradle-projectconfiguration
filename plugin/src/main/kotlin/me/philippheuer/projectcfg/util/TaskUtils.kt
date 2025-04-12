@@ -31,5 +31,9 @@ class TaskUtils {
                 false
             }
         }
+
+        fun isCI(): Boolean {
+            return System.getenv("CI") != null && System.getenv("CI").toBoolean()
+        }
     }
 }
