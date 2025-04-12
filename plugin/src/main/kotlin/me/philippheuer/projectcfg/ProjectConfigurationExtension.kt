@@ -16,6 +16,7 @@ import me.philippheuer.projectcfg.domain.ProjectFramework
 import me.philippheuer.projectcfg.domain.ProjectLanguage
 import me.philippheuer.projectcfg.domain.ProjectType
 import me.philippheuer.projectcfg.util.PluginLogger
+import me.philippheuer.projectcfg.util.TaskUtils
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.api.artifacts.repositories.ArtifactRepository
@@ -46,6 +47,7 @@ open class ProjectConfigurationExtension @Inject constructor(val project: Projec
     override val artifactDescription: Property<String> = objects.property(String::class.java)
     override var pom: (MavenPom) -> Unit = {}
     override val native: Property<Boolean> = objects.property(Boolean::class.java).convention(false)
+    override val strictChecks: Property<Boolean> = objects.property(Boolean::class.java).convention(!TaskUtils.isCI())
 
     override val frameworkWebApi: Property<Boolean> = objects.property(Boolean::class.java).convention(false)
     override val frameworkMetrics: Property<Boolean> = objects.property(Boolean::class.java).convention(true)

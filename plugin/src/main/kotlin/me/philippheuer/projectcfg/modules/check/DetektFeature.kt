@@ -40,12 +40,18 @@ class DetektFeature constructor(override var ctx: IProjectContext) : PluginModul
             project.tasks.withType(DetektCreateBaselineTask::class.java).configureEach {
                 it.jvmTarget = config.javaVersion.map { jv -> jv.toJVMVersion() }.get()
             }
+
+            // fail-on-error
+            project.tasks.withType(Detekt::class.java).configureEach {
+                it.ignoreFailures = !config.strictChecks.get()
+            }
         }
 
         fun applyReporting(project: Project) {
             project.tasks.withType(Detekt::class.java).configureEach {
                 it.reports.html.required.set(true)
                 it.reports.xml.required.set(true)
+                it.reports.sarif.required.set(true)
             }
         }
     }

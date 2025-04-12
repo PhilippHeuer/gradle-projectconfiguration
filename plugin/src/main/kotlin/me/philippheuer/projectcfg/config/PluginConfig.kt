@@ -50,6 +50,14 @@ interface PluginConfig {
     val native: Property<Boolean>
 
     /**
+     * Determines whether common linting check failures should fail the entire build.
+     *
+     * @since 0.16.1
+     * @default true, or false in CI
+     */
+    val strictChecks: Property<Boolean>
+
+    /**
      * postProcess can be used to apply config changes / set defaults, after the user configuration has been parsed
      */
     fun postProcess()
