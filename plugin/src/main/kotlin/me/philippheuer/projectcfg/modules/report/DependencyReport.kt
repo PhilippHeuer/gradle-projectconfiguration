@@ -10,6 +10,10 @@ private const val DEPENDENCY_REPORT_OUTPUT_DIR = "generated/depreport/resources"
 
 class DependencyReport(override var ctx: IProjectContext) : PluginModule {
     override fun check(): Boolean {
+        if (ctx.project.pluginManager.hasPlugin("java-platform") || ctx.project.pluginManager.hasPlugin("version-catalog")) {
+            return false
+        }
+
         return true
     }
 
