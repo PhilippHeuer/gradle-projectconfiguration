@@ -6,15 +6,28 @@ import me.philippheuer.projectcfg.domain.PluginModule
 import me.philippheuer.projectcfg.domain.ProjectType
 import me.philippheuer.projectcfg.util.PluginLogger
 import me.philippheuer.projectcfg.util.applyPlugin
+import org.gradle.api.GradleException
 import org.gradle.api.Project
 import org.gradle.api.logging.LogLevel
 import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.publish.maven.MavenPublication
 import java.net.URI
+import java.net.URISyntaxException
 
 class PublishFeature(override var ctx: IProjectContext) : PluginModule {
     override fun check(): Boolean {
-        return ctx.isProjectType(ProjectType.LIBRARY) && (ctx.project.properties.containsKey("repository.publish.target") && (ctx.project.properties["repository.publish.target"] as String).isNotEmpty())
+        if (!ctx.isProjectType(ProjectType.LIBRARY)) {
+            return false
+        }
+
+        var hasPublicationTarget = ctx.config.artifactRepository.isPresent
+        if (ctx.project.properties.containsKey("repository.publish.target") && (ctx.project.properties["repository.publish.target"] as String).isNotEmpty()) {
+            hasPublicationTarget = true
+        } else if (System.getenv("MAVEN_REPO_URL") != null) {
+            hasPublicationTarget = true
+        }
+
+        return hasPublicationTarget
     }
 
     override fun run() {
@@ -28,7 +41,6 @@ class PublishFeature(override var ctx: IProjectContext) : PluginModule {
 
             // configure
             project.extensions.configure(PublishingExtension::class.java) { publish ->
-                // only configure if a target repository has been configured
                 if (config.artifactRepository.isPresent) {
                     publish.repositories.add(config.artifactRepository.get())
                 } else {
@@ -49,15 +61,26 @@ class PublishFeature(override var ctx: IProjectContext) : PluginModule {
                 }
 
                 // environment based configuration
-                if (System.getenv("MAVEN_REPO_URL") != null) {
-                    PluginLogger.log(LogLevel.INFO, "configuring repository for publication from environment")
-                    publish.repositories.maven { m ->
-                        m.name = "publish"
-                        m.url = URI(System.getenv("MAVEN_REPO_URL"))
-                        m.credentials.run {
-                            username = System.getenv("MAVEN_REPO_USERNAME")
-                            password = System.getenv("MAVEN_REPO_PASSWORD")
+                val envRepoUrl = System.getenv("MAVEN_REPO_URL")?.trim()
+                if (!envRepoUrl.isNullOrBlank()) {
+                    val repoName = System.getenv("MAVEN_REPO_NAME")?.trim() ?: "maven"
+                    val repoUser = System.getenv("MAVEN_REPO_USERNAME")?.trim()
+                    val repoPassword = System.getenv("MAVEN_REPO_PASSWORD")?.trim()
+                    PluginLogger.log(LogLevel.INFO, "configuring repository [$repoName] for publication from environment")
+
+                    try {
+                        publish.repositories.maven { m ->
+                            m.name = repoName
+                            m.url = URI(envRepoUrl)
+                            if (!repoUser.isNullOrBlank() && !repoPassword.isNullOrBlank()) {
+                                m.credentials.run {
+                                    username = repoUser
+                                    password = repoPassword
+                                }
+                            }
                         }
+                    } catch (e: URISyntaxException) {
+                        throw GradleException("Invalid MAVEN_REPO_URL: $envRepoUrl", e)
                     }
                 }
 
