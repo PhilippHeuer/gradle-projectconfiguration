@@ -12,6 +12,7 @@ import me.philippheuer.projectcfg.modules.features.JUnit5Feature
 import me.philippheuer.projectcfg.modules.features.JacocoFeature
 import me.philippheuer.projectcfg.modules.features.LoggingLibraryFeature
 import me.philippheuer.projectcfg.modules.features.LombokFeature
+import me.philippheuer.projectcfg.modules.features.PublicationBundleFeature
 import me.philippheuer.projectcfg.modules.features.PublishFeature
 import me.philippheuer.projectcfg.modules.features.ReleaseFeature
 import me.philippheuer.projectcfg.modules.features.ReproducibleArchivesFeature
@@ -48,6 +49,7 @@ abstract class ProjectConfigurationPlugin : Plugin<Project> {
                 // features
                 JacocoFeature(ctx),
                 PublishFeature(ctx),
+                PublicationBundleFeature(ctx),
                 SigningFeature(ctx),
                 ReleaseFeature(ctx),
                 LombokFeature(ctx),
