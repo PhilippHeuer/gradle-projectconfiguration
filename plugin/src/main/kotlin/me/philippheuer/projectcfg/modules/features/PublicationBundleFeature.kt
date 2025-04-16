@@ -32,6 +32,8 @@ class PublicationBundleFeature(override var ctx: IProjectContext) : PluginModule
 
     companion object {
         const val BUNDLE_REPO_DIR = "tmp/publication-bundle"
+        const val MODULE_BUNDLE_TASK = "createPublicationBundle"
+        const val PROJECT_BUNDLE_TASK = "createProjectPublicationBundle"
 
         fun configureBundle(project: Project, config: ProjectConfigurationExtension) {
             val publication = project.extensions
@@ -61,7 +63,7 @@ class PublicationBundleFeature(override var ctx: IProjectContext) : PluginModule
             val publishTask = project.tasks.named("publishAllPublicationsToLocalTempBundleRepository") {
                 it.dependsOn(cleanTask)
             }
-            project.tasks.register("createPublicationBundle", Zip::class.java) { task ->
+            project.tasks.register(MODULE_BUNDLE_TASK, Zip::class.java) { task ->
                 task.group = "publishing"
                 task.description = "Creates a zip file with all modules in the build/distributions directory"
                 task.dependsOn(publishTask)
@@ -72,8 +74,8 @@ class PublicationBundleFeature(override var ctx: IProjectContext) : PluginModule
 
             // bundle project
             val rootProject = project.rootProject
-            if (rootProject.subprojects.isNotEmpty() && rootProject.tasks.findByName("publishProjectBundleToFilesystem") == null) {
-                rootProject.tasks.register("createProjectPublicationBundle", Zip::class.java) { task ->
+            if (rootProject.subprojects.isNotEmpty() && rootProject.tasks.findByName(PROJECT_BUNDLE_TASK) == null) {
+                rootProject.tasks.register(PROJECT_BUNDLE_TASK, Zip::class.java) { task ->
                     task.group = "publishing"
                     task.description = "Creates a zip file with all subprojects in the build/distributions directory"
                     task.dependsOn(publishTask)
@@ -82,7 +84,7 @@ class PublicationBundleFeature(override var ctx: IProjectContext) : PluginModule
 
                     rootProject.subprojects.forEach { subProject ->
                         // add dependencies
-                        subProject.tasks.matching { it.name == "createPublicationBundle" }.configureEach {
+                        subProject.tasks.matching { it.name == MODULE_BUNDLE_TASK }.configureEach {
                             task.dependsOn(it)
                         }
 
