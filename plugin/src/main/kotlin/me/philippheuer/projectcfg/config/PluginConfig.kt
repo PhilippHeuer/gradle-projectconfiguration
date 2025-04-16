@@ -5,6 +5,7 @@ import me.philippheuer.projectcfg.domain.IProjectLanguage
 import me.philippheuer.projectcfg.domain.IProjectType
 import org.gradle.api.artifacts.repositories.ArtifactRepository
 import org.gradle.api.logging.LogLevel
+import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.publish.maven.MavenPom
 
@@ -56,6 +57,11 @@ interface PluginConfig {
      * @default true, or false in CI
      */
     val strictChecks: Property<Boolean>
+
+    /**
+     * List of plugin modules that should not be applied.
+     */
+    val disablePluginModules: ListProperty<String>
 
     /**
      * postProcess can be used to apply config changes / set defaults, after the user configuration has been parsed

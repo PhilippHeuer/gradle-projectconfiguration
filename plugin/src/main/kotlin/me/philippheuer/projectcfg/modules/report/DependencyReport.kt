@@ -4,6 +4,8 @@ import me.philippheuer.projectcfg.domain.IProjectContext
 import me.philippheuer.projectcfg.domain.PluginModule
 import me.philippheuer.projectcfg.modules.report.tasks.DependenciesReportResourcesTask
 import me.philippheuer.projectcfg.util.DependencyUtils
+import me.philippheuer.projectcfg.util.PluginLogger
+import org.gradle.api.logging.LogLevel
 
 private const val DEPENDENCY_REPORT_TASK_NAME = "projectcfg-dependency-report-resources"
 private const val DEPENDENCY_REPORT_OUTPUT_DIR = "generated/depreport/resources"
@@ -24,6 +26,7 @@ class DependencyReport(override var ctx: IProjectContext) : PluginModule {
         }
 
         // add task and add it to the task graph
+        PluginLogger.log(LogLevel.INFO, "Adding task ${DEPENDENCY_REPORT_TASK_NAME} to project ${ctx.project.name}")
         val task = ctx.project.tasks.register(DEPENDENCY_REPORT_TASK_NAME, DependenciesReportResourcesTask::class.java) {
             val deps = DependencyUtils.getResolvedDependencies(ctx.project, listOf("compileClasspath"))
 

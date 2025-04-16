@@ -3,6 +3,8 @@ package me.philippheuer.projectcfg.domain
 interface PluginModule {
     var ctx: IProjectContext
 
+    fun name() = this::class.simpleName ?: "UnknownModule"
+
     /**
      * default init code, but always run before afterEvaluate when config is not available yet
      */

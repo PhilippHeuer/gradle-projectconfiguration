@@ -48,6 +48,7 @@ open class ProjectConfigurationExtension @Inject constructor(val project: Projec
     override var pom: (MavenPom) -> Unit = {}
     override val native: Property<Boolean> = objects.property(Boolean::class.java).convention(false)
     override val strictChecks: Property<Boolean> = objects.property(Boolean::class.java).convention(!TaskUtils.isCI())
+    override val disablePluginModules: ListProperty<String> = objects.listProperty(String::class.java).convention(Collections.emptyList())
 
     override val frameworkWebApi: Property<Boolean> = objects.property(Boolean::class.java).convention(false)
     override val frameworkMetrics: Property<Boolean> = objects.property(Boolean::class.java).convention(true)

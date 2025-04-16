@@ -3,6 +3,8 @@ package me.philippheuer.projectcfg.util
 import me.philippheuer.projectcfg.config.PluginConfig
 import me.philippheuer.projectcfg.domain.PluginModule
 import org.gradle.api.Project
+import org.gradle.api.logging.LogLevel
+import java.util.Collections
 
 class ModuleUtils {
     companion object {
@@ -10,9 +12,10 @@ class ModuleUtils {
          * Initializes the modules
          */
         fun initModules(modules: List<PluginModule>, project: Project) {
-            modules.forEach {
-                PluginLogger.setContext(project, "${it::class.java}")
-                it.init()
+            modules.forEach { module ->
+                val moduleName = module.name()
+                PluginLogger.setContext(project, moduleName)
+                module.init()
             }
         }
 
@@ -27,14 +30,19 @@ class ModuleUtils {
                 config.postProcess()
 
                 // process module
-                modules.forEach {
-                    PluginLogger.setContext(project, "${it::class.java}")
-                    val enabled = it.check()
-                    if (enabled) {
+                modules.forEach { module ->
+                    val moduleName = module.name()
+
+                    PluginLogger.setContext(project, moduleName)
+                    val enabled = module.check()
+                    val isDisabled = config.disablePluginModules.getOrElse(Collections.emptyList()).contains(moduleName)
+                    PluginLogger.log(LogLevel.DEBUG, "module [$moduleName] is enabled:[${enabled}], onDisabledPluginsList:[${isDisabled}] - ${config.disablePluginModules.get().toString()}")
+                    if (enabled && !isDisabled) {
                         if (project.isRootProjectWithoutSubprojectsOrSubproject()) {
-                            it.run()
+                            module.run()
                         }
                     }
+                    PluginLogger.setContext(project, null)
                 }
             }
         }

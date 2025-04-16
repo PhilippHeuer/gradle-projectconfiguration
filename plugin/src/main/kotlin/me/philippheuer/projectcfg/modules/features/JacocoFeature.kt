@@ -11,7 +11,6 @@ import org.gradle.testing.jacoco.tasks.JacocoReport
  * JaCoCo - Java Code Coverage
  */
 class JacocoFeature(override var ctx: IProjectContext) : PluginModule {
-
     override fun check(): Boolean {
         return ctx.isProjectSourceModule()
     }
