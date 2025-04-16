@@ -13,6 +13,7 @@ import me.philippheuer.projectcfg.modules.features.JacocoFeature
 import me.philippheuer.projectcfg.modules.features.LoggingLibraryFeature
 import me.philippheuer.projectcfg.modules.features.LombokFeature
 import me.philippheuer.projectcfg.modules.features.PublishFeature
+import me.philippheuer.projectcfg.modules.features.ReleaseFeature
 import me.philippheuer.projectcfg.modules.features.ReproducibleArchivesFeature
 import me.philippheuer.projectcfg.modules.features.ShadowFeature
 import me.philippheuer.projectcfg.modules.features.SigningFeature
@@ -48,6 +49,7 @@ abstract class ProjectConfigurationPlugin : Plugin<Project> {
                 JacocoFeature(ctx),
                 PublishFeature(ctx),
                 SigningFeature(ctx),
+                ReleaseFeature(ctx),
                 LombokFeature(ctx),
                 TestLoggingFeature(ctx),
                 ShadowFeature(ctx),
