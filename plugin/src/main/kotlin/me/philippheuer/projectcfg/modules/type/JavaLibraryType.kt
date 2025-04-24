@@ -88,6 +88,7 @@ class JavaLibraryType constructor(override var ctx: IProjectContext) : PluginMod
 
             project.run {
                 addDependency("api", "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${DependencyVersion.kotlinVersion}")
+                addDependency("testImplementation", "org.jetbrains.kotlin:kotlin-test:${DependencyVersion.kotlinVersion}")
 
                 tasks.withType(KotlinJvmCompile::class.java).configureEach {
                     it.compilerOptions { co ->

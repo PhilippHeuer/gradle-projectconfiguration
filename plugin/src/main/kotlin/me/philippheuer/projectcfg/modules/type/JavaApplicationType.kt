@@ -72,10 +72,12 @@ class JavaApplicationType constructor(override var ctx: IProjectContext) : Plugi
         }
 
         fun configureKotlinApplication(project: Project, config: ProjectConfigurationExtension) {
+            project.applyPlugin("application")
             project.applyPlugin("org.jetbrains.kotlin.jvm")
 
             project.run {
                 addDependency("implementation", "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${DependencyVersion.kotlinVersion}")
+                addDependency("testImplementation", "org.jetbrains.kotlin:kotlin-test:${DependencyVersion.kotlinVersion}")
 
                 tasks.withType(KotlinJvmCompile::class.java).configureEach {
                     it.compilerOptions { co ->
