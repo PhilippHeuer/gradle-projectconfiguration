@@ -13,7 +13,7 @@ dependencies {
     implementation(project(":projectcfg-gradle-plugin"))
 
     // spring
-    implementation("org.springframework.boot:spring-boot-gradle-plugin:3.4.4")
+    implementation("org.springframework.boot:spring-boot-gradle-plugin:3.4.5")
 }
 
 configurations {
