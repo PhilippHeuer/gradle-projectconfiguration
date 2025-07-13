@@ -7,7 +7,6 @@ import me.philippheuer.projectcfg.modules.check.DetektFeature
 import me.philippheuer.projectcfg.modules.documentation.DokkaDocumentation
 import me.philippheuer.projectcfg.modules.documentation.JavadocDocumentation
 import me.philippheuer.projectcfg.modules.features.AutomaticModuleNameFeature
-import me.philippheuer.projectcfg.modules.features.GitPropertiesFeature
 import me.philippheuer.projectcfg.modules.features.JUnit5Feature
 import me.philippheuer.projectcfg.modules.features.JacocoFeature
 import me.philippheuer.projectcfg.modules.features.LoggingLibraryFeature
@@ -57,7 +56,6 @@ abstract class ProjectConfigurationPlugin : Plugin<Project> {
                 ShadowFeature(ctx),
                 JUnit5Feature(ctx),
                 LoggingLibraryFeature(ctx),
-                GitPropertiesFeature(ctx),
                 AutomaticModuleNameFeature(ctx),
                 ReproducibleArchivesFeature(ctx),
                 // check
