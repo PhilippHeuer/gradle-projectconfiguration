@@ -160,16 +160,21 @@ class JavadocDocumentation constructor(override var ctx: IProjectContext) : Plug
                     project.tasks.register("aggregateJavadoc", Javadoc::class.java) { aj ->
                         aj.group = JavaBasePlugin.DOCUMENTATION_GROUP
                         aj.description = "Generates javadoc for all modules and merges them all together, useful to publish javadoc of all modules as documentation."
-                        aj.setDestinationDir(project.file("${project.rootDir}/build/javadoc-aggregate"))
+                        aj.destinationDir = project.file("${project.rootDir}/build/javadoc-aggregate")
 
                         // sources
-                        var javadocTasks = mutableListOf<Javadoc>()
+                        val javadocTasks = mutableListOf<Javadoc>()
                         subprojects.forEach { sp ->
                             sp.plugins.withType(JavaPlugin::class.java) {
                                 val main = sp.extensions.getByType(JavaPluginExtension::class.java).sourceSets.getByName("main")
                                 val javadoc = sp.tasks.named(main.javadocTaskName, Javadoc::class.java).get()
 
-                                aj.dependsOn(sp.tasks.findByName(JavaPlugin.CLASSES_TASK_NAME))
+                                val classesTask = sp.tasks.findByName(JavaPlugin.CLASSES_TASK_NAME)
+                                if (classesTask == null) {
+                                    PluginLogger.log(LogLevel.INFO, "subproject [${sp.name}] does not have a classes task, skipping javadoc aggregation for this subproject")
+                                    return@withType
+                                }
+                                aj.dependsOn(classesTask)
                                 javadocTasks.add(javadoc)
                             }
                         }
