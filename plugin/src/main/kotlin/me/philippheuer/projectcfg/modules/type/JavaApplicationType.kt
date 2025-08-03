@@ -83,6 +83,15 @@ class JavaApplicationType constructor(override var ctx: IProjectContext) : Plugi
                     it.compilerOptions { co ->
                         co.jvmTarget.set(config.javaVersion.map { jv -> jv.toJvmTarget() }.get())
                         co.javaParameters.set(true)
+
+                        // - see https://youtrack.jetbrains.com/issue/KT-73255
+                        co.freeCompilerArgs.set(
+                            co.freeCompilerArgs.get().toMutableList().apply {
+                                if (none { a -> a.startsWith("-Xannotation-default-target=") }) {
+                                    add("-Xannotation-default-target=param-property")
+                                }
+                            }
+                        )
                     }
                 }
 

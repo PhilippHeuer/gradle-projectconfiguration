@@ -7,35 +7,63 @@ class DependencyUtils {
 
     companion object {
         /**
-         * hasDependency can be used to check if a project contains a certain dependency
+         * Checks if the project contains a specific dependency.
+         *
+         * @param project The Gradle project to inspect.
+         * @param configurationNames List of configuration names to check, e.g. ["implementation", "api"].
+         * @param dependencyNotation The dependency string to look for, either "group" or "group:name".
+         * @param resolve If true, checks resolved dependencies (including transitives), otherwise checks declared dependencies only.
+         * @return true if any dependency is found, false otherwise.
          */
-        fun hasDependency(project: Project, configurationNames: List<String>, dependencyNotation: String): Boolean {
-            project.configurations.filter { configurationNames.contains(it.name) }.forEach { configuration ->
-                configuration.allDependencies.forEach { dep ->
-                    if (dependencyNotation == dep.group || dependencyNotation == "${dep.group}:${dep.name}") {
-                        return true
-                    }
-                }
-            }
-
-            return false
+        fun hasDependency(
+            project: Project,
+            configurationNames: List<String>,
+            dependencyNotation: String,
+            resolve: Boolean = false
+        ): Boolean {
+            return hasOneOfDependency(
+                project,
+                configurationNames,
+                listOf(dependencyNotation),
+                resolve
+            )
         }
 
         /**
-         * hasDependency can be used to check if a project contains a certain dependency
+         * Checks if the project contains **any** of the specified dependencies.
+         *
+         * @param project The Gradle project to inspect.
+         * @param configurationNames List of configuration names to check, e.g. ["implementation", "api"].
+         * @param dependencyNotations List of dependency strings to look for, either "group" or "group:name".
+         * @param resolve If true, checks resolved dependencies (including transitives), otherwise checks declared dependencies only.
+         * @return true if any dependency is found, false otherwise.
          */
-        fun hasOneOfDependency(project: Project, configurationNames: List<String>, dependencyNotation: List<String>): Boolean {
-            project.configurations.filter { configurationNames.contains(it.name) }.forEach { configuration ->
-                configuration.allDependencies.forEach { dep ->
-                    dependencyNotation.forEach { dn ->
-                        if (dn == dep.group || dn == "${dep.group}:${dep.name}") {
-                            return true
+        fun hasOneOfDependency(
+            project: Project,
+            configurationNames: List<String>,
+            dependencyNotations: List<String>,
+            resolve: Boolean = false
+        ): Boolean {
+            val configurations = project.configurations.filter { configurationNames.contains(it.name) }
+
+            return if (resolve) {
+                configurations.any { config ->
+                    config.resolvedConfiguration.resolvedArtifacts.any { artifact ->
+                        val dep = artifact.moduleVersion.id
+                        dependencyNotations.any { notation ->
+                            notation == dep.group || notation == "${dep.group}:${dep.name}"
+                        }
+                    }
+                }
+            } else {
+                configurations.any { config ->
+                    config.allDependencies.any { dep ->
+                        dependencyNotations.any { notation ->
+                            notation == dep.group || notation == "${dep.group}:${dep.name}"
                         }
                     }
                 }
             }
-
-            return false
         }
 
         /**

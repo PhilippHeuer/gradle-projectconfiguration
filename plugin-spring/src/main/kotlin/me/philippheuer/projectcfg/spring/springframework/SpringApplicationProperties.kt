@@ -66,7 +66,7 @@ abstract class SpringApplicationProperties : DefaultTask() {
 
             // compression
             "server.compression.enabled" to "true",
-            "server.compression.mime-types" to "text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json",
+            "server.compression.mime-types" to "text/html,text/xml,text/plain,application/json,text/css,text/javascript,application/javascript",
             "server.compression.min-response-size" to "1024",
 
             // cache
