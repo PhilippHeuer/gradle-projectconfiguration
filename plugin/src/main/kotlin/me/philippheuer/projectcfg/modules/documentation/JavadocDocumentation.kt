@@ -76,7 +76,7 @@ class JavadocDocumentation constructor(override var ctx: IProjectContext) : Plug
                     PluginLogger.log(LogLevel.INFO, "set [tasks.javadoc.options.doclint] to [${config.javadocLint.get().joinToString(",")}]")
 
                     // links
-                    if (config.javadocLinks.get().size > 0) {
+                    if (config.javadocLinks.get().isNotEmpty()) {
                         PluginLogger.log(LogLevel.INFO, "set [tasks.javadoc.options.links] to [${config.javadocLinks.get()}]")
                         javadocOptions.links(*config.javadocLinks.get().toTypedArray())
                     }

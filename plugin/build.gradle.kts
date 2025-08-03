@@ -16,7 +16,9 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:2.2.0")
     implementation("org.jetbrains.kotlin:kotlin-allopen:2.2.0")
     implementation("org.jetbrains.kotlin:kotlin-noarg:2.2.0")
-    implementation("org.jetbrains.dokka:dokka-gradle-plugin:1.9.20")
+    implementation("org.jetbrains.dokka:dokka-gradle-plugin:2.0.0")
+    implementation("org.jetbrains.dokka-javadoc:org.jetbrains.dokka-javadoc.gradle.plugin:2.0.0")
+    testImplementation("org.jetbrains.kotlin:kotlin-test:2.2.0")
 
     // jackson
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.19.2")
@@ -31,7 +33,7 @@ dependencies {
     // test
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.13.4")
     testImplementation("org.junit.jupiter:junit-jupiter-engine:5.13.4")
-    testImplementation("org.jetbrains.kotlin:kotlin-test:2.2.0")
+
 }
 
 configurations {
