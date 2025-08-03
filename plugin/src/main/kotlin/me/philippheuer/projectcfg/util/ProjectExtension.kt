@@ -6,8 +6,12 @@ import org.gradle.api.UnknownTaskException
 import org.gradle.api.logging.LogLevel
 
 fun Project.applyPlugin(pluginId: String) {
-    PluginLogger.log(LogLevel.INFO, "applying plugin [$pluginId]")
-    pluginManager.apply(pluginId)
+    if (!pluginManager.hasPlugin(pluginId)) {
+        PluginLogger.log(LogLevel.INFO, "applying plugin [$pluginId]")
+        pluginManager.apply(pluginId)
+    } else {
+        PluginLogger.log(LogLevel.DEBUG, "plugin [$pluginId] already applied, skipping")
+    }
 }
 
 /**
@@ -30,9 +34,15 @@ fun Project.addDependency(configurationName: String, dependencyNotation: String)
 }
 
 fun Project.addDependency(dependencyNotation: String) {
-    val configurationName = getPrimaryConfigurationName()
-    PluginLogger.log(LogLevel.INFO, "applying dependency [$configurationName] $dependencyNotation")
-    dependencies.add(configurationName, dependencyNotation)
+    addDependency(getPrimaryConfigurationName(), dependencyNotation)
+}
+
+fun Project.addDependencyIfAbsent(configurationName: String, dependencyNotation: String) {
+    if (!DependencyUtils.hasOneOfDependency(this, listOf(configurationName), listOf(dependencyNotation), resolve = false)) {
+        addDependency(configurationName, dependencyNotation)
+    } else {
+        PluginLogger.log(LogLevel.DEBUG, "dependency [$dependencyNotation] already present in $configurationName, skipping")
+    }
 }
 
 fun Project.addPlatformDependency(configurationName: String, dependencyNotation: String) {

@@ -7,7 +7,7 @@ import me.philippheuer.projectcfg.domain.ProjectLanguage
 import me.philippheuer.projectcfg.domain.ProjectType
 import me.philippheuer.projectcfg.util.DependencyVersion
 import me.philippheuer.projectcfg.util.PluginLogger
-import me.philippheuer.projectcfg.util.addDependency
+import me.philippheuer.projectcfg.util.addDependencyIfAbsent
 import me.philippheuer.projectcfg.util.applyPlugin
 import me.philippheuer.projectcfg.util.toJavaLanguageVersion
 import me.philippheuer.projectcfg.util.toJvmTarget
@@ -18,7 +18,7 @@ import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.tasks.compile.JavaCompile
 import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 
-class JavaLibraryType constructor(override var ctx: IProjectContext) : PluginModule {
+class JavaLibraryType(override var ctx: IProjectContext) : PluginModule {
     override fun check(): Boolean {
         return ctx.config.type.get() == ProjectType.LIBRARY
     }
@@ -87,8 +87,8 @@ class JavaLibraryType constructor(override var ctx: IProjectContext) : PluginMod
             project.applyPlugin("org.jetbrains.kotlin.jvm")
 
             project.run {
-                addDependency("api", "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${DependencyVersion.kotlinVersion}")
-                addDependency("testImplementation", "org.jetbrains.kotlin:kotlin-test:${DependencyVersion.kotlinVersion}")
+                addDependencyIfAbsent("api", "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${DependencyVersion.kotlinVersion}")
+                addDependencyIfAbsent("testImplementation", "org.jetbrains.kotlin:kotlin-test:${DependencyVersion.kotlinVersion}")
 
                 tasks.withType(KotlinJvmCompile::class.java).configureEach {
                     it.compilerOptions { co ->

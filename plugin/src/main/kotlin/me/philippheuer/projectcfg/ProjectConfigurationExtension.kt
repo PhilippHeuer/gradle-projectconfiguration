@@ -33,7 +33,7 @@ open class ProjectConfigurationExtension @Inject constructor(val project: Projec
     private val objects = project.objects
 
     override val logLevel: Property<LogLevel> = objects.property(LogLevel::class.java).convention(LogLevel.INFO)
-    override val language: Property<IProjectLanguage> = objects.property(IProjectLanguage::class.java).convention(ProjectLanguage.JAVA)
+    override val language: Property<IProjectLanguage> = objects.property(IProjectLanguage::class.java).convention(ProjectLanguage.DEFAULT)
     override val javaVersion: Property<JavaVersion> = objects.property(JavaVersion::class.java).convention(JavaVersion.VERSION_11)
     override val javaToolchainVersion: Property<JavaVersion> = objects.property(JavaVersion::class.java)
     override val type: Property<IProjectType> = objects.property(IProjectType::class.java).convention(ProjectType.DEFAULT)
@@ -101,9 +101,30 @@ open class ProjectConfigurationExtension @Inject constructor(val project: Projec
             }
         }
 
-        // inform, if no project type is set or detected
-        if (type.get() == ProjectType.DEFAULT) {
-            PluginLogger.log(LogLevel.INFO, "No project type specified or detected, this module will not be customized.")
+        // auto-detect project language
+        if (language.get() == ProjectLanguage.DEFAULT) {
+            if (project.pluginManager.hasPlugin("org.jetbrains.kotlin.jvm")) {
+                language.set(ProjectLanguage.KOTLIN)
+            } else {
+                language.set(ProjectLanguage.JAVA)
+            }
+
+            if (language.get() != ProjectLanguage.DEFAULT) {
+                PluginLogger.log(LogLevel.INFO, "Set project language to [${language.get()}]")
+            }
+        }
+
+        // auto-detect project framework
+        if (framework.get() == ProjectFramework.NONE) {
+            if (project.pluginManager.hasPlugin("org.springframework.boot")) {
+                framework.set(ProjectFramework.SPRINGBOOT)
+            } else if (project.pluginManager.hasPlugin("io.quarkus")) {
+                framework.set(ProjectFramework.QUARKUS)
+            }
+
+            if (framework.get() != ProjectFramework.NONE) {
+                PluginLogger.log(LogLevel.INFO, "Set project framework to [${framework.get()}]")
+            }
         }
 
         // artifact
