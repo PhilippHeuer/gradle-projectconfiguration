@@ -1,6 +1,5 @@
 package me.philippheuer.projectcfg.modules.features
 
-import com.github.jengelman.gradle.plugins.shadow.tasks.ConfigureShadowRelocation
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import me.philippheuer.projectcfg.ProjectConfigurationExtension
 import me.philippheuer.projectcfg.domain.IProjectContext
@@ -27,21 +26,20 @@ class ShadowFeature(override var ctx: IProjectContext) : PluginModule {
 
     companion object {
         fun applyPlugin(project: Project) {
-            project.applyPlugin("com.github.johnrengelman.shadow")
+            project.applyPlugin("com.gradleup.shadow")
         }
 
         fun configurePlugin(project: Project, config: ProjectConfigurationExtension) {
-            if (config.shadowRelocate.isPresent) {
-                val relocateTask = project.tasks.create("relocateShadowJar", ConfigureShadowRelocation::class.java) {
-                    it.target = project.tasks.named("shadowJar", ShadowJar::class.java).get()
-                    it.prefix = config.shadowRelocate.get()
+            project.tasks.withType(Jar::class.java) {
+                if (it !is ShadowJar) {
+                    return@withType
                 }
 
-                project.tasks.withType(Jar::class.java).configureEach {
-                    if (it is ShadowJar) {
-                        it.dependsOn(relocateTask)
-                        it.archiveClassifier.set("shaded")
-                    }
+                it.archiveClassifier.set("shaded")
+
+                if (config.shadowRelocate.isPresent) {
+                    it.isEnableRelocation = true
+                    it.relocationPrefix = config.shadowRelocate.get()
                 }
             }
         }

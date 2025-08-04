@@ -26,7 +26,7 @@ dependencies {
     // third party - plugins
     implementation("io.freefair.gradle:lombok-plugin:8.14")
     implementation("com.adarshr:gradle-test-logger-plugin:4.0.0")
-    implementation("gradle.plugin.com.github.johnrengelman:shadow:8.0.0")
+    implementation("com.gradleup.shadow:com.gradleup.shadow.gradle.plugin:8.3.8")
     implementation("io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.23.8")
     implementation("org.cyclonedx:cyclonedx-gradle-plugin:2.3.1")
 
