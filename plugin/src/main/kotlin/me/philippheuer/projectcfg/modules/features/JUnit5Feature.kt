@@ -8,6 +8,7 @@ import me.philippheuer.projectcfg.util.DependencyVersion
 import me.philippheuer.projectcfg.util.PluginLogger
 import me.philippheuer.projectcfg.util.addDependency
 import me.philippheuer.projectcfg.util.addPlatformDependency
+import me.philippheuer.projectcfg.util.isRootProjectWithoutSubprojectsOrSubproject
 import org.gradle.api.Project
 import org.gradle.api.logging.LogLevel
 import org.gradle.api.tasks.testing.Test
@@ -18,7 +19,7 @@ import org.gradle.api.tasks.testing.logging.TestExceptionFormat
  */
 class JUnit5Feature constructor(override var ctx: IProjectContext) : PluginModule {
     override fun check(): Boolean {
-        return ctx.isProjectSourceModule()
+        return ctx.project.isRootProjectWithoutSubprojectsOrSubproject() && ctx.isProjectSourceModule()
     }
 
     override fun run() {

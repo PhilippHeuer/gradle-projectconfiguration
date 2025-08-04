@@ -5,6 +5,7 @@ import me.philippheuer.projectcfg.domain.PluginModule
 import me.philippheuer.projectcfg.modules.report.tasks.DependenciesReportResourcesTask
 import me.philippheuer.projectcfg.util.DependencyUtils
 import me.philippheuer.projectcfg.util.PluginLogger
+import me.philippheuer.projectcfg.util.isRootProjectWithoutSubprojectsOrSubproject
 import org.gradle.api.logging.LogLevel
 
 private const val DEPENDENCY_REPORT_TASK_NAME = "projectcfg-dependency-report-resources"
@@ -12,6 +13,9 @@ private const val DEPENDENCY_REPORT_OUTPUT_DIR = "generated/depreport/resources"
 
 class DependencyReport(override var ctx: IProjectContext) : PluginModule {
     override fun check(): Boolean {
+        if (!ctx.project.isRootProjectWithoutSubprojectsOrSubproject()) {
+            return false
+        }
         if (ctx.project.pluginManager.hasPlugin("java-platform") || ctx.project.pluginManager.hasPlugin("version-catalog")) {
             return false
         }

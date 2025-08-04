@@ -11,6 +11,10 @@ interface IProjectContext {
     // reference to the plugin configuration
     val config: ProjectConfigurationExtension
 
+    fun isRootProject(): Boolean {
+        return project == project.rootProject
+    }
+
     fun isProjectLanguage(language: IProjectLanguage): Boolean {
         return language.valueEquals(config.language.get())
     }

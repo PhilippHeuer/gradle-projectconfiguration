@@ -14,9 +14,6 @@ fun Project.applyPlugin(pluginId: String) {
     }
 }
 
-/**
- * checks if the current project is the root project
- */
 fun Project.isRootProject() : Boolean {
     return this.project == this.rootProject
 }
@@ -25,7 +22,11 @@ fun Project.isRootProject() : Boolean {
  * checks if the current project is the root project without subprojects OR a subproject
  */
 fun Project.isRootProjectWithoutSubprojectsOrSubproject() : Boolean {
-    return this.subprojects.size == 0 || (this.subprojects.size != 0 && this.project != this.rootProject)
+    return this.subprojects.isEmpty() || (this.subprojects.isNotEmpty() && this.project != this.rootProject)
+}
+
+fun Project.isRootProjectWithSubprojects() : Boolean {
+    return this.subprojects.isNotEmpty() && this.project == this.rootProject
 }
 
 fun Project.addDependency(configurationName: String, dependencyNotation: String) {

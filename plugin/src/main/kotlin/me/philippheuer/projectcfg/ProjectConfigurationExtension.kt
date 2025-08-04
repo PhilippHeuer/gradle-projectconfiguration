@@ -34,6 +34,7 @@ import javax.inject.Inject
 open class ProjectConfigurationExtension @Inject constructor(val project: Project) : PluginConfig, FrameworkConfig, JavaTypeConfig, LombokConfig, JavadocConfig, DokkaConfig, ShadowConfig, GradleWrapperVersionConfig, CheckstyleConfig, JacocoConfig {
     private val objects = project.objects
 
+    override val enabled: Property<Boolean> = objects.property(Boolean::class.java).convention(true)
     override val logLevel: Property<LogLevel> = objects.property(LogLevel::class.java).convention(LogLevel.INFO)
     override val language: Property<IProjectLanguage> = objects.property(IProjectLanguage::class.java).convention(ProjectLanguage.DEFAULT)
     override val javaVersion: Property<JavaVersion> = objects.property(JavaVersion::class.java).convention(JavaVersion.VERSION_11)

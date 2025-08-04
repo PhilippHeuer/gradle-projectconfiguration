@@ -9,6 +9,7 @@ import me.philippheuer.projectcfg.util.DependencyVersion
 import me.philippheuer.projectcfg.util.PluginLogger
 import me.philippheuer.projectcfg.util.addDependencyIfAbsent
 import me.philippheuer.projectcfg.util.applyPlugin
+import me.philippheuer.projectcfg.util.isRootProjectWithoutSubprojectsOrSubproject
 import me.philippheuer.projectcfg.util.toJavaLanguageVersion
 import me.philippheuer.projectcfg.util.toJvmTarget
 import org.gradle.api.Project
@@ -20,7 +21,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 
 class JavaLibraryType(override var ctx: IProjectContext) : PluginModule {
     override fun check(): Boolean {
-        return ctx.config.type.get() == ProjectType.LIBRARY
+        return ctx.project.isRootProjectWithoutSubprojectsOrSubproject() && ctx.config.type.get() == ProjectType.LIBRARY
     }
 
     override fun run() {
@@ -69,7 +70,12 @@ class JavaLibraryType(override var ctx: IProjectContext) : PluginModule {
                             // sourceSets
                             listOf("main", "test").forEach { name ->
                                 it.sourceSets.getByName(name) { ss ->
-                                    ss.java.srcDirs(listOf("src/$name/java", "src/$name/kotlin"))
+                                    val newDirs = listOf("src/$name/java", "src/$name/kotlin")
+                                        .map { dir -> file(dir) }
+                                        .filter { dirFile -> !ss.java.srcDirs.contains(dirFile) }
+                                    if (newDirs.isNotEmpty()) {
+                                        ss.java.srcDirs(newDirs)
+                                    }
                                 }
                             }
                         }

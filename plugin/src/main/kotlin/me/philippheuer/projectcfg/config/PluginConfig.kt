@@ -11,6 +11,9 @@ import org.gradle.api.publish.maven.MavenPom
 
 interface PluginConfig {
 
+    // enabled for the current project
+    val enabled: Property<Boolean>
+
     // logLevel for debugging, if not set logs will be forwarded to slf4j
     val logLevel: Property<LogLevel>
 

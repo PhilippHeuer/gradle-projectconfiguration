@@ -38,9 +38,7 @@ class ModuleUtils {
                     val isDisabled = config.disablePluginModules.getOrElse(Collections.emptyList()).contains(moduleName)
                     PluginLogger.log(LogLevel.DEBUG, "module [$moduleName] is enabled:[${enabled}], onDisabledPluginsList:[${isDisabled}] - ${config.disablePluginModules.get().toString()}")
                     if (enabled && !isDisabled) {
-                        if (project.isRootProjectWithoutSubprojectsOrSubproject()) {
-                            module.run()
-                        }
+                        module.run()
                     }
                     PluginLogger.setContext(project, null)
                 }

@@ -75,6 +75,12 @@ abstract class ProjectConfigurationPlugin : Plugin<Project> {
         PluginLogger.project = project
         PluginLogger.setLogLevel(config.logLevel.getOrElse(LogLevel.INFO))
 
+        // enabled?
+        if (!config.enabled.get()) {
+            PluginLogger.log(LogLevel.DEBUG, "Configuration plugin is disabled, skipping module processing.")
+            return
+        }
+
         // module list
         val modules = allModules(ctx)
 

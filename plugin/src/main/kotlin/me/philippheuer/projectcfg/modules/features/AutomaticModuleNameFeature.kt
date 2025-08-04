@@ -5,6 +5,7 @@ import me.philippheuer.projectcfg.domain.PluginModule
 import me.philippheuer.projectcfg.domain.ProjectLanguage
 import me.philippheuer.projectcfg.domain.ProjectType
 import me.philippheuer.projectcfg.util.PluginLogger
+import me.philippheuer.projectcfg.util.isRootProjectWithoutSubprojectsOrSubproject
 import org.gradle.api.Project
 import org.gradle.api.logging.LogLevel
 import org.gradle.api.plugins.JavaPlugin
@@ -17,6 +18,9 @@ import org.gradle.jvm.tasks.Jar
  */
 class AutomaticModuleNameFeature(override var ctx: IProjectContext) : PluginModule {
     override fun check(): Boolean {
+        if (!ctx.project.isRootProjectWithoutSubprojectsOrSubproject()) {
+            return false
+        }
         if (!ctx.isProjectType(ProjectType.LIBRARY)) {
             return false
         }

@@ -6,10 +6,11 @@ import me.philippheuer.projectcfg.domain.ProjectLanguage
 import me.philippheuer.projectcfg.domain.ProjectType
 import me.philippheuer.projectcfg.util.DependencyVersion
 import me.philippheuer.projectcfg.util.addDependency
+import me.philippheuer.projectcfg.util.isRootProjectWithoutSubprojectsOrSubproject
 
 class LoggingLibraryFeature(override var ctx: IProjectContext) : PluginModule {
     override fun check(): Boolean {
-        return ctx.isProjectSourceModule()
+        return ctx.project.isRootProjectWithoutSubprojectsOrSubproject() && ctx.isProjectSourceModule()
     }
 
     override fun run() {

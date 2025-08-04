@@ -6,10 +6,11 @@ import me.philippheuer.projectcfg.domain.IProjectContext
 import me.philippheuer.projectcfg.domain.PluginModule
 import me.philippheuer.projectcfg.util.PluginHelper
 import me.philippheuer.projectcfg.util.applyPlugin
+import me.philippheuer.projectcfg.util.isRootProjectWithoutSubprojectsOrSubproject
 
 class TestLoggingFeature(override var ctx: IProjectContext) : PluginModule {
     override fun check(): Boolean {
-        return true
+        return ctx.project.isRootProjectWithoutSubprojectsOrSubproject()
     }
 
     override fun run() {
