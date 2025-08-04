@@ -6,6 +6,9 @@ import org.gradle.api.provider.Property
 
 interface JavadocConfig {
 
+    // javadoc title
+    val javadocTitle: Property<String>
+
     // javadoc locale
     val javadocLocale: Property<String>
 

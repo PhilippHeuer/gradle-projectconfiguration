@@ -80,6 +80,9 @@ class DokkaDocumentation(override var ctx: IProjectContext) : PluginModule {
                         }
                     }
                 }
+
+                // user customization
+                ctx.config.dokka.invoke(dokka)
             }
         }
     }

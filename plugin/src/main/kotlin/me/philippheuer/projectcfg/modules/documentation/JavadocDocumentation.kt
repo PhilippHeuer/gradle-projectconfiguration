@@ -58,9 +58,14 @@ class JavadocDocumentation constructor(override var ctx: IProjectContext) : Plug
                     it.options.locale(config.javadocLocale.get())
                     PluginLogger.log(LogLevel.INFO, "set [tasks.javadoc.options.locale] to [${config.javadocLocale.get()}]")
 
-                    javadocOptions.windowTitle = "${project.rootProject.name} (v${project.version}) - ${project.name}"
+                    // javadoc title
+                    var title = "${project.rootProject.name} (v${project.version}) - ${project.name}"
+                    if (config.javadocTitle.isPresent) {
+                        title = config.javadocTitle.get()
+                    }
+                    javadocOptions.windowTitle = title
                     PluginLogger.log(LogLevel.INFO, "set [tasks.javadoc.options.windowTitle] to [${javadocOptions.windowTitle}]")
-                    javadocOptions.docTitle = "${project.rootProject.name} (v${project.version}) - ${project.name}"
+                    javadocOptions.docTitle = title
                     PluginLogger.log(LogLevel.INFO, "set [tasks.javadoc.options.docTitle] to [${javadocOptions.docTitle}]")
 
                     // disable timestamps for reproducibility

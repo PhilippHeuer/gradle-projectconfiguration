@@ -1,6 +1,7 @@
 package me.philippheuer.projectcfg
 
 import me.philippheuer.projectcfg.config.CheckstyleConfig
+import me.philippheuer.projectcfg.config.DokkaConfig
 import me.philippheuer.projectcfg.config.FrameworkConfig
 import me.philippheuer.projectcfg.config.GradleWrapperVersionConfig
 import me.philippheuer.projectcfg.config.JacocoConfig
@@ -25,11 +26,12 @@ import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.publish.maven.MavenPom
+import org.jetbrains.dokka.gradle.DokkaExtension
 import java.util.Collections
 import javax.inject.Inject
 
 @Suppress("UnnecessaryAbstractClass")
-open class ProjectConfigurationExtension @Inject constructor(val project: Project) : PluginConfig, FrameworkConfig, JavaTypeConfig, LombokConfig, JavadocConfig, ShadowConfig, GradleWrapperVersionConfig, CheckstyleConfig, JacocoConfig {
+open class ProjectConfigurationExtension @Inject constructor(val project: Project) : PluginConfig, FrameworkConfig, JavaTypeConfig, LombokConfig, JavadocConfig, DokkaConfig, ShadowConfig, GradleWrapperVersionConfig, CheckstyleConfig, JacocoConfig {
     private val objects = project.objects
 
     override val logLevel: Property<LogLevel> = objects.property(LogLevel::class.java).convention(LogLevel.INFO)
@@ -59,6 +61,7 @@ open class ProjectConfigurationExtension @Inject constructor(val project: Projec
     // renovate: datasource=maven depName=org.projectlombok:lombok
     override val lombokVersion: Property<String> = objects.property(String::class.java).convention("1.18.38")
 
+    override val javadocTitle: Property<String> = objects.property(String::class.java)
     override val javadocEncoding: Property<String> = objects.property(String::class.java).convention("UTF-8")
     override val javadocLocale: Property<String> = objects.property(String::class.java).convention("en")
     override val javadocAutoLinking: Property<Boolean> = objects.property(Boolean::class.java).convention(false)
@@ -68,6 +71,8 @@ open class ProjectConfigurationExtension @Inject constructor(val project: Projec
     override val javadocOverviewTemplate: Property<String> = objects.property(String::class.java)
     override val javadocOverviewAggregateTemplate: Property<String> = objects.property(String::class.java)
     override val javadocLint: ListProperty<String> = objects.listProperty(String::class.java).convention(listOf("accessibility", "html", "reference", "syntax", "-missing"))
+
+    override var dokka: (DokkaExtension) -> Unit = {}
 
     override val shadow: Property<Boolean> = objects.property(Boolean::class.java).convention(false)
     override val shadowRelocate: Property<String> = objects.property(String::class.java)
