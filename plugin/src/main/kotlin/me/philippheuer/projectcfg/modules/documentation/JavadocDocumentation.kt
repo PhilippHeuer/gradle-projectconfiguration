@@ -10,6 +10,7 @@ import me.philippheuer.projectcfg.util.DependencyUtils
 import me.philippheuer.projectcfg.util.JavadocIOUtils
 import me.philippheuer.projectcfg.util.PluginLogger
 import me.philippheuer.projectcfg.util.isRootProject
+import me.philippheuer.projectcfg.util.isRootProjectWithSubprojects
 import me.philippheuer.projectcfg.util.isRootProjectWithoutSubprojectsOrSubproject
 import org.gradle.api.Action
 import org.gradle.api.JavaVersion
@@ -37,11 +38,10 @@ class JavadocDocumentation constructor(override var ctx: IProjectContext) : Plug
         // javadoc task
         if (ctx.project.isRootProjectWithoutSubprojectsOrSubproject()) {
             configureJavadocTask(ctx.project, ctx.config)
-            configureHtml5JDK9(ctx.project)
         }
 
         // javadoc aggregate task
-        if (ctx.project.isRootProject()) {
+        if (ctx.project.isRootProjectWithSubprojects()) {
             configureJavadocAggregateTask(ctx.project, ctx.config)
         }
     }
@@ -50,45 +50,10 @@ class JavadocDocumentation constructor(override var ctx: IProjectContext) : Plug
         fun configureJavadocTask(project: Project, config: ProjectConfigurationExtension) {
             project.run {
                 tasks.withType(Javadoc::class.java).configureEach {
-                    it.options.encoding = "UTF-8"
                     val javadocOptions = it.options as StandardJavadocDocletOptions
-                    javadocOptions.docEncoding = "UTF-8"
-                    javadocOptions.charSet = "UTF-8"
-                    PluginLogger.log(LogLevel.INFO, "set [tasks.javadoc.options.encoding] to [${it.options.encoding}]")
-                    it.options.locale(config.javadocLocale.get())
-                    PluginLogger.log(LogLevel.INFO, "set [tasks.javadoc.options.locale] to [${config.javadocLocale.get()}]")
 
-                    // javadoc title
-                    var title = "${project.rootProject.name} (v${project.version}) - ${project.name}"
-                    if (config.javadocTitle.isPresent) {
-                        title = config.javadocTitle.get()
-                    }
-                    javadocOptions.windowTitle = title
-                    PluginLogger.log(LogLevel.INFO, "set [tasks.javadoc.options.windowTitle] to [${javadocOptions.windowTitle}]")
-                    javadocOptions.docTitle = title
-                    PluginLogger.log(LogLevel.INFO, "set [tasks.javadoc.options.docTitle] to [${javadocOptions.docTitle}]")
-
-                    // disable timestamps for reproducibility
-                    javadocOptions.noTimestamp(true)
-
-                    // additional javadoc tags
-                    javadocOptions.tags = listOf(
-                        "apiNote:a:API Note:",
-                        "implSpec:a:Implementation Requirements:",
-                        "implNote:a:Implementation Note:"
-                    )
-
-                    // lint
-                    config.javadocLint.get().forEach { lint ->
-                        javadocOptions.addBooleanOption("Xdoclint:$lint", true)
-                    }
-                    PluginLogger.log(LogLevel.INFO, "set [tasks.javadoc.options.doclint] to [${config.javadocLint.get().joinToString(",")}]")
-
-                    // links
-                    if (config.javadocLinks.get().isNotEmpty()) {
-                        PluginLogger.log(LogLevel.INFO, "set [tasks.javadoc.options.links] to [${config.javadocLinks.get()}]")
-                        javadocOptions.links(*config.javadocLinks.get().toTypedArray())
-                    }
+                    // options
+                    configureJavadocOptions(project, it, config)
 
                     // javadoc auto-linking via javadoc.io
                     if (config.javadocAutoLinking.get()) {
@@ -115,6 +80,7 @@ class JavadocDocumentation constructor(override var ctx: IProjectContext) : Plug
                     // custom templates
                     if (config.javadocOverviewTemplate.isPresent) {
                         it.options.overview = file(config.javadocOverviewTemplate.get()).absolutePath
+                        PluginLogger.log(LogLevel.INFO, "set [tasks.${it.name}.options.overview] to [${it.options.overview}]")
                     }
 
                     // others
@@ -134,16 +100,6 @@ class JavadocDocumentation constructor(override var ctx: IProjectContext) : Plug
 
             javadocTask.dependsOn(delombok)
             javadocTask.setSource(delombok.get().target)
-        }
-
-        fun configureHtml5JDK9(project: Project) {
-            // html5 for jdk9+
-            if (JavaVersion.current().isJava9Compatible) {
-                PluginLogger.log(LogLevel.INFO, "set [tasks.javadoc.options.html5] to [true]")
-                project.tasks.withType(Javadoc::class.java).configureEach {
-                    (it.options as StandardJavadocDocletOptions).addBooleanOption("html5", true)
-                }
-            }
         }
 
         private fun jdk11ElementListBackwardsCompat(it: Javadoc, project: Project) {
@@ -172,75 +128,134 @@ class JavadocDocumentation constructor(override var ctx: IProjectContext) : Plug
             })
         }
 
+        fun configureJavadocOptions(project: Project, javadocTask: Javadoc, config: ProjectConfigurationExtension) {
+            val javadocOptions = javadocTask.options as StandardJavadocDocletOptions
+
+            javadocOptions.encoding = "UTF-8"
+            javadocOptions.docEncoding = "UTF-8"
+            javadocOptions.charSet = "UTF-8"
+            PluginLogger.log(LogLevel.INFO, "set [tasks.${javadocTask.name}.options.encoding] to [${javadocTask.options.encoding}]")
+
+            javadocTask.options.locale(config.javadocLocale.get())
+            PluginLogger.log(LogLevel.INFO, "set [tasks.${javadocTask.name}.options.locale] to [${config.javadocLocale.get()}]")
+
+            // Javadoc title
+            var title = "${project.rootProject.name} (v${project.version}) - ${project.name}"
+            if (config.javadocTitle.isPresent) {
+                title = config.javadocTitle.get()
+            }
+            javadocOptions.windowTitle = title
+            PluginLogger.log(LogLevel.INFO, "set [tasks.${javadocTask.name}.options.windowTitle] to [$title]")
+
+            javadocOptions.docTitle = title
+            PluginLogger.log(LogLevel.INFO, "set [tasks.${javadocTask.name}.options.docTitle] to [$title]")
+
+            // Disable timestamps for reproducibility
+            javadocOptions.noTimestamp(true)
+
+            // Additional Javadoc tags
+            javadocOptions.tags = listOf(
+                "apiNote:a:API Note:",
+                "implSpec:a:Implementation Requirements:",
+                "implNote:a:Implementation Note:"
+            )
+
+            // lint
+            config.javadocLint.get().forEach { lint ->
+                javadocOptions.addBooleanOption("Xdoclint:$lint", true)
+            }
+            PluginLogger.log(LogLevel.INFO, "set [tasks.javadoc.options.doclint] to [${config.javadocLint.get().joinToString(",")}]")
+
+            // links
+            if (config.javadocLinks.get().isNotEmpty()) {
+                PluginLogger.log(LogLevel.INFO, "set [tasks.javadoc.options.links] to [${config.javadocLinks.get()}]")
+                javadocOptions.links(*config.javadocLinks.get().toTypedArray())
+            }
+
+            // html5 for jdk9+
+            if (JavaVersion.current().isJava9Compatible) {
+                PluginLogger.log(LogLevel.INFO, "set [tasks.javadoc.options.html5] to [true]")
+                javadocOptions.addBooleanOption("html5", true)
+            }
+
+            // customizations
+            config.javadocCustomize.invoke(javadocOptions)
+        }
+
         /**
          * configures a javadoc aggregation task, must be applied on the root project
          */
         fun configureJavadocAggregateTask(project: Project, config: ProjectConfigurationExtension) {
             if (ProjectType.LIBRARY == config.type.get() && project.subprojects.isNotEmpty()) {
-                project.run {
-                    project.tasks.register("aggregateJavadoc", Javadoc::class.java) { aj ->
-                        aj.enabled = JavaVersion.current().isJava9Compatible
-                        aj.group = JavaBasePlugin.DOCUMENTATION_GROUP
-                        aj.description = "Generates javadoc for all modules and merges them all together, useful to publish javadoc of all modules as documentation."
-                        aj.destinationDir = project.file("${project.rootDir}/build/javadoc-aggregate")
+                val subprojects = project.subprojects.toList()
 
-                        // sources
-                        val javadocTasks = mutableListOf<Javadoc>()
-                        subprojects.forEach { sp ->
-                            sp.plugins.withType(JavaPlugin::class.java) {
-                                val main = sp.extensions.getByType(JavaPluginExtension::class.java).sourceSets.getByName("main")
-                                val javadoc = sp.tasks.named(main.javadocTaskName, Javadoc::class.java).get()
+                project.tasks.register("aggregateJavadoc", Javadoc::class.java) { aj ->
+                    aj.enabled = JavaVersion.current().isJava9Compatible
+                    aj.group = JavaBasePlugin.DOCUMENTATION_GROUP
+                    aj.description = "Generates aggregated Javadocs for all subprojects"
+                    aj.destinationDir = project.file("${project.rootDir}/build/javadoc-aggregate")
 
-                                val classesTask = sp.tasks.findByName(JavaPlugin.CLASSES_TASK_NAME)
-                                if (classesTask == null) {
-                                    PluginLogger.log(LogLevel.INFO, "subproject [${sp.name}] does not have a classes task, skipping javadoc aggregation for this subproject")
-                                    return@withType
-                                }
-                                aj.dependsOn(classesTask)
-                                javadocTasks.add(javadoc)
+                    // sources
+                    val javadocTasks = mutableListOf<Javadoc>()
+                    subprojects.forEach { sp ->
+                        sp.plugins.withType(JavaPlugin::class.java) {
+                            val main = sp.extensions.getByType(JavaPluginExtension::class.java).sourceSets.getByName("main")
+                            val javadoc = sp.tasks.named(main.javadocTaskName, Javadoc::class.java).get()
+
+                            val classesTask = sp.tasks.findByName(JavaPlugin.CLASSES_TASK_NAME)
+                            if (classesTask == null) {
+                                PluginLogger.log(LogLevel.INFO, "subproject [${sp.name}] does not have a classes task, skipping javadoc aggregation for this subproject")
+                                return@withType
                             }
+                            aj.dependsOn(classesTask)
+                            javadocTasks.add(javadoc)
                         }
-                        aj.source(javadocTasks.map { it.source })
-                        aj.classpath = files(javadocTasks.map { it.classpath })
-
-                        // lint
-                        (aj.options as StandardJavadocDocletOptions).addStringOption("-Xdoclint:" + config.javadocLint.get().joinToString(","))
-
-                        // custom templates
-                        if (config.javadocOverviewAggregateTemplate.isPresent) {
-                            aj.options.overview = project.file(config.javadocOverviewAggregateTemplate.get()).absolutePath
-                        }
-
-                        // merge options
-                        subprojects.forEach { sp ->
-                            sp.tasks.withType(Javadoc::class.java).configureEach { spj ->
-                                // combine links
-                                (spj.options as StandardJavadocDocletOptions).links?.forEach {
-                                    if ((spj.options as StandardJavadocDocletOptions).links!!.contains(it)) {
-                                        (spj.options as StandardJavadocDocletOptions).links!!.add(it)
-                                    }
-                                }
-
-                                // combine offline links
-                                (spj.options as StandardJavadocDocletOptions).linksOffline?.forEach {
-                                    if ((spj.options as StandardJavadocDocletOptions).linksOffline!!.contains(it)) {
-                                        (spj.options as StandardJavadocDocletOptions).linksOffline!!.add(it)
-                                    }
-                                }
-
-                                // combine jflags
-                                (spj.options as StandardJavadocDocletOptions).jFlags?.forEach {
-                                    if ((spj.options as StandardJavadocDocletOptions).jFlags!!.contains(it)) {
-                                        (spj.options as StandardJavadocDocletOptions).jFlags!!.add(it)
-                                    }
-                                }
-                            }
-                        }
-
-                        // others
-                        clearOutputFirst(aj)
-                        jdk11ElementListBackwardsCompat(aj, project)
                     }
+                    aj.source(javadocTasks.map { it.source })
+                    aj.classpath = project.files(javadocTasks.map { it.classpath })
+
+                    // options
+                    configureJavadocOptions(project, aj, config)
+                    val javadocOptions = aj.options as StandardJavadocDocletOptions
+
+                    // custom templates
+                    if (config.javadocOverviewAggregateTemplate.isPresent) {
+                        aj.options.overview = project.file(config.javadocOverviewAggregateTemplate.get()).absolutePath
+                        PluginLogger.log(LogLevel.INFO, "set [tasks.${aj.name}.options.overview] to [${aj.options.overview}]")
+                    }
+
+                    // merge options
+                    subprojects.forEach { sp ->
+                        sp.tasks.withType(Javadoc::class.java).configureEach { spj ->
+                            // combine links
+                            (spj.options as StandardJavadocDocletOptions).links?.forEach {
+                                if (javadocOptions.links!!.contains(it)) {
+                                    javadocOptions.links!!.add(it)
+                                }
+                            }
+
+                            // combine offline links
+                            (spj.options as StandardJavadocDocletOptions).linksOffline?.forEach {
+                                if (javadocOptions.linksOffline!!.contains(it)) {
+                                    javadocOptions.linksOffline!!.add(it)
+                                }
+                            }
+
+                            // combine jflags
+                            (spj.options as StandardJavadocDocletOptions).jFlags?.forEach {
+                                if (javadocOptions.jFlags!!.contains(it)) {
+                                    javadocOptions.jFlags!!.add(it)
+                                }
+                            }
+                        }
+                    }
+
+                    // customizations
+                    config.javadocAggregateCustomize.invoke(javadocOptions)
+
+                    // others
+                    clearOutputFirst(aj)
+                    jdk11ElementListBackwardsCompat(aj, project)
                 }
             }
         }

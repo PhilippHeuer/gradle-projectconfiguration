@@ -26,6 +26,8 @@ import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.publish.maven.MavenPom
+import org.gradle.api.tasks.javadoc.Javadoc
+import org.gradle.external.javadoc.StandardJavadocDocletOptions
 import org.jetbrains.dokka.gradle.DokkaExtension
 import java.util.Collections
 import javax.inject.Inject
@@ -64,7 +66,7 @@ open class ProjectConfigurationExtension @Inject constructor(val project: Projec
 
     override val javadocTitle: Property<String> = objects.property(String::class.java)
     override val javadocEncoding: Property<String> = objects.property(String::class.java).convention("UTF-8")
-    override val javadocLocale: Property<String> = objects.property(String::class.java).convention("en")
+    override val javadocLocale: Property<String> = objects.property(String::class.java).convention("en_US")
     override val javadocAutoLinking: Property<Boolean> = objects.property(Boolean::class.java).convention(false)
     override val javadocLinks: ListProperty<String> = objects.listProperty(String::class.java).convention(Collections.emptyList())
     override val javadocGroups: MapProperty<String, String> = objects.mapProperty(String::class.java, String::class.java).convention(mutableMapOf())
@@ -72,6 +74,8 @@ open class ProjectConfigurationExtension @Inject constructor(val project: Projec
     override val javadocOverviewTemplate: Property<String> = objects.property(String::class.java)
     override val javadocOverviewAggregateTemplate: Property<String> = objects.property(String::class.java)
     override val javadocLint: ListProperty<String> = objects.listProperty(String::class.java).convention(listOf("accessibility", "html", "reference", "syntax", "-missing"))
+    override var javadocCustomize: (StandardJavadocDocletOptions) -> Unit = {}
+    override var javadocAggregateCustomize: (StandardJavadocDocletOptions) -> Unit = {}
 
     override var dokka: (DokkaExtension) -> Unit = {}
 

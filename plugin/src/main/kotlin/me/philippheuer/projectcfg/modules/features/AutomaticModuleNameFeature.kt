@@ -9,6 +9,7 @@ import me.philippheuer.projectcfg.util.isRootProjectWithoutSubprojectsOrSubproje
 import org.gradle.api.Project
 import org.gradle.api.logging.LogLevel
 import org.gradle.api.plugins.JavaPlugin
+import org.gradle.internal.extensions.stdlib.toDefaultLowerCase
 import org.gradle.jvm.tasks.Jar
 
 /**
@@ -43,9 +44,9 @@ class AutomaticModuleNameFeature(override var ctx: IProjectContext) : PluginModu
             val rootName = project.rootProject.name.replace('-', '.')
             val currentName = project.name.replace('-', '.')
             val moduleName = if (project != project.rootProject) {
-                "$rootName.$currentName"
+                "$rootName.$currentName".toDefaultLowerCase()
             } else {
-                currentName
+                currentName.toDefaultLowerCase()
             }
 
             PluginLogger.log(LogLevel.INFO, "setting manifest attr [Automatic-Module-Name] to [$moduleName]")

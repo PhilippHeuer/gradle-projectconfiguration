@@ -3,6 +3,7 @@ package me.philippheuer.projectcfg.config
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
+import org.gradle.external.javadoc.StandardJavadocDocletOptions
 
 interface JavadocConfig {
 
@@ -43,5 +44,11 @@ interface JavadocConfig {
      * syntax – checks for low-level issues like unescaped angle brackets (< and >) and ampersands (&) and invalid Javadoc tags
      */
     val javadocLint: ListProperty<String>
+
+    // javadoc customization
+    var javadocCustomize: (StandardJavadocDocletOptions) -> Unit
+
+    // javadoc aggregation customization
+    var javadocAggregateCustomize: (StandardJavadocDocletOptions) -> Unit
 
 }
