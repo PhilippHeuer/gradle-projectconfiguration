@@ -79,6 +79,11 @@ class JavaLibraryType(override var ctx: IProjectContext) : PluginModule {
                 tasks.withType(JavaCompile::class.java).configureEach {
                     it.options.encoding = config.fileEncoding.get()
                     it.options.isIncremental = true
+
+                    // suppress target java8 deprecation warnings for JDK 21 and later
+                    if (config.javaVersion.get().isJava8) {
+                        it.options.compilerArgs.add("-Xlint:-options")
+                    }
                 }
             }
         }
