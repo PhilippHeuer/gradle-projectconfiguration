@@ -1,9 +1,9 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-    kotlin("jvm")
+    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.gradle.plugin.publish)
     id("java-gradle-plugin")
-    id("com.gradle.plugin-publish")
     id("maven-publish")
 }
 
@@ -13,7 +13,7 @@ dependencies {
     implementation(project(":projectcfg-gradle-plugin"))
 
     // spring
-    implementation("org.springframework.boot:spring-boot-gradle-plugin:3.5.4")
+    implementation(libs.spring.boot.plugin)
 }
 
 configurations {

@@ -1,9 +1,9 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-    kotlin("jvm")
+    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.gradle.plugin.publish)
     id("java-gradle-plugin")
-    id("com.gradle.plugin-publish")
     id("maven-publish")
 }
 
@@ -12,28 +12,30 @@ dependencies {
     implementation(gradleApi())
 
     // kotlin
-    implementation(kotlin("stdlib-jdk8"))
-    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:2.2.0")
-    implementation("org.jetbrains.kotlin:kotlin-allopen:2.2.0")
-    implementation("org.jetbrains.kotlin:kotlin-noarg:2.2.0")
-    implementation("org.jetbrains.dokka:dokka-gradle-plugin:2.0.0")
-    implementation("org.jetbrains.dokka-javadoc:org.jetbrains.dokka-javadoc.gradle.plugin:2.0.0")
-    testImplementation("org.jetbrains.kotlin:kotlin-test:2.2.0")
+    implementation(libs.kotlin.stdlib.jdk8)
+    testImplementation(libs.kotlin.test)
 
     // jackson
-    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.19.2")
-
-    // third party - plugins
-    implementation("io.freefair.gradle:lombok-plugin:8.14")
-    implementation("com.adarshr:gradle-test-logger-plugin:4.0.0")
-    implementation("com.gradleup.shadow:com.gradleup.shadow.gradle.plugin:8.3.8")
-    implementation("io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.23.8")
-    implementation("org.cyclonedx:cyclonedx-gradle-plugin:2.3.1")
+    implementation(libs.jackson.dataformat.yaml)
 
     // test
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.13.4")
-    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.13.4")
+    testImplementation(platform(libs.junit.bom))
+    testImplementation(libs.junit.jupiter)
+    testImplementation(libs.junit.platform.launcher)
 
+    // plugins - kotlin
+    implementation(libs.kotlin.plugin)
+    implementation(libs.kotlin.allopen.plugin)
+    implementation(libs.kotlin.noarg.plugin)
+    implementation(libs.dokka.plugin)
+    implementation(libs.dokka.javadoc.plugin)
+
+    // plugins - various
+    implementation(libs.lombok.plugin)
+    implementation(libs.test.logger.plugin)
+    implementation(libs.shadow.plugin)
+    implementation(libs.detect.plugin)
+    implementation(libs.cyclonedx.plugin)
 }
 
 configurations {

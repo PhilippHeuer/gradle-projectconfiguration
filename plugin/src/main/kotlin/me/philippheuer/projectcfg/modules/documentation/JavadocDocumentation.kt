@@ -1,5 +1,6 @@
 package me.philippheuer.projectcfg.modules.documentation
 
+import io.freefair.gradle.plugins.lombok.tasks.Delombok
 import me.philippheuer.projectcfg.ProjectConfigurationExtension
 import me.philippheuer.projectcfg.domain.IProjectContext
 import me.philippheuer.projectcfg.domain.PluginModule
@@ -49,8 +50,6 @@ class JavadocDocumentation constructor(override var ctx: IProjectContext) : Plug
         fun configureJavadocTask(project: Project, config: ProjectConfigurationExtension) {
             project.run {
                 tasks.withType(Javadoc::class.java).configureEach {
-                    it.options.windowTitle = "${project.rootProject.name} (v${project.version}) - ${project.name}"
-                    PluginLogger.log(LogLevel.INFO, "set [tasks.javadoc.options.windowTitle] to [${it.options.windowTitle}]")
                     it.options.encoding = "UTF-8"
                     val javadocOptions = it.options as StandardJavadocDocletOptions
                     javadocOptions.docEncoding = "UTF-8"
@@ -58,6 +57,11 @@ class JavadocDocumentation constructor(override var ctx: IProjectContext) : Plug
                     PluginLogger.log(LogLevel.INFO, "set [tasks.javadoc.options.encoding] to [${it.options.encoding}]")
                     it.options.locale(config.javadocLocale.get())
                     PluginLogger.log(LogLevel.INFO, "set [tasks.javadoc.options.locale] to [${config.javadocLocale.get()}]")
+
+                    javadocOptions.windowTitle = "${project.rootProject.name} (v${project.version}) - ${project.name}"
+                    PluginLogger.log(LogLevel.INFO, "set [tasks.javadoc.options.windowTitle] to [${javadocOptions.windowTitle}]")
+                    javadocOptions.docTitle = "${project.rootProject.name} (v${project.version}) - ${project.name}"
+                    PluginLogger.log(LogLevel.INFO, "set [tasks.javadoc.options.docTitle] to [${javadocOptions.docTitle}]")
 
                     // disable timestamps for reproducibility
                     javadocOptions.noTimestamp(true)
@@ -111,8 +115,20 @@ class JavadocDocumentation constructor(override var ctx: IProjectContext) : Plug
                     // others
                     clearOutputFirst(it)
                     jdk11ElementListBackwardsCompat(it, project)
+                    lombokSource(it, project)
                 }
             }
+        }
+
+        fun lombokSource(javadocTask: Javadoc, project: Project) {
+            if (!project.tasks.names.contains("delombok")) {
+                return
+            }
+
+            val delombok = project.tasks.named("delombok", Delombok::class.java)
+
+            javadocTask.dependsOn(delombok)
+            javadocTask.setSource(delombok.get().target)
         }
 
         fun configureHtml5JDK9(project: Project) {

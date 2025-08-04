@@ -45,7 +45,9 @@ class JUnit5Feature constructor(override var ctx: IProjectContext) : PluginModul
 
                 // use junit5
                 PluginLogger.log(LogLevel.DEBUG, "setting [test.useJUnitPlatform()]")
-                test.useJUnitPlatform()
+                test.useJUnitPlatform() { jp ->
+                    jp.excludeTags("integration")
+                }
 
                 // test logging
                 test.testLogging.showExceptions = true
