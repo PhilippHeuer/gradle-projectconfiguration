@@ -176,7 +176,7 @@ class JavadocDocumentation constructor(override var ctx: IProjectContext) : Plug
          * configures a javadoc aggregation task, must be applied on the root project
          */
         fun configureJavadocAggregateTask(project: Project, config: ProjectConfigurationExtension) {
-            if (project.rootProject == project && ProjectType.LIBRARY == config.type.get() && project.subprojects.size > 0) {
+            if (project.rootProject == project && ProjectType.LIBRARY == config.type.get() && project.subprojects.isNotEmpty()) {
                 project.run {
                     project.tasks.register("aggregateJavadoc", Javadoc::class.java) { aj ->
                         aj.group = JavaBasePlugin.DOCUMENTATION_GROUP

@@ -69,7 +69,7 @@ class JavaLibraryType(override var ctx: IProjectContext) : PluginModule {
                             // sourceSets
                             listOf("main", "test").forEach { name ->
                                 it.sourceSets.getByName(name) { ss ->
-                                    ss.java.setSrcDirs(listOf("src/$name/java", "src/$name/kotlin"))
+                                    ss.java.srcDirs(listOf("src/$name/java", "src/$name/kotlin"))
                                 }
                             }
                         }

@@ -56,11 +56,10 @@ class JavaApplicationType(override var ctx: IProjectContext) : PluginModule {
                         }
 
                         // sourceSets
-                        it.sourceSets.getByName("main") { ss ->
-                            ss.java.setSrcDirs(listOf("src/main/java", "src/main/kotlin"))
-                        }
-                        it.sourceSets.getByName("test") { ss ->
-                            ss.java.setSrcDirs(listOf("src/test/java", "src/test/kotlin"))
+                        listOf("main", "test").forEach { name ->
+                            it.sourceSets.getByName(name) { ss ->
+                                ss.java.srcDirs(listOf("src/$name/java", "src/$name/kotlin"))
+                            }
                         }
                     }
                 }
