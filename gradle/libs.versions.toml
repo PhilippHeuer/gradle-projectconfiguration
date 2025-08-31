@@ -1,7 +1,7 @@
 [versions]
 kotlin-version = "2.2.10"
 dokka-version = "2.0.0"
-jackson-version = "2.19.2"
+jackson-version = "2.20.0"
 lombok-plugin-version = "8.14.2"
 shadow-plugin-version = "8.3.9"
 detect-plugin-version = "1.23.8"
