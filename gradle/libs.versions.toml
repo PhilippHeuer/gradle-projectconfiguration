@@ -5,7 +5,7 @@ jackson-version = "2.20.0"
 lombok-plugin-version = "8.14.2"
 shadow-plugin-version = "8.3.9"
 detect-plugin-version = "1.23.8"
-cyclonedx-version = "2.3.1"
+cyclonedx-version = "2.4.1"
 test-logger-plugin-version = "4.0.0"
 junit-version = "5.13.4"
 spring-boot-version = "3.5.6"
@@ -17,6 +17,7 @@ kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotl
 kotlin-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin-version" }
 kotlin-allopen-plugin = { module = "org.jetbrains.kotlin:kotlin-allopen", version.ref = "kotlin-version" }
 kotlin-noarg-plugin = { module = "org.jetbrains.kotlin:kotlin-noarg", version.ref = "kotlin-version" }
+kotlin-spring-plugin = { module = "org.jetbrains.kotlin.plugin.spring:org.jetbrains.kotlin.plugin.spring.gradle.plugin", version.ref = "kotlin-version" }
 dokka-plugin = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref = "dokka-version" }
 dokka-javadoc-plugin = { module = "org.jetbrains.dokka-javadoc:org.jetbrains.dokka-javadoc.gradle.plugin", version.ref = "dokka-version" }
 jackson-dataformat-yaml = { module = "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml", version.ref = "jackson-version" }
