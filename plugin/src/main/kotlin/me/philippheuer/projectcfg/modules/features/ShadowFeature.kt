@@ -38,8 +38,8 @@ class ShadowFeature(override var ctx: IProjectContext) : PluginModule {
                 it.archiveClassifier.set("shaded")
 
                 if (config.shadowRelocate.isPresent) {
-                    it.isEnableRelocation = true
-                    it.relocationPrefix = config.shadowRelocate.get()
+                    it.enableAutoRelocation.set(true)
+                    it.relocationPrefix.set(config.shadowRelocate.get())
                 }
             }
         }
