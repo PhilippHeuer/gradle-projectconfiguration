@@ -34,8 +34,12 @@ class LombokFeature(override var ctx: IProjectContext) : PluginModule {
             project.applyPlugin("io.freefair.lombok")
 
             project.extensions.configure(LombokExtension::class.java) {
-                it.disableConfig.set(true) // don't generate lombok.config files
-                PluginLogger.log(LogLevel.INFO, "set [lombok.disableConfig] to [${it.disableConfig.get()}]")
+                val lombokConfigFile = project.rootDir.resolve("lombok.config")
+                if (!lombokConfigFile.exists()) {
+                    it.disableConfig.set(true) // don't generate lombok.config file, if not already present
+                    PluginLogger.log(LogLevel.INFO, "set [lombok.disableConfig] to [${it.disableConfig.get()}]")
+                }
+
                 it.version.set(config.lombokVersion.get())
                 PluginLogger.log(LogLevel.INFO, "set [lombok.version] to [${it.version.get()}]")
             }
