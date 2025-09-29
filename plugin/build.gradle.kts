@@ -36,6 +36,9 @@ dependencies {
     implementation(libs.shadow.plugin)
     implementation(libs.detect.plugin)
     implementation(libs.cyclonedx.plugin)
+
+    // misc
+    implementation(libs.apache.commons.lang3)
 }
 
 configurations {
