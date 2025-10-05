@@ -3,9 +3,9 @@ package me.philippheuer.projectcfg.modules.report
 import me.philippheuer.projectcfg.domain.IProjectContext
 import me.philippheuer.projectcfg.domain.PluginModule
 import me.philippheuer.projectcfg.domain.ProjectType
-import org.cyclonedx.gradle.CycloneDxTask
 import org.cyclonedx.model.Component
 import org.cyclonedx.Version
+import org.cyclonedx.gradle.CyclonedxDirectTask
 
 class CycloneDXSBOM(override var ctx: IProjectContext) : PluginModule {
     override fun check(): Boolean {
@@ -13,7 +13,7 @@ class CycloneDXSBOM(override var ctx: IProjectContext) : PluginModule {
     }
 
     override fun run() {
-        ctx.project.tasks.withType(CycloneDxTask::class.java).configureEach {
+        ctx.project.tasks.withType(CyclonedxDirectTask::class.java).configureEach {
             it.includeConfigs.set(listOf("runtimeClasspath", "compileClasspath"))
             it.skipConfigs.set(listOf("testCompileClasspath", ".*test.*", ".*Test.*"))
 
