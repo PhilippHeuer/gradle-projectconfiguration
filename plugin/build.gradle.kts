@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.gradle.plugin.publish)
     id("java-gradle-plugin")
     id("maven-publish")
+    id("signing")
 }
 
 dependencies {
@@ -62,7 +63,10 @@ tasks.run {
     }
 }
 
-group = "me.philippheuer.projectcfg"
+// signing
+extensions.configure(SigningExtension::class.java) {
+    sign(publishing.publications)
+}
 
 gradlePlugin {
     website = "https://github.com/PhilippHeuer/gradle-projectconfiguration"
