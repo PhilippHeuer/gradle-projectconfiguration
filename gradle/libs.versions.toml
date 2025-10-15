@@ -1,6 +1,6 @@
 [versions]
 kotlin-version = "2.2.20"
-dokka-version = "2.0.0"
+dokka-version = "2.1.0"
 jackson-version = "2.20.0"
 lombok-plugin-version = "9.0.0"
 shadow-plugin-version = "9.2.2"
