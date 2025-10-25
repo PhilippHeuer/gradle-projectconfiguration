@@ -29,6 +29,13 @@ class DependencyReport(override var ctx: IProjectContext) : PluginModule {
             return
         }
 
+        // check if sourceSets
+        val sourceSets = ctx.project.extensions.getByType(org.gradle.api.tasks.SourceSetContainer::class.java)
+        if (sourceSets.findByName("main") == null) {
+            PluginLogger.log(LogLevel.DEBUG, "No 'main' sourceSet found in project ${ctx.project.name}, skipping dependency report setup.")
+            return
+        }
+
         // add task and add it to the task graph
         PluginLogger.log(LogLevel.INFO, "Adding task ${DEPENDENCY_REPORT_TASK_NAME} to project ${ctx.project.name}")
         val task = ctx.project.tasks.register(DEPENDENCY_REPORT_TASK_NAME, DependenciesReportResourcesTask::class.java) {

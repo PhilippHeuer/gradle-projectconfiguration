@@ -27,29 +27,32 @@ class SigningFeature(override var ctx: IProjectContext) : PluginModule {
                 val signingKey = ctx.project.findProperty("signingKey") as String?
                 val signingPassword = ctx.project.findProperty("signingPassword") as String?
 
-                val publication = publish.publications.findByName("main")
-                if (publication == null) {
-                    PluginLogger.log(LogLevel.WARN, "can't configure signing, no main publication found")
+                if (publish.publications.isEmpty()) {
+                    PluginLogger.log(LogLevel.WARN, "no publications found, skipping signing configuration")
                     return@configure
                 }
 
                 if (!ctx.project.hasProperty("signing.gnupg.keyName") && signingKey == null) {
-                    PluginLogger.log(LogLevel.WARN, "skipping signing for main publication, signing.gnupg.keyName and signingKey not set")
+                    PluginLogger.log(LogLevel.WARN, "skipping signing for publication, signing.gnupg.keyName and signingKey not set")
                     return@configure
                 }
 
-                PluginLogger.log(LogLevel.INFO, "configuring signing for main publication")
-                configure(SigningExtension::class.java) {
-                    if (signingKey != null) {
-                        PluginLogger.log(LogLevel.INFO, "using ASCII armored key for signing")
-                        val decodedSigningKey =  Base64.getDecoder().decode(signingKey).toString(Charsets.UTF_8)
-                        it.useInMemoryPgpKeys(decodedSigningKey, signingPassword)
-                    } else {
-                        PluginLogger.log(LogLevel.INFO, "using GPG command for signing")
-                        it.useGpgCmd()
-                        it.isRequired = false // only sign if key is available
+                configure(SigningExtension::class.java) { signing ->
+                    publish.publications.forEach { publication ->
+                        PluginLogger.log(LogLevel.INFO, "configuring signing for publication '${publication.name}'")
+
+                        if (signingKey != null) {
+                            PluginLogger.log(LogLevel.DEBUG, "using ASCII armored key for signing")
+                            val decodedSigningKey = Base64.getDecoder().decode(signingKey).toString(Charsets.UTF_8)
+                            signing.useInMemoryPgpKeys(decodedSigningKey, signingPassword)
+                        } else {
+                            PluginLogger.log(LogLevel.DEBUG, "using GPG command for signing")
+                            signing.useGpgCmd()
+                            signing.isRequired = false // only sign if key is available
+                        }
+
+                        signing.sign(publication)
                     }
-                    it.sign(publication)
                 }
             }
         }

@@ -56,6 +56,44 @@ class PublishFeature(override var ctx: IProjectContext) : PluginModule {
                         PluginLogger.log(LogLevel.INFO, "configured artifact: ${pub.groupId}:${pub.artifactId}:${pub.version}")
                     }
                 }
+
+                // kotlin multiplatform support
+                if (project.pluginManager.hasPlugin("org.jetbrains.kotlin.multiplatform")) {
+                    val multiplatformPublications = mapOf(
+                        "kotlinMultiplatform" to "",
+                        "jvm" to "-jvm",
+                        "js" to "-js",
+                        "wasmJs" to "-wasm",
+                        "iosArm64" to "-ios-arm64",
+                        "iosSimulatorArm64" to "-ios-sim",
+                        "macosArm64" to "-macos-arm64",
+                        "macosX64" to "-macos-x64",
+                        "linuxX64" to "-linux-x64",
+                        "mingwX64" to "-mingw-x64"
+                    )
+
+                    multiplatformPublications.forEach { (pubName, suffix) ->
+                        publish.publications.findByName(pubName) ?: return@forEach
+
+                        val pub = publish.publications.findByName(pubName) as? MavenPublication ?: run {
+                            PluginLogger.log(LogLevel.WARN, "Publication '$pubName' exists but is not a MavenPublication, skipping.")
+                            return@forEach
+                        }
+
+                        pub.groupId = config.artifactGroupId.get()
+                        pub.artifactId = config.artifactId.get() + suffix
+                        pub.version = config.artifactVersion.get()
+                        pub.pom { pom ->
+                            pom.name.set(config.artifactDisplayName.getOrElse(project.displayName))
+                            pom.description.set(config.artifactDescription.getOrElse(""))
+
+                            // customize pom
+                            config.pom.invoke(pom)
+                        }
+
+                        PluginLogger.log(LogLevel.INFO, "configured kotlin-multiplatform artifact for ${pubName}: ${pub.groupId}:${pub.artifactId}:${pub.version}")
+                    }
+                }
             }
         }
     }

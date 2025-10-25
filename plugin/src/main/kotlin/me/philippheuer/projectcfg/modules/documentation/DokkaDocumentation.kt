@@ -29,7 +29,7 @@ class DokkaDocumentation(override var ctx: IProjectContext) : PluginModule {
 
     override fun run() {
         // javadoc task
-        if (ctx.project.isRootProjectWithoutSubprojectsOrSubproject()) {
+        if (ctx.project.isRootProjectWithoutSubprojectsOrSubproject() && !ctx.project.pluginManager.hasPlugin("org.jetbrains.kotlin.multiplatform")) { // TODO: needs tweaks to not break in multiplatform projects
             configureDokkaTaskV2(ctx)
         }
     }

@@ -112,7 +112,7 @@ open class ProjectConfigurationExtension @Inject constructor(val project: Projec
 
         // auto-detect project language
         if (language.get() == ProjectLanguage.DEFAULT) {
-            if (project.pluginManager.hasPlugin("org.jetbrains.kotlin.jvm")) {
+            if (project.pluginManager.hasPlugin("org.jetbrains.kotlin.jvm") || project.pluginManager.hasPlugin("org.jetbrains.kotlin.multiplatform")) {
                 language.set(ProjectLanguage.KOTLIN)
             } else {
                 language.set(ProjectLanguage.JAVA)

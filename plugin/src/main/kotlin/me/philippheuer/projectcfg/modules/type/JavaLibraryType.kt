@@ -25,7 +25,9 @@ class JavaLibraryType(override var ctx: IProjectContext) : PluginModule {
     }
 
     override fun run() {
-        if (ctx.config.language.get() == ProjectLanguage.JAVA) {
+        if (ctx.project.pluginManager.hasPlugin("org.jetbrains.kotlin.multiplatform")) {
+            configureKotlinMultiplatformLibrary(ctx.project, ctx.config)
+        }else if (ctx.config.language.get() == ProjectLanguage.JAVA) {
             configureJavaLibrary(ctx.project, ctx.config)
         } else if (ctx.config.language.get() == ProjectLanguage.KOTLIN) {
             configureJavaLibrary(ctx.project, ctx.config)
@@ -119,6 +121,32 @@ class JavaLibraryType(override var ctx: IProjectContext) : PluginModule {
 
                 // Workaround for https://youtrack.jetbrains.com/issue/KT-54207
                 tasks.getByName("kotlinSourcesJar").enabled = false
+            }
+        }
+
+        fun configureKotlinMultiplatformLibrary(project: Project, config: ProjectConfigurationExtension) {
+            project.applyPlugin("org.jetbrains.kotlin.multiplatform")
+            project.applyPlugin("maven-publish")
+
+            project.run {
+                group = config.artifactGroupId.get()
+                version = config.artifactVersion.get()
+
+                tasks.withType(KotlinJvmCompile::class.java).configureEach {
+                    it.compilerOptions { co ->
+                        co.jvmTarget.set(config.javaVersion.map { jv -> jv.toJvmTarget() }.get())
+                        co.javaParameters.set(true)
+
+                        // - see https://youtrack.jetbrains.com/issue/KT-73255
+                        co.freeCompilerArgs.set(
+                            co.freeCompilerArgs.get().toMutableList().apply {
+                                if (none { a -> a.startsWith("-Xannotation-default-target=") }) {
+                                    add("-Xannotation-default-target=param-property")
+                                }
+                            }
+                        )
+                    }
+                }
             }
         }
     }
