@@ -10,7 +10,7 @@ test-logger-plugin-version = "4.0.0"
 junit-version = "6.0.1"
 spring-boot-version = "3.5.7"
 gradle-publish-version = "2.0.0"
-apache-commons-lang3-version = "3.19.0"
+apache-commons-lang3-version = "3.20.0"
 
 [libraries]
 kotlin-stdlib-jdk8 = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "kotlin-version" }
