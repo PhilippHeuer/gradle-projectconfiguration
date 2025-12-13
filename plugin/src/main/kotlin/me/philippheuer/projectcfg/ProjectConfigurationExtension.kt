@@ -87,7 +87,7 @@ open class ProjectConfigurationExtension @Inject constructor(val project: Projec
     override val jacocoVersion: Property<String> = objects.property(String::class.java).convention("0.8.14")
 
     // renovate: datasource=maven depName=com.puppycrawl.tools:checkstyle
-    override val checkstyleToolVersion: Property<String> = objects.property(String::class.java).convention("12.2.0")
+    override val checkstyleToolVersion: Property<String> = objects.property(String::class.java).convention("12.3.0")
     override val checkstyleRuleSet: Property<String> = objects.property(String::class.java).convention("")
 
     override fun toString(): String {
