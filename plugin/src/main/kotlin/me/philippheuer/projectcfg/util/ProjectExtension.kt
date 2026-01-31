@@ -42,13 +42,26 @@ fun Project.addDependencyIfAbsent(configurationName: String, dependencyNotation:
     if (!DependencyUtils.hasOneOfDependency(this, listOf(configurationName), listOf(dependencyNotation), resolve = false)) {
         addDependency(configurationName, dependencyNotation)
     } else {
-        PluginLogger.log(LogLevel.DEBUG, "dependency [$dependencyNotation] already present in $configurationName, skipping")
+        PluginLogger.log(LogLevel.DEBUG, "dependency [$configurationName] $dependencyNotation already present, skipping")
     }
 }
 
 fun Project.addPlatformDependency(configurationName: String, dependencyNotation: String) {
     PluginLogger.log(LogLevel.INFO, "applying platform dependency [$configurationName] $dependencyNotation")
     dependencies.add(configurationName, dependencies.enforcedPlatform(dependencyNotation))
+}
+
+fun Project.addPlatformDependencyIfAbsent(configurationName: String, dependencyNotation: String) {
+    val configuration = configurations.getByName(configurationName)
+    val (group, name) = dependencyNotation.substringBeforeLast(":").split(":", limit = 2)
+
+    val alreadyPresent = configuration.dependencies.any { dep -> dep.group == group && dep.name == name }
+    if (alreadyPresent) {
+        PluginLogger.log(LogLevel.DEBUG, "platform dependency [$configurationName] $dependencyNotation already present, skipping")
+        return
+    }
+
+    addPlatformDependency(configurationName, dependencyNotation)
 }
 
 fun Project.addConstraint(dependencyNotation: String, version: String) {
