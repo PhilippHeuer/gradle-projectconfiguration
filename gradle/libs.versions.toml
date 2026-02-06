@@ -1,5 +1,5 @@
 [versions]
-kotlin-version = "2.3.0"
+kotlin-version = "2.3.10"
 dokka-version = "2.1.0"
 jackson-version = "2.21.0"
 lombok-plugin-version = "9.2.0"
