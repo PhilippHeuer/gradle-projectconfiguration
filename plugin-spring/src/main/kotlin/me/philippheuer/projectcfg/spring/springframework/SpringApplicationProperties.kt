@@ -5,7 +5,9 @@ import me.philippheuer.projectcfg.util.PropertyUtils
 import me.philippheuer.projectcfg.util.TaskUtils
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.TaskAction
+import org.gradle.work.DisableCachingByDefault
 
+@DisableCachingByDefault
 abstract class SpringApplicationProperties : DefaultTask() {
     init {
         group = "other"
