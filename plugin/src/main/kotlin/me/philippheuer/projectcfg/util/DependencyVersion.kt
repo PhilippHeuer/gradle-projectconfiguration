@@ -6,8 +6,8 @@ open class DependencyVersion {
         @JvmStatic var kotlinVersion: String = "2.3.20"
         // renovate: datasource=maven depName=org.junit.jupiter:junit-jupiter-api
         @JvmStatic var junitVersion: String = "6.0.3"
-        // renovate: datasource=maven depName=io.github.microutils:kotlin-logging
-        @JvmStatic var kotlinLoggingVersion: String = "3.0.5"
+        // renovate: datasource=maven depName=io.github.oshai:kotlin-logging
+        @JvmStatic var kotlinLoggingVersion: String = "5.1.4"
         // renovate: datasource=maven depName=org.slf4j:slf4j-api
         @JvmStatic var slf4jVersion: String = "2.0.17"
     }
