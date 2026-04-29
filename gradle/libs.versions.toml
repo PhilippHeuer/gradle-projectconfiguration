@@ -2,7 +2,7 @@
 kotlin-version = "2.3.21"
 dokka-version = "2.2.0"
 jackson-version = "2.21.2"
-lombok-plugin-version = "9.4.0"
+lombok-plugin-version = "9.5.0"
 shadow-plugin-version = "9.4.1"
 detect-plugin-version = "1.23.8"
 cyclonedx-version = "3.2.4"
