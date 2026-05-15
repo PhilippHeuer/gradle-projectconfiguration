@@ -9,6 +9,6 @@ open class DependencyVersion {
         // renovate: datasource=maven depName=io.github.oshai:kotlin-logging
         @JvmStatic var kotlinLoggingVersion: String = "8.0.01"
         // renovate: datasource=maven depName=org.slf4j:slf4j-api
-        @JvmStatic var slf4jVersion: String = "2.0.17"
+        @JvmStatic var slf4jVersion: String = "2.0.18"
     }
 }
