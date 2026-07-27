@@ -12,9 +12,9 @@ class ShadowFeatureTest {
     fun `shadow plugin is being applied`() {
         val (project, config) = PluginTestUtils.getJavaProject()
         config.shadow.set(true)
-        ShadowFeature.applyPlugin(project)
+        project.pluginManager.apply("com.gradleup.shadow")
 
-        assertNotNull(project.pluginManager.findPlugin("com.github.johnrengelman.shadow"), "com.github.johnrengelman.shadow plugin was not applied")
+        assertNotNull(project.pluginManager.findPlugin("com.gradleup.shadow"), "com.gradleup.shadow plugin was not applied")
         project.afterEvaluate {
             assertTrue(project.tasks.withType(ShadowJar::class.java).size > 0, "shadowJar task should be present")
         }

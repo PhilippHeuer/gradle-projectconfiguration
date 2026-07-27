@@ -6,7 +6,6 @@ import me.philippheuer.projectcfg.domain.PluginModule
 import me.philippheuer.projectcfg.domain.ProjectLanguage
 import me.philippheuer.projectcfg.util.DependencyVersion
 import me.philippheuer.projectcfg.util.PluginLogger
-import me.philippheuer.projectcfg.util.addDependency
 import me.philippheuer.projectcfg.util.addDependencyIfAbsent
 import me.philippheuer.projectcfg.util.addPlatformDependencyIfAbsent
 import me.philippheuer.projectcfg.util.isRootProjectWithoutSubprojectsOrSubproject
@@ -48,13 +47,17 @@ class JUnitFeature constructor(override var ctx: IProjectContext) : PluginModule
             if (config.javaVersion.get() < JavaVersion.VERSION_17) {
                 PluginLogger.log(LogLevel.INFO, "override jvm target for test-suite to [${config.javaVersion.get()}->17]")
 
-                project.tasks.named("compileTestJava", JavaCompile::class.java) {
-                    it.options.release.set(17)
+                project.tasks.withType(JavaCompile::class.java).configureEach { task ->
+                    if (task.name == "compileTestJava" || task.name == "compileJmhJava") {
+                        task.options.release.set(17)
+                    }
                 }
 
                 if (config.language.get() == ProjectLanguage.KOTLIN) {
-                    project.tasks.named("compileTestKotlin", KotlinCompile::class.java) {
-                        it.compilerOptions.jvmTarget.set(JvmTarget.JVM_17)
+                    project.tasks.withType(KotlinCompile::class.java).configureEach { task ->
+                        if (task.name == "compileTestKotlin" || task.name == "compileJmhKotlin") {
+                            task.compilerOptions.jvmTarget.set(JvmTarget.JVM_17)
+                        }
                     }
                 }
             }
