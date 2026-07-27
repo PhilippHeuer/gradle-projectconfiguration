@@ -7,6 +7,7 @@ import me.philippheuer.projectcfg.domain.ProjectLanguage
 import me.philippheuer.projectcfg.util.DependencyVersion
 import me.philippheuer.projectcfg.util.PluginLogger
 import me.philippheuer.projectcfg.util.addDependency
+import me.philippheuer.projectcfg.util.addDependencyIfAbsent
 import me.philippheuer.projectcfg.util.addPlatformDependencyIfAbsent
 import me.philippheuer.projectcfg.util.isRootProjectWithoutSubprojectsOrSubproject
 import org.gradle.api.JavaVersion
@@ -35,12 +36,12 @@ class JUnitFeature constructor(override var ctx: IProjectContext) : PluginModule
         private fun configureJunitDependencies(project: Project, config: ProjectConfigurationExtension) {
             // junit
             project.addPlatformDependencyIfAbsent("testImplementation", "org.junit:junit-bom:${DependencyVersion.junitVersion}")
-            project.addDependency("testImplementation", "org.junit.jupiter:junit-jupiter")
-            project.addDependency("testRuntimeOnly", "org.junit.platform:junit-platform-launcher")
+            project.addDependencyIfAbsent("testImplementation", "org.junit.jupiter:junit-jupiter")
+            project.addDependencyIfAbsent("testRuntimeOnly", "org.junit.platform:junit-platform-launcher")
 
             // kotlin
             if (ProjectLanguage.KOTLIN.valueEquals(config.language.get())) {
-                project.addDependency("testImplementation", "org.jetbrains.kotlin:kotlin-test:${DependencyVersion.kotlinVersion}")
+                project.addDependencyIfAbsent("testImplementation", "org.jetbrains.kotlin:kotlin-test:${DependencyVersion.kotlinVersion}")
             }
 
             // junit 6 requires jdk 17 to run tests
