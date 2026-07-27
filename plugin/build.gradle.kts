@@ -28,6 +28,7 @@ dependencies {
     implementation(libs.kotlin.plugin)
     implementation(libs.kotlin.allopen.plugin)
     implementation(libs.kotlin.noarg.plugin)
+    implementation(libs.kotlin.serialization)
     implementation(libs.dokka.plugin)
     implementation(libs.dokka.javadoc.plugin)
 

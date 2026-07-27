@@ -18,6 +18,7 @@ kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotl
 kotlin-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin-version" }
 kotlin-allopen-plugin = { module = "org.jetbrains.kotlin:kotlin-allopen", version.ref = "kotlin-version" }
 kotlin-noarg-plugin = { module = "org.jetbrains.kotlin:kotlin-noarg", version.ref = "kotlin-version" }
+kotlin-serialization = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "kotlin-version" }
 kotlin-spring-plugin = { module = "org.jetbrains.kotlin.plugin.spring:org.jetbrains.kotlin.plugin.spring.gradle.plugin", version.ref = "kotlin-version" }
 dokka-plugin = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref = "dokka-version" }
 dokka-javadoc-plugin = { module = "org.jetbrains.dokka-javadoc:org.jetbrains.dokka-javadoc.gradle.plugin", version.ref = "dokka-version" }
