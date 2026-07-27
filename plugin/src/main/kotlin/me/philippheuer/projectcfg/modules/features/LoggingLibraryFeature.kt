@@ -26,7 +26,7 @@ class LoggingLibraryFeature(override var ctx: IProjectContext) : PluginModule {
 
         // kotlin
         if (ProjectLanguage.KOTLIN.valueEquals(ctx.config.language.get())) {
-            ctx.project.addDependency(configurationName, "io.github.microutils:kotlin-logging:${DependencyVersion.kotlinLoggingVersion}")
+            ctx.project.addDependency(configurationName, "io.github.oshai:kotlin-logging:${DependencyVersion.kotlinLoggingVersion}")
         }
     }
 }
