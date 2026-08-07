@@ -36,6 +36,7 @@ dependencies {
     implementation(libs.lombok.plugin)
     implementation(libs.test.logger.plugin)
     compileOnly(libs.shadow.plugin)
+    testImplementation(libs.shadow.plugin)
     implementation(libs.detect.plugin)
     implementation(libs.cyclonedx.plugin)
 
