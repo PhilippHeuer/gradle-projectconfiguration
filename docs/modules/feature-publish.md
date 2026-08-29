@@ -30,6 +30,27 @@ repository.publish.mavencentral.password=your_password
 
 Note: Do not put these 3 lines into the git repository, put them into the `gradle.properties` file in your user-profile!
 
+#### HTTP header authentication
+
+Repositories that authenticate via HTTP header instead of username/password (like a GitLab package registry) can be configured using `headerName` and `headerValue` instead of `username` and `password`:
+
+```gradle.properties
+repository.publish.gitlab.url=https://gitlab.example.com/api/v4/groups/<group>/-/packages/maven
+repository.publish.gitlab.headerName=Private-Token
+repository.publish.gitlab.headerValue=your_token
+```
+
+GitLab token type and required header name:
+
+| Token type          | Header name     | Token value                                  |
+|---------------------|-----------------|----------------------------------------------|
+| Personal access token | `Private-Token` | Token as-is                                  |
+| Deploy token        | `Deploy-Token`  | Token as-is                                  |
+| CI Job token        | `Job-Token`     | `System.getenv("CI_JOB_TOKEN")`              |
+| OAuth token         | `Authorization` | Token prefixed with `Bearer `, e.g. `Bearer <oauth_token>` |
+
+The same options are available as environment variables: `MAVEN_REPO_HEADER_NAME` and `MAVEN_REPO_HEADER_VALUE`.
+
 **plugin configuration**
 
 ```build.gradle.kts

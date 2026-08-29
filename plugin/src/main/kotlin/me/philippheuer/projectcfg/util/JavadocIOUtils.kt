@@ -1,7 +1,7 @@
 package me.philippheuer.projectcfg.util
 
 import org.gradle.api.Project
-import java.net.URL
+import java.net.URI
 
 class JavadocIOUtils {
 
@@ -28,7 +28,7 @@ class JavadocIOUtils {
             } else {
                 listOf("package-list", "element-list").forEach { file ->
                     try {
-                        URL("$link/$file").openStream()
+                        URI("$link/$file").toURL().openStream()
                         found = true
                     } catch (ex: Exception) {
                         // ignore

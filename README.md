@@ -62,6 +62,7 @@ There are options to further configure each `feature`, these links document what
 | Feature   | Javadoc                | [view](docs/modules/feature-javadoc.md)               |
 | Feature   | Test Logging           | [view](docs/modules/feature-test-logging.md)          |
 | Feature   | Shadow                 | [view](docs/modules/feature-shadow.md)                |
+| Feature   | Publish                | [view](docs/modules/feature-publish.md)               |
 | Feature   | JUnit5                 | [view](docs/modules/feature-junit5.md)                |
 | Feature   | Manifest               | [view](docs/modules/feature-manifest.md)              |
 | Feature   | VersionUpgrade         | [view](docs/modules/feature-versionupgrade.md)        |
