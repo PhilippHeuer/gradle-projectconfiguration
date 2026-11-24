@@ -138,25 +138,21 @@ open class ProjectConfigurationExtension @Inject constructor(val project: Projec
 
         // artifact
         if (!artifactGroupId.isPresent) {
-            if (project.properties["artifact.group"] is String) {
-                artifactGroupId.set(project.properties["artifact.group"] as String)
-            } else if (project.properties["group"] is String) {
-                artifactGroupId.set(project.properties["group"] as String)
-            } else {
-                artifactGroupId.set(project.group as String?)
-            }
+            artifactGroupId.set(
+                project.providers.gradleProperty("artifact.group").orNull
+                    ?: project.providers.gradleProperty("group").orNull
+                    ?: project.group as String?
+            )
         }
         if (!artifactId.isPresent) {
             artifactId.set(project.name)
         }
         if (!artifactVersion.isPresent) {
-            if (project.properties["artifact.version"] is String) {
-                artifactVersion.set(project.properties["artifact.version"] as String)
-            } else if (project.properties["version"] is String) {
-                artifactVersion.set(project.properties["version"] as String)
-            } else if (project.version != "undefined") {
-                artifactVersion.set(project.version as String?)
-            }
+            artifactVersion.set(
+                project.providers.gradleProperty("artifact.version").orNull
+                    ?: project.providers.gradleProperty("version").orNull
+                    ?: (project.version as? String)?.takeIf { it != "undefined" }
+            )
         }
     }
 }
