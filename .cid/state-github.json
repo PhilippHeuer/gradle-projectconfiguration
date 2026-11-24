@@ -1,7 +1,7 @@
 {
   "workflows": {
     "Nightly": {
-      "version": "0.11.13",
+      "version": "0.13.0",
       "name": "Nightly",
       "name_slug": "nightly",
       "job_timeout": 20,
@@ -51,6 +51,9 @@
               "env": [
                 {
                   "name": "WRAPPER_VERIFICATION"
+                },
+                {
+                  "name": "MAVEN_VERSION"
                 }
               ],
               "executables": [
@@ -73,7 +76,18 @@
               ]
             },
             "inputs": {},
-            "outputs": {},
+            "outputs": {
+              "artifacts": [
+                {
+                  "type": "sbom",
+                  "format": "cyclonedx-json"
+                },
+                {
+                  "type": "sbom",
+                  "format": "spdx-json"
+                }
+              ]
+            },
             "order": 0
           },
           {
@@ -86,6 +100,14 @@
             "module": "gradle-build-gradle-kts",
             "module-dir": ".",
             "access": {
+              "env": [
+                {
+                  "name": "WRAPPER_VERIFICATION"
+                },
+                {
+                  "name": "MAVEN_VERSION"
+                }
+              ],
               "executables": [
                 {
                   "name": "java",
@@ -127,15 +149,15 @@
           },
           {
             "id": "2",
-            "name": "gitleaks-scan",
-            "slug": "gitleaks-scan",
+            "name": "betterleaks-scan",
+            "slug": "betterleaks-scan",
             "stage": "scan",
             "scope": "project",
-            "action": "builtin://actions/gitleaks-scan",
+            "action": "builtin://actions/betterleaks-scan",
             "access": {
               "executables": [
                 {
-                  "name": "gitleaks",
+                  "name": "betterleaks",
                   "constraint": "\u003e= 0.0.0-0"
                 }
               ],
@@ -178,7 +200,7 @@
                 }
               ],
               "network": [
-                "semgrep.dev:443"
+                "http://semgrep.dev:443|GET,HEAD|POST,PUT:/api/**"
               ],
               "resources": [
                 "security-events"
@@ -206,11 +228,11 @@
               "executables": [
                 {
                   "name": "trivy",
-                  "constraint": "=\u003e 0.61.0"
+                  "constraint": "\u003e 0.69.6"
                 }
               ],
               "network": [
-                "mirror.gcr.io:443"
+                "http://mirror.gcr.io:443|GET,HEAD"
               ],
               "resources": [
                 "security-events"
@@ -256,14 +278,14 @@
         "pkg:github-action/step-security/harden-runner": {
           "id": "step-security/harden-runner",
           "type": "github-action",
-          "version": "v2.22.3",
-          "hash": "46b06cea07f9e64621fdf066ba77ac6915163d43"
+          "version": "v2.23.0",
+          "hash": "aebdcf6156ab6691adf63218240e476564a1ed4c"
         },
         "pkg:github/cidverse/cid": {
           "id": "cidverse/cid",
           "type": "github",
-          "version": "0.11.13",
-          "hash": "800d546523ee7c20a031a250bff0651e741c89211b6bec66bfaeeeb47664f5c9",
+          "version": "0.13.0",
+          "hash": "617e3bf2dfef293e18a757060fad5777d8c841a81c2ef97eac5969ca51a340f5",
           "gpg-fingerprint": "76A4948E69C62589C7B0AB84E414434DF5371FB6"
         }
       },
@@ -279,7 +301,7 @@
       ]
     },
     "Pull Request": {
-      "version": "0.11.13",
+      "version": "0.13.0",
       "name": "Pull Request",
       "name_slug": "pull-request",
       "job_timeout": 20,
@@ -327,6 +349,9 @@
               "env": [
                 {
                   "name": "WRAPPER_VERIFICATION"
+                },
+                {
+                  "name": "MAVEN_VERSION"
                 }
               ],
               "executables": [
@@ -349,7 +374,18 @@
               ]
             },
             "inputs": {},
-            "outputs": {},
+            "outputs": {
+              "artifacts": [
+                {
+                  "type": "sbom",
+                  "format": "cyclonedx-json"
+                },
+                {
+                  "type": "sbom",
+                  "format": "spdx-json"
+                }
+              ]
+            },
             "order": 0
           },
           {
@@ -362,6 +398,14 @@
             "module": "gradle-build-gradle-kts",
             "module-dir": ".",
             "access": {
+              "env": [
+                {
+                  "name": "WRAPPER_VERIFICATION"
+                },
+                {
+                  "name": "MAVEN_VERSION"
+                }
+              ],
               "executables": [
                 {
                   "name": "java",
@@ -403,15 +447,15 @@
           },
           {
             "id": "2",
-            "name": "gitleaks-scan",
-            "slug": "gitleaks-scan",
+            "name": "betterleaks-scan",
+            "slug": "betterleaks-scan",
             "stage": "scan",
             "scope": "project",
-            "action": "builtin://actions/gitleaks-scan",
+            "action": "builtin://actions/betterleaks-scan",
             "access": {
               "executables": [
                 {
-                  "name": "gitleaks",
+                  "name": "betterleaks",
                   "constraint": "\u003e= 0.0.0-0"
                 }
               ],
@@ -454,7 +498,7 @@
                 }
               ],
               "network": [
-                "semgrep.dev:443"
+                "http://semgrep.dev:443|GET,HEAD|POST,PUT:/api/**"
               ],
               "resources": [
                 "security-events"
@@ -482,11 +526,11 @@
               "executables": [
                 {
                   "name": "trivy",
-                  "constraint": "=\u003e 0.61.0"
+                  "constraint": "\u003e 0.69.6"
                 }
               ],
               "network": [
-                "mirror.gcr.io:443"
+                "http://mirror.gcr.io:443|GET,HEAD"
               ],
               "resources": [
                 "security-events"
@@ -532,14 +576,14 @@
         "pkg:github-action/step-security/harden-runner": {
           "id": "step-security/harden-runner",
           "type": "github-action",
-          "version": "v2.22.3",
-          "hash": "46b06cea07f9e64621fdf066ba77ac6915163d43"
+          "version": "v2.23.0",
+          "hash": "aebdcf6156ab6691adf63218240e476564a1ed4c"
         },
         "pkg:github/cidverse/cid": {
           "id": "cidverse/cid",
           "type": "github",
-          "version": "0.11.13",
-          "hash": "800d546523ee7c20a031a250bff0651e741c89211b6bec66bfaeeeb47664f5c9",
+          "version": "0.13.0",
+          "hash": "617e3bf2dfef293e18a757060fad5777d8c841a81c2ef97eac5969ca51a340f5",
           "gpg-fingerprint": "76A4948E69C62589C7B0AB84E414434DF5371FB6"
         }
       },
@@ -555,7 +599,7 @@
       ]
     },
     "Release": {
-      "version": "0.11.13",
+      "version": "0.13.0",
       "name": "Release",
       "name_slug": "release",
       "job_timeout": 20,
@@ -589,6 +633,7 @@
           "build",
           "test",
           "scan",
+          "package",
           "publish"
         ],
         "steps": [
@@ -605,6 +650,9 @@
               "env": [
                 {
                   "name": "WRAPPER_VERIFICATION"
+                },
+                {
+                  "name": "MAVEN_VERSION"
                 }
               ],
               "executables": [
@@ -627,7 +675,18 @@
               ]
             },
             "inputs": {},
-            "outputs": {},
+            "outputs": {
+              "artifacts": [
+                {
+                  "type": "sbom",
+                  "format": "cyclonedx-json"
+                },
+                {
+                  "type": "sbom",
+                  "format": "spdx-json"
+                }
+              ]
+            },
             "order": 0
           },
           {
@@ -640,6 +699,14 @@
             "module": "gradle-build-gradle-kts",
             "module-dir": ".",
             "access": {
+              "env": [
+                {
+                  "name": "WRAPPER_VERIFICATION"
+                },
+                {
+                  "name": "MAVEN_VERSION"
+                }
+              ],
               "executables": [
                 {
                   "name": "java",
@@ -681,15 +748,51 @@
           },
           {
             "id": "2",
-            "name": "gitleaks-scan",
-            "slug": "gitleaks-scan",
-            "stage": "scan",
-            "scope": "project",
-            "action": "builtin://actions/gitleaks-scan",
+            "name": "syft-sbom [gradle-projectconfiguration]",
+            "slug": "syft-sbom-gradle-projectconfiguration",
+            "stage": "package",
+            "scope": "module",
+            "action": "builtin://actions/syft-sbom",
+            "module": "gradle-build-gradle-kts",
+            "module-dir": ".",
             "access": {
               "executables": [
                 {
-                  "name": "gitleaks",
+                  "name": "syft",
+                  "constraint": "\u003e= 1.0.0"
+                }
+              ],
+              "network": [
+                "repo.maven.apache.org:443",
+                "plugins.gradle.org:443"
+              ]
+            },
+            "inputs": {},
+            "outputs": {
+              "artifacts": [
+                {
+                  "type": "sbom",
+                  "format": "cyclonedx-json"
+                },
+                {
+                  "type": "sbom",
+                  "format": "spdx-json"
+                }
+              ]
+            },
+            "order": 2
+          },
+          {
+            "id": "3",
+            "name": "betterleaks-scan",
+            "slug": "betterleaks-scan",
+            "stage": "scan",
+            "scope": "project",
+            "action": "builtin://actions/betterleaks-scan",
+            "access": {
+              "executables": [
+                {
+                  "name": "betterleaks",
                   "constraint": "\u003e= 0.0.0-0"
                 }
               ],
@@ -706,10 +809,10 @@
                 }
               ]
             },
-            "order": 2
+            "order": 3
           },
           {
-            "id": "3",
+            "id": "4",
             "name": "semgrep-scan",
             "slug": "semgrep-scan",
             "stage": "scan",
@@ -732,39 +835,7 @@
                 }
               ],
               "network": [
-                "semgrep.dev:443"
-              ],
-              "resources": [
-                "security-events"
-              ]
-            },
-            "inputs": {},
-            "outputs": {
-              "artifacts": [
-                {
-                  "type": "report",
-                  "format": "sarif"
-                }
-              ]
-            },
-            "order": 3
-          },
-          {
-            "id": "4",
-            "name": "trivyfs-scan",
-            "slug": "trivyfs-scan",
-            "stage": "scan",
-            "scope": "project",
-            "action": "builtin://actions/trivyfs-scan",
-            "access": {
-              "executables": [
-                {
-                  "name": "trivy",
-                  "constraint": "=\u003e 0.61.0"
-                }
-              ],
-              "network": [
-                "mirror.gcr.io:443"
+                "http://semgrep.dev:443|GET,HEAD|POST,PUT:/api/**"
               ],
               "resources": [
                 "security-events"
@@ -783,23 +854,160 @@
           },
           {
             "id": "5",
+            "name": "trivyfs-scan",
+            "slug": "trivyfs-scan",
+            "stage": "scan",
+            "scope": "project",
+            "action": "builtin://actions/trivyfs-scan",
+            "access": {
+              "executables": [
+                {
+                  "name": "trivy",
+                  "constraint": "\u003e 0.69.6"
+                }
+              ],
+              "network": [
+                "http://mirror.gcr.io:443|GET,HEAD"
+              ],
+              "resources": [
+                "security-events"
+              ]
+            },
+            "inputs": {},
+            "outputs": {
+              "artifacts": [
+                {
+                  "type": "report",
+                  "format": "sarif"
+                }
+              ]
+            },
+            "order": 5
+          },
+          {
+            "id": "6",
+            "name": "sigstore-sign",
+            "slug": "sigstore-sign",
+            "stage": "publish",
+            "scope": "project",
+            "action": "builtin://actions/sigstore-sign",
+            "run-after": [
+              "betterleaks-scan",
+              "gradle-build-gradle-projectconfiguration",
+              "gradle-test-gradle-projectconfiguration",
+              "semgrep-scan",
+              "syft-sbom-gradle-projectconfiguration",
+              "trivyfs-scan"
+            ],
+            "run-after-by-name": [
+              "betterleaks-scan",
+              "gradle-build [gradle-projectconfiguration]",
+              "gradle-test [gradle-projectconfiguration]",
+              "semgrep-scan",
+              "syft-sbom [gradle-projectconfiguration]",
+              "trivyfs-scan"
+            ],
+            "uses-output-of": [
+              "gradle-build-gradle-projectconfiguration",
+              "syft-sbom-gradle-projectconfiguration"
+            ],
+            "uses-output-of-by-name": [
+              "gradle-build [gradle-projectconfiguration]",
+              "syft-sbom [gradle-projectconfiguration]"
+            ],
+            "access": {
+              "env": [
+                {
+                  "name": "CID_SIGSTORE_SIGN"
+                },
+                {
+                  "name": "^ACTIONS_ID_TOKEN_REQUEST_URL$",
+                  "pattern": true
+                },
+                {
+                  "name": "^ACTIONS_ID_TOKEN_REQUEST_TOKEN$",
+                  "pattern": true,
+                  "secret": true
+                },
+                {
+                  "name": "^SIGSTORE_ID_TOKEN$",
+                  "pattern": true,
+                  "secret": true
+                },
+                {
+                  "name": "^GITHUB_SERVER_URL$",
+                  "pattern": true
+                },
+                {
+                  "name": "^GITHUB_WORKFLOW_REF$",
+                  "pattern": true
+                },
+                {
+                  "name": "^CI_RUNNER_ID$",
+                  "pattern": true
+                }
+              ],
+              "network": [
+                "*.actions.githubusercontent.com:443",
+                "tuf-repo-cdn.sigstore.dev:443",
+                "fulcio.sigstore.dev:443",
+                "rekor.sigstore.dev:443",
+                "*.rekor.sigstore.dev:443",
+                "timestamp.sigstore.dev:443"
+              ],
+              "idTokens": [
+                {
+                  "name": "SIGSTORE_ID_TOKEN",
+                  "audience": "sigstore"
+                }
+              ]
+            },
+            "inputs": {
+              "artifacts": [
+                {
+                  "type": "binary"
+                },
+                {
+                  "type": "sbom",
+                  "format": "cyclonedx-json"
+                },
+                {
+                  "type": "sbom",
+                  "format": "spdx-json"
+                }
+              ]
+            },
+            "outputs": {
+              "artifacts": [
+                {
+                  "type": "signature",
+                  "format": "sigstore"
+                }
+              ]
+            },
+            "order": 6
+          },
+          {
+            "id": "7",
             "name": "changelog-generate",
             "slug": "changelog-generate",
             "stage": "publish",
             "scope": "project",
             "action": "builtin://actions/changelog-generate",
             "run-after": [
-              "gitleaks-scan",
+              "betterleaks-scan",
               "gradle-build-gradle-projectconfiguration",
               "gradle-test-gradle-projectconfiguration",
               "semgrep-scan",
+              "syft-sbom-gradle-projectconfiguration",
               "trivyfs-scan"
             ],
             "run-after-by-name": [
-              "gitleaks-scan",
+              "betterleaks-scan",
               "gradle-build [gradle-projectconfiguration]",
               "gradle-test [gradle-projectconfiguration]",
               "semgrep-scan",
+              "syft-sbom [gradle-projectconfiguration]",
               "trivyfs-scan"
             ],
             "access": {},
@@ -811,36 +1019,46 @@
                 }
               ]
             },
-            "order": 5
+            "order": 7
           },
           {
-            "id": "6",
+            "id": "8",
             "name": "github-release-publish",
             "slug": "github-release-publish",
             "stage": "publish",
             "scope": "project",
             "action": "builtin://actions/github-release-publish",
             "run-after": [
+              "betterleaks-scan",
               "changelog-generate",
-              "gitleaks-scan",
               "gradle-build-gradle-projectconfiguration",
               "gradle-test-gradle-projectconfiguration",
               "semgrep-scan",
+              "sigstore-sign",
+              "syft-sbom-gradle-projectconfiguration",
               "trivyfs-scan"
             ],
             "run-after-by-name": [
+              "betterleaks-scan",
               "changelog-generate",
-              "gitleaks-scan",
               "gradle-build [gradle-projectconfiguration]",
               "gradle-test [gradle-projectconfiguration]",
               "semgrep-scan",
+              "sigstore-sign",
+              "syft-sbom [gradle-projectconfiguration]",
               "trivyfs-scan"
             ],
             "uses-output-of": [
-              "changelog-generate"
+              "changelog-generate",
+              "gradle-build-gradle-projectconfiguration",
+              "sigstore-sign",
+              "syft-sbom-gradle-projectconfiguration"
             ],
             "uses-output-of-by-name": [
-              "changelog-generate"
+              "changelog-generate",
+              "gradle-build [gradle-projectconfiguration]",
+              "sigstore-sign",
+              "syft-sbom [gradle-projectconfiguration]"
             ],
             "access": {
               "env": [
@@ -864,11 +1082,27 @@
                 {
                   "type": "signature",
                   "format": "pgp"
+                },
+                {
+                  "type": "signature",
+                  "format": "sigstore"
+                },
+                {
+                  "type": "checksum",
+                  "format": "sha256"
+                },
+                {
+                  "type": "sbom",
+                  "format": "cyclonedx-json"
+                },
+                {
+                  "type": "sbom",
+                  "format": "spdx-json"
                 }
               ]
             },
             "outputs": {},
-            "order": 6
+            "order": 8
           }
         ]
       },
@@ -899,14 +1133,14 @@
         "pkg:github-action/step-security/harden-runner": {
           "id": "step-security/harden-runner",
           "type": "github-action",
-          "version": "v2.22.3",
-          "hash": "46b06cea07f9e64621fdf066ba77ac6915163d43"
+          "version": "v2.23.0",
+          "hash": "aebdcf6156ab6691adf63218240e476564a1ed4c"
         },
         "pkg:github/cidverse/cid": {
           "id": "cidverse/cid",
           "type": "github",
-          "version": "0.11.13",
-          "hash": "800d546523ee7c20a031a250bff0651e741c89211b6bec66bfaeeeb47664f5c9",
+          "version": "0.13.0",
+          "hash": "617e3bf2dfef293e18a757060fad5777d8c841a81c2ef97eac5969ca51a340f5",
           "gpg-fingerprint": "76A4948E69C62589C7B0AB84E414434DF5371FB6"
         }
       },
@@ -922,7 +1156,7 @@
       ]
     },
     "Main": {
-      "version": "0.11.13",
+      "version": "0.13.0",
       "name": "Main",
       "name_slug": "main",
       "job_timeout": 20,
@@ -970,6 +1204,9 @@
               "env": [
                 {
                   "name": "WRAPPER_VERIFICATION"
+                },
+                {
+                  "name": "MAVEN_VERSION"
                 }
               ],
               "executables": [
@@ -992,7 +1229,18 @@
               ]
             },
             "inputs": {},
-            "outputs": {},
+            "outputs": {
+              "artifacts": [
+                {
+                  "type": "sbom",
+                  "format": "cyclonedx-json"
+                },
+                {
+                  "type": "sbom",
+                  "format": "spdx-json"
+                }
+              ]
+            },
             "order": 0
           },
           {
@@ -1005,6 +1253,14 @@
             "module": "gradle-build-gradle-kts",
             "module-dir": ".",
             "access": {
+              "env": [
+                {
+                  "name": "WRAPPER_VERIFICATION"
+                },
+                {
+                  "name": "MAVEN_VERSION"
+                }
+              ],
               "executables": [
                 {
                   "name": "java",
@@ -1046,15 +1302,15 @@
           },
           {
             "id": "2",
-            "name": "gitleaks-scan",
-            "slug": "gitleaks-scan",
+            "name": "betterleaks-scan",
+            "slug": "betterleaks-scan",
             "stage": "scan",
             "scope": "project",
-            "action": "builtin://actions/gitleaks-scan",
+            "action": "builtin://actions/betterleaks-scan",
             "access": {
               "executables": [
                 {
-                  "name": "gitleaks",
+                  "name": "betterleaks",
                   "constraint": "\u003e= 0.0.0-0"
                 }
               ],
@@ -1097,7 +1353,7 @@
                 }
               ],
               "network": [
-                "semgrep.dev:443"
+                "http://semgrep.dev:443|GET,HEAD|POST,PUT:/api/**"
               ],
               "resources": [
                 "security-events"
@@ -1125,11 +1381,11 @@
               "executables": [
                 {
                   "name": "trivy",
-                  "constraint": "=\u003e 0.61.0"
+                  "constraint": "\u003e 0.69.6"
                 }
               ],
               "network": [
-                "mirror.gcr.io:443"
+                "http://mirror.gcr.io:443|GET,HEAD"
               ],
               "resources": [
                 "security-events"
@@ -1175,14 +1431,14 @@
         "pkg:github-action/step-security/harden-runner": {
           "id": "step-security/harden-runner",
           "type": "github-action",
-          "version": "v2.22.3",
-          "hash": "46b06cea07f9e64621fdf066ba77ac6915163d43"
+          "version": "v2.23.0",
+          "hash": "aebdcf6156ab6691adf63218240e476564a1ed4c"
         },
         "pkg:github/cidverse/cid": {
           "id": "cidverse/cid",
           "type": "github",
-          "version": "0.11.13",
-          "hash": "800d546523ee7c20a031a250bff0651e741c89211b6bec66bfaeeeb47664f5c9",
+          "version": "0.13.0",
+          "hash": "617e3bf2dfef293e18a757060fad5777d8c841a81c2ef97eac5969ca51a340f5",
           "gpg-fingerprint": "76A4948E69C62589C7B0AB84E414434DF5371FB6"
         }
       },

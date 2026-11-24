@@ -23,8 +23,8 @@ fi
 
 # download
 echo "Fetching binary and signature [$CID_VERSION]..."
-curl -sSL -o "$TMP_DIR/cid" "$BINARY_URL"
-curl -sSL -o "$TMP_DIR/cid.asc" "$SIG_URL"
+curl -fsSL -o "$TMP_DIR/cid" "$BINARY_URL"
+curl -fsSL -o "$TMP_DIR/cid.asc" "$SIG_URL"
 
 # sha256 integrity
 if [[ -n "${CID_SHA256}" ]]; then
